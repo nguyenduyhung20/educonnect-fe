@@ -7,17 +7,10 @@ import SidebarLayout from '@/layouts/SidebarLayout';
 import {  Container, Grid } from '@mui/material';
 import Footer from '@/components/Footer';
 
-// import AccountBalance from '@/content/Dashboards/Crypto/AccountBalance';
-// import Wallets from '@/content/Dashboards/Crypto/Wallets';
-// import AccountSecurity from '@/content/Dashboards/Crypto/AccountSecurity';
-// import WatchList from '@/content/Dashboards/Crypto/WatchList';
-// import { NewsFeed } from '@/sections/Dashboards/Feeds/NewsFeed';
-import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
 import { ExploreTrending } from '@/sections/dashboards/explore/explore-trending';
 import { ExploreWhoToFollow } from '@/sections/dashboards/explore/explore-who-to-follow';
-// import { CreateNewsFeed } from '@/sections/Dashboards/Feeds/CreateNewsFeed';
 
-function DashboardCrypto() {
+function CommunitiesExplore() {
   return (
     <>
       <Head>
@@ -46,6 +39,6 @@ function DashboardCrypto() {
   );
 }
 
-DashboardCrypto.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
+CommunitiesExplore.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
 
-export default DashboardCrypto;
+export default CommunitiesExplore;
