@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
 import { DiscoverGroups } from '@/sections/dashboards/groups/groups-discover';
 
-function DashboardCrypto() {
+function CommunitiesGroups() {
   return (
     <>
       <Head>
@@ -34,6 +34,6 @@ function DashboardCrypto() {
   );
 }
 
-DashboardCrypto.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
+CommunitiesGroups.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
 
-export default DashboardCrypto;
+export default CommunitiesGroups;

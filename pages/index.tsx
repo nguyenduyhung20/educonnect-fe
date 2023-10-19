@@ -13,7 +13,7 @@ import Link from 'src/components/Link';
 import Head from 'next/head';
 
 import Logo from 'src/components/LogoSign';
-import Hero from '@/sections/Overview/Hero';
+import Hero from '@/sections/overview/hero';
 
 const HeaderWrapper = styled(Card)(
   ({ theme }) => `
@@ -68,13 +68,13 @@ function Overview() {
       <Hero />
       <Container maxWidth="lg" sx={{ mt: 8 }}>
         <Typography textAlign="center" variant="subtitle1">
-          Crafted by{' '}
+          Created by{' '}
           <Link
-            href="https://bloomui.com"
+            href="https://hcmut.edu.vn/"
             target="_blank"
             rel="noopener noreferrer"
           >
-            BloomUI.com
+            HCMUT's Student
           </Link>
         </Typography>
       </Container>

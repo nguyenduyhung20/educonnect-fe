@@ -6,7 +6,8 @@ import {
   CardContent,
   CardHeader,
   CardMedia,
-  Typography,
+  Stack,
+  Typography
 } from '@mui/material';
 import React from 'react';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -16,7 +17,6 @@ import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
 
 export const BodyNews = () => {
-
   const user = {
     name: 'Catherine Pike',
     avatar: '/static/images/avatars/1.jpg'
@@ -25,7 +25,7 @@ export const BodyNews = () => {
     <Card>
       <CardHeader
         avatar={<Avatar variant="rounded" alt={user.name} src={user.avatar} />}
-        title={ <Typography variant='h4'>Trần Long Biên</Typography>}
+        title={<Typography variant="h4">Trần Long Biên</Typography>}
         subheader="17 phút"
         action={
           <IconButton aria-label="delete">
@@ -57,7 +57,11 @@ export const BodyNews = () => {
             }}
           >
             <IconButton aria-label="delete">
-              <FavoriteBorderIcon />
+              <Stack direction={'row'} alignItems={'center'} spacing={0.5}>
+                 <FavoriteBorderIcon />
+                 <Typography>123</Typography>
+              </Stack>
+             
             </IconButton>
           </Box>
           <Box
@@ -68,7 +72,11 @@ export const BodyNews = () => {
             }}
           >
             <IconButton aria-label="delete">
-              <ForumOutlinedIcon />
+              <Stack direction={'row'} alignItems={'center'} spacing={0.5}>
+                <ForumOutlinedIcon />
+                <Typography>123</Typography>
+              </Stack>
+              
             </IconButton>
           </Box>
 
@@ -80,7 +88,10 @@ export const BodyNews = () => {
             }}
           >
             <IconButton aria-label="delete">
-              <ReplyOutlinedIcon />
+              <Stack direction={'row'} spacing={0.5} alignItems={'center'}>
+                <ReplyOutlinedIcon />
+                <Typography>123</Typography>
+              </Stack>
             </IconButton>
           </Box>
         </Box>

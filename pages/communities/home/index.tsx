@@ -15,7 +15,7 @@ import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
 import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
 import { CreateNewsFeed } from '@/sections/dashboards/feeds/create-news-feed';
 
-function DashboardCrypto() {
+function CommunitiesHome() {
   return (
     <>
       <Head>
@@ -46,6 +46,6 @@ function DashboardCrypto() {
   );
 }
 
-DashboardCrypto.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
+CommunitiesHome.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
 
-export default DashboardCrypto;
+export default CommunitiesHome;
