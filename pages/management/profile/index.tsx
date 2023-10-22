@@ -10,13 +10,15 @@ import Feed from '@/sections/Management/Users/details/Feed';
 import PopularTags from '@/sections/Management/Users/details/PopularTags';
 import MyCards from '@/sections/Management/Users/details/MyCards';
 import Addresses from '@/sections/Management/Users/details/Addresses';
+import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
+import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
 
 function ManagementUserProfile() {
   const user = {
     savedCards: 7,
-    name: 'Catherine Pike',
+    name: 'Trần Long Biên',
     coverImg: '/static/images/placeholders/covers/5.jpg',
-    avatar: '/static/images/avatars/4.jpg',
+    avatar: '/static/images/avatars/1.jpg',
     description:
       "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage",
     jobtitle: 'Web Developer',
@@ -43,17 +45,12 @@ function ManagementUserProfile() {
           <Grid item xs={12} md={4}>
             <RecentActivity />
           </Grid>
-          <Grid item xs={12} md={8}>
-            <Feed />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <PopularTags />
-          </Grid>
           <Grid item xs={12} md={7}>
-            <MyCards />
+            <NewsFeed />
           </Grid>
           <Grid item xs={12} md={5}>
-            <Addresses />
+            {/* <PopularTags /> */}
+            <TrendingNews />
           </Grid>
         </Grid>
       </Container>
