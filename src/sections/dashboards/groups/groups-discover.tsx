@@ -13,6 +13,7 @@ import {
 import React, { useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import GroupAvatarsMembers from './groups-avatar-members';
+import { SearchBar } from '@/components/dashboards/search-bar';
 
 export const DiscoverGroups = () => {
   const user = {
@@ -42,6 +43,7 @@ export const DiscoverGroups = () => {
     <Box>
       <Paper elevation={5} sx={{ p: 2 }}>
         <Stack direction={'column'} spacing={2}>
+          <SearchBar />
           <Typography
             variant="h3"
             sx={{
@@ -53,7 +55,18 @@ export const DiscoverGroups = () => {
           </Typography>
 
           <Stack direction={'column'} spacing={3}>
-            <Stack direction={'row'} justifyContent={'space-between'} width={1}>
+            <Stack
+              direction={'row'}
+              justifyContent={'space-between'}
+              width={1}
+              sx={{
+                p: 1,
+                '&:hover': {
+                  background: `${theme.colors.primary.lighter}`,
+                  borderRadius: 1
+                }
+              }}
+            >
               <Stack direction={'row'} spacing={1}>
                 <Avatar
                   sx={{
@@ -86,7 +99,18 @@ export const DiscoverGroups = () => {
                 </IconButton>
               </Box>
             </Stack>
-            <Stack direction={'row'} justifyContent={'space-between'} width={1}>
+            <Stack
+              direction={'row'}
+              justifyContent={'space-between'}
+              width={1}
+              sx={{
+                p: 1,
+                '&:hover': {
+                  background: `${theme.colors.primary.lighter}`,
+                  borderRadius: 1
+                }
+              }}
+            >
               <Stack direction={'row'} spacing={1}>
                 <Avatar
                   sx={{
@@ -119,7 +143,18 @@ export const DiscoverGroups = () => {
                 </IconButton>
               </Box>
             </Stack>
-            <Stack direction={'row'} justifyContent={'space-between'} width={1}>
+            <Stack
+              direction={'row'}
+              justifyContent={'space-between'}
+              width={1}
+              sx={{
+                p: 1,
+                '&:hover': {
+                  background: `${theme.colors.primary.lighter}`,
+                  borderRadius: 1
+                }
+              }}
+            >
               <Stack direction={'row'} spacing={1}>
                 <Avatar
                   sx={{
@@ -152,7 +187,18 @@ export const DiscoverGroups = () => {
                 </IconButton>
               </Box>
             </Stack>
-            <Stack direction={'row'} justifyContent={'space-between'} width={1}>
+            <Stack
+              direction={'row'}
+              justifyContent={'space-between'}
+              width={1}
+              sx={{
+                p: 1,
+                '&:hover': {
+                  background: `${theme.colors.primary.lighter}`,
+                  borderRadius: 1
+                }
+              }}
+            >
               <Stack direction={'row'} spacing={1}>
                 <Avatar
                   sx={{
@@ -191,6 +237,13 @@ export const DiscoverGroups = () => {
                   direction={'row'}
                   justifyContent={'space-between'}
                   width={1}
+                  sx={{
+                    p: 1,
+                    '&:hover': {
+                      background: `${theme.colors.primary.lighter}`,
+                      borderRadius: 1
+                    }
+                  }}
                 >
                   <Stack direction={'row'} spacing={1}>
                     <Avatar
@@ -228,6 +281,13 @@ export const DiscoverGroups = () => {
                   direction={'row'}
                   justifyContent={'space-between'}
                   width={1}
+                  sx={{
+                    p: 1,
+                    '&:hover': {
+                      background: `${theme.colors.primary.lighter}`,
+                      borderRadius: 1
+                    }
+                  }}
                 >
                   <Stack direction={'row'} spacing={1}>
                     <Avatar

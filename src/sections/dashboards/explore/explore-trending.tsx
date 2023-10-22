@@ -6,11 +6,13 @@ import {
   IconButtonProps,
   Paper,
   Stack,
+  TextField,
   Typography,
   styled
 } from '@mui/material';
 import React, { useState } from 'react';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { TrendingNewsItem } from '@/components/dashboards/trending-news-item';
+import { SearchBar } from '@/components/dashboards/search-bar';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -36,6 +38,8 @@ export const ExploreTrending = () => {
     <Box>
       <Paper elevation={5} sx={{ p: 2 }}>
         <Stack direction={'column'} spacing={2}>
+          <SearchBar />
+
           <Typography
             variant="h3"
             sx={{
@@ -47,104 +51,15 @@ export const ExploreTrending = () => {
           </Typography>
 
           <Stack direction={'column'} spacing={1}>
-            <Stack direction={'row'} justifyContent={'space-between'} width={1}>
-              <Box>
-                <Typography variant="subtitle1">Trending</Typography>
-                <Typography variant="h4">Lionel Messi</Typography>
-                <Typography variant="subtitle2">321K posts</Typography>
-              </Box>
-              <Box>
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              </Box>
-            </Stack>
-            <Stack direction={'row'} justifyContent={'space-between'} width={1}>
-              <Box>
-                <Typography variant="subtitle1">Trending</Typography>
-                <Typography variant="h4">Lionel Messi</Typography>
-                <Typography variant="subtitle2">321K posts</Typography>
-              </Box>
-              <Box>
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              </Box>
-            </Stack>
-            <Stack direction={'row'} justifyContent={'space-between'} width={1}>
-              <Box>
-                <Typography variant="subtitle1">Trending</Typography>
-                <Typography variant="h4">Lionel Messi</Typography>
-                <Typography variant="subtitle2">321K posts</Typography>
-              </Box>
-              <Box>
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              </Box>
-            </Stack>
-            <Stack direction={'row'} justifyContent={'space-between'} width={1}>
-              <Box>
-                <Typography variant="subtitle1">Trending</Typography>
-                <Typography variant="h4">Lionel Messi</Typography>
-                <Typography variant="subtitle2">321K posts</Typography>
-              </Box>
-              <Box>
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              </Box>
-            </Stack>
+            <TrendingNewsItem />
+            <TrendingNewsItem />
+            <TrendingNewsItem />
+            <TrendingNewsItem />
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <Stack direction={'column'} spacing={1}>
-                <Stack
-                  direction={'row'}
-                  justifyContent={'space-between'}
-                  width={1}
-                >
-                  <Box>
-                    <Typography variant="subtitle1">Trending</Typography>
-                    <Typography variant="h4">Lionel Messi</Typography>
-                    <Typography variant="subtitle2">321K posts</Typography>
-                  </Box>
-                  <Box>
-                    <IconButton aria-label="settings">
-                      <MoreVertIcon />
-                    </IconButton>
-                  </Box>
-                </Stack>
-                <Stack
-                  direction={'row'}
-                  justifyContent={'space-between'}
-                  width={1}
-                >
-                  <Box>
-                    <Typography variant="subtitle1">Trending</Typography>
-                    <Typography variant="h4">Lionel Messi</Typography>
-                    <Typography variant="subtitle2">321K posts</Typography>
-                  </Box>
-                  <Box>
-                    <IconButton aria-label="settings">
-                      <MoreVertIcon />
-                    </IconButton>
-                  </Box>
-                </Stack>
-                <Stack
-                  direction={'row'}
-                  justifyContent={'space-between'}
-                  width={1}
-                >
-                  <Box>
-                    <Typography variant="subtitle1">Trending</Typography>
-                    <Typography variant="h4">Lionel Messi</Typography>
-                    <Typography variant="subtitle2">321K posts</Typography>
-                  </Box>
-                  <Box>
-                    <IconButton aria-label="settings">
-                      <MoreVertIcon />
-                    </IconButton>
-                  </Box>
-                </Stack>
+                <TrendingNewsItem />
+                <TrendingNewsItem />
+                <TrendingNewsItem />
               </Stack>
             </Collapse>
             <Stack justifyContent={'center'} direction={'row'}>
