@@ -171,7 +171,7 @@ function SidebarMenu() {
   const { closeSidebar } = useContext(SidebarContext);
   const router = useRouter();
   const currentRoute = router.pathname;
-
+  console.log(currentRoute);
   return (
     <>
       <MenuWrapper>
@@ -208,7 +208,11 @@ function SidebarMenu() {
                 <NextLink href="/communities/home" passHref>
                   <Button
                     className={
-                      currentRoute === '/communities/home' ? 'active' : ''
+                      currentRoute ===
+                      ('/communities/home' ||
+                        '/communities/home/home-following')
+                        ? 'active'
+                        : ''
                     }
                     disableRipple
                     component="a"
@@ -234,7 +238,7 @@ function SidebarMenu() {
                   </Button>
                 </NextLink>
               </ListItem>
-        
+
               <ListItem component="div">
                 <NextLink href="/communities/groups" passHref>
                   <Button
@@ -250,7 +254,6 @@ function SidebarMenu() {
                   </Button>
                 </NextLink>
               </ListItem>
-
             </List>
           </SubMenuWrapper>
         </List>
@@ -268,7 +271,8 @@ function SidebarMenu() {
                 <NextLink href="/elearning" passHref>
                   <Button
                     className={
-                      currentRoute === '/elearning'
+                      currentRoute === '/elearning' ||
+                      currentRoute === '/elearning/elearning-scores'
                         ? 'active'
                         : ''
                     }
@@ -329,8 +333,6 @@ function SidebarMenu() {
             </List>
           </SubMenuWrapper>
         </List>
-        
-        
       </MenuWrapper>
     </>
   );

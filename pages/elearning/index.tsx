@@ -21,7 +21,7 @@ import { ElearningGradeEleven } from '@/sections/dashboards/elearning/elearning-
 import { ContainHeader } from '@/sections/dashboards/elearning/contain-header';
 import { ElearningGradeTwelve } from '@/sections/dashboards/elearning/elearning-grade-twelve';
 
-function CommunitiesGroups() {
+function EleaningPage() {
   const tabs = [
     {
       label: 'Lớp 10',
@@ -70,8 +70,8 @@ function CommunitiesGroups() {
   );
 }
 
-CommunitiesGroups.getLayout = (page) => (
+EleaningPage.getLayout = (page) => (
   <ElearningLayout>{page}</ElearningLayout>
 );
 
-export default CommunitiesGroups;
+export default EleaningPage;

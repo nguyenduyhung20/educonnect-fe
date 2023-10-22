@@ -208,7 +208,10 @@ function SidebarMenu() {
                 <NextLink href="/communities/home" passHref>
                   <Button
                     className={
-                      currentRoute === '/communities/home' ? 'active' : ''
+                      currentRoute === '/communities/home' ||
+                      currentRoute === '/communities/home/home-following'
+                        ? 'active'
+                        : ''
                     }
                     disableRipple
                     component="a"
@@ -234,7 +237,7 @@ function SidebarMenu() {
                   </Button>
                 </NextLink>
               </ListItem>
-        
+
               <ListItem component="div">
                 <NextLink href="/communities/groups" passHref>
                   <Button
@@ -250,7 +253,6 @@ function SidebarMenu() {
                   </Button>
                 </NextLink>
               </ListItem>
-
             </List>
           </SubMenuWrapper>
         </List>
@@ -267,11 +269,7 @@ function SidebarMenu() {
               <ListItem component="div">
                 <NextLink href="/elearning" passHref>
                   <Button
-                    className={
-                      currentRoute === '/elearning'
-                        ? 'active'
-                        : ''
-                    }
+                    className={currentRoute === '/elearning' ? 'active' : ''}
                     disableRipple
                     component="a"
                     onClick={closeSidebar}
@@ -329,8 +327,6 @@ function SidebarMenu() {
             </List>
           </SubMenuWrapper>
         </List>
-        
-        
       </MenuWrapper>
     </>
   );
