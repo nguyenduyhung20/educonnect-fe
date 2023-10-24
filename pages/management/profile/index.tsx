@@ -34,8 +34,7 @@ function ManagementUserProfile() {
         <title>User Details - Management</title>
       </Head>
       <Container sx={{ mt: 3 }} maxWidth="lg">
-        {/* <UserViewProfile user={user} /> */}
-        <UserOtherViewProfile user={user} />
+        <UserViewProfile user={user} />
       </Container>
       <Footer />
     </>
