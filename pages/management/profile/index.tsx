@@ -12,6 +12,8 @@ import MyCards from '@/sections/Management/Users/details/MyCards';
 import Addresses from '@/sections/Management/Users/details/Addresses';
 import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
 import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
+import { UserViewProfile } from './user-view-profile';
+import { UserOtherViewProfile } from './other-user-view-profile';
 
 function ManagementUserProfile() {
   const user = {
@@ -32,27 +34,8 @@ function ManagementUserProfile() {
         <title>User Details - Management</title>
       </Head>
       <Container sx={{ mt: 3 }} maxWidth="lg">
-        <Grid
-          container
-          direction="row"
-          justifyContent="center"
-          alignItems="stretch"
-          spacing={3}
-        >
-          <Grid item xs={12} md={8}>
-            <ProfileCover user={user} />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <RecentActivity />
-          </Grid>
-          <Grid item xs={12} md={7}>
-            <NewsFeed />
-          </Grid>
-          <Grid item xs={12} md={5}>
-            {/* <PopularTags /> */}
-            <TrendingNews />
-          </Grid>
-        </Grid>
+        {/* <UserViewProfile user={user} /> */}
+        <UserOtherViewProfile user={user} />
       </Container>
       <Footer />
     </>
