@@ -7,7 +7,7 @@ export const TrendingNewsItem = () => {
   const theme = useTheme();
   return (
     <>
-      <Link href={'/communities/explore'}>
+      <Link href={'/communities/explore/explore-choose-trend'}>
         <Stack
           direction={'row'}
           justifyContent={'space-between'}
