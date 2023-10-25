@@ -226,7 +226,11 @@ function SidebarMenu() {
                 <NextLink href="/communities/explore" passHref>
                   <Button
                     className={
-                      currentRoute === '/communities/explore' ? 'active' : ''
+                      currentRoute === '/communities/explore' ||
+                      currentRoute ===
+                        '/communities/explore/explore-choose-trend'
+                        ? 'active'
+                        : ''
                     }
                     disableRipple
                     component="a"
