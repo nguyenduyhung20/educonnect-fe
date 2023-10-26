@@ -24,6 +24,8 @@ import React, { ChangeEvent, useState } from 'react';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import ImageIcon from '@mui/icons-material/Image';
 import { CreateNewsFeedPost } from '@/sections/dashboards/feeds/create-news-feed-post';
+import { CreateNewsFeedImage } from '@/sections/dashboards/feeds/create-news-feed-image';
+import { CreateNewsFeedLink } from '@/sections/dashboards/feeds/create-news-feed-link';
 
 function CreatePost() {
   const tabs = [
@@ -103,7 +105,15 @@ function CreatePost() {
                         iconPosition="start"
                       />
                     </Tabs>{' '}
-                    <CreateNewsFeedPost></CreateNewsFeedPost>
+                    {currentTab === 'Post' && (
+                      <CreateNewsFeedPost></CreateNewsFeedPost>
+                    )}
+                    {currentTab === 'Image' && (
+                      <CreateNewsFeedImage></CreateNewsFeedImage>
+                    )}
+                    {currentTab === 'Link' && (
+                      <CreateNewsFeedLink></CreateNewsFeedLink>
+                    )}
                   </Stack>
                 </Paper>
               </Stack>

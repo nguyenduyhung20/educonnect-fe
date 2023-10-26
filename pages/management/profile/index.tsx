@@ -13,7 +13,6 @@ import Addresses from '@/sections/Management/Users/details/Addresses';
 import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
 import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
 import { UserViewProfile } from './user-view-profile';
-import { UserOtherViewProfile } from './other-user-view-profile';
 
 function ManagementUserProfile() {
   const user = {

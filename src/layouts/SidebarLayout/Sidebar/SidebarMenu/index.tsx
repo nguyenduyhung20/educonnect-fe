@@ -209,7 +209,8 @@ function SidebarMenu() {
                   <Button
                     className={
                       currentRoute === '/communities/home' ||
-                      currentRoute === '/communities/home/home-following'
+                      currentRoute === '/communities/home/home-following' ||
+                      currentRoute === '/communities/home/home-create-post'
                         ? 'active'
                         : ''
                     }
