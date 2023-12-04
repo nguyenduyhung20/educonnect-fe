@@ -1,12 +1,19 @@
 import { Avatar, Paper, Stack, TextField, useTheme } from '@mui/material';
 import React from 'react';
 import Link from 'src/components/Link/index';
+import { useRouter } from 'next/router';
 
 export const CreateNewsFeed = () => {
   const theme = useTheme();
   const user = {
     name: 'Trần Long Biên',
     avatar: '/static/images/avatars/1.jpg'
+  };
+  const router = useRouter();
+  const handleLinkClick = (e) => {
+    // Ngăn sự kiện mặc định của trình duyệt xảy ra
+    e.preventDefault();
+    router.push('/communities/home/home-create-post');
   };
   return (
     <Paper elevation={5} sx={{ mb: 2, p: 2 }}>
@@ -22,9 +29,11 @@ export const CreateNewsFeed = () => {
           component={Link}
           href={'/management/profile'}
         />
-        <Link href={'/communities/home/home-create-post'} sx={{width: 1}}>
-          <TextField placeholder="Create Your Post" fullWidth />
-        </Link>
+        <TextField
+          placeholder="Create Your Post"
+          fullWidth
+          onClick={(e) => handleLinkClick(e)}
+        />
       </Stack>
     </Paper>
   );
