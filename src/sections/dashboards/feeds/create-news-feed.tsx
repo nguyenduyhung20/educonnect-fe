@@ -23,7 +23,7 @@ export const CreateNewsFeed = () => {
           href={'/management/profile'}
         />
         <Link href={'/communities/home/home-create-post'} sx={{width: 1}}>
-          <TextField placeholder="Create Your Post" fullWidth />
+          <TextField InputProps={{readOnly: true,}} placeholder="Create Your Post" fullWidth />
         </Link>
       </Stack>
     </Paper>
