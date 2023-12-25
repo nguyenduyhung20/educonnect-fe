@@ -15,7 +15,7 @@ import IconButton from '@mui/material/IconButton';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
-
+import Link from '../Link';
 export const BodyNews = () => {
   const user = {
     name: 'Catherine Pike',
@@ -24,8 +24,28 @@ export const BodyNews = () => {
   return (
     <Card>
       <CardHeader
-        avatar={<Avatar variant="rounded" alt={user.name} src={user.avatar} />}
-        title={<Typography variant="h4">Trần Long Biên</Typography>}
+        avatar={
+          <Avatar
+            component={Link}
+            variant="rounded"
+            alt={user.name}
+            src={user.avatar}
+            href={'/management/profile'}
+          />
+        }
+        title={
+          <Typography
+            variant="h4"
+            component={Link}
+            href={'/management/profile'}
+            sx={{
+              color: 'black',
+              '&:hover': { textDecoration: 'underline' }
+            }}
+          >
+            Trần Long Biên
+          </Typography>
+        }
         subheader="17 phút"
         action={
           <IconButton aria-label="delete">
@@ -58,10 +78,9 @@ export const BodyNews = () => {
           >
             <IconButton aria-label="delete">
               <Stack direction={'row'} alignItems={'center'} spacing={0.5}>
-                 <FavoriteBorderIcon />
-                 <Typography>123</Typography>
+                <FavoriteBorderIcon />
+                <Typography>123</Typography>
               </Stack>
-             
             </IconButton>
           </Box>
           <Box
@@ -76,7 +95,6 @@ export const BodyNews = () => {
                 <ForumOutlinedIcon />
                 <Typography>123</Typography>
               </Stack>
-              
             </IconButton>
           </Box>
 
