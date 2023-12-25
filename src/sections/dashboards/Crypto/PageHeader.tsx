@@ -24,10 +24,10 @@ function PageHeader() {
       </Grid>
       <Grid item>
         <Typography variant="h4" fontSize={23} component="h4" gutterBottom>
-          Welcome, {user.name}!
+          Xin chào, {user.name}!
         </Typography>
         <Typography variant="subtitle2">
-          Today is a good day to start trading crypto assets!
+          Biên ơi, bạn đang nghĩ gì thế?
         </Typography>
       </Grid>
     </Grid>

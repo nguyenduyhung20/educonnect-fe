@@ -29,8 +29,8 @@ import { CreateNewsFeedLink } from '@/sections/dashboards/feeds/create-news-feed
 
 function CreatePost() {
   const tabs = [
-    { value: 'Post', label: 'Post' },
-    { value: 'Image', label: 'Image' },
+    { value: 'Post', label: 'Bài viết' },
+    { value: 'Image', label: 'Hình ảnh' },
     { value: 'Link', label: 'Link' }
   ];
 
@@ -40,7 +40,7 @@ function CreatePost() {
 
   const [currentTab, setCurrentTab] = useState<string>('Post');
   const user = {
-    name: 'Catherine Pike',
+    name: 'Trần Long Biên',
     avatar: '/static/images/avatars/1.jpg'
   };
   return (
@@ -61,13 +61,13 @@ function CreatePost() {
           <Grid item xs={12} md={7}>
             <Stack spacing={2}>
               <Box>
-                <Typography variant="h4">Create a post</Typography>
+                <Typography variant="h4">Tạo một bài viết</Typography>
               </Box>
               <Divider />
               <Stack spacing={1}>
                 <TextField
                   id="input-with-icon-textfield"
-                  label="Choose your communities"
+                  label="Chọn nhóm của bạn"
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -86,14 +86,14 @@ function CreatePost() {
                       variant="fullWidth"
                     >
                       <Tab
-                        label={'Post'}
-                        value={'Post'}
+                        label={'Bài viết'}
+                        value={'Bài viết'}
                         icon={<PostAddIcon />}
                         iconPosition="start"
                       />
                       <Tab
-                        label={'Image'}
-                        value={'Image'}
+                        label={'Hình ảnh'}
+                        value={'Hình ảnh'}
                         icon={<ImageIcon />}
                         iconPosition="start"
                       />
@@ -124,25 +124,29 @@ function CreatePost() {
               <Stack spacing={1}>
                 <Stack direction={'row'} alignItems={'center'} spacing={2}>
                   <Avatar variant="rounded" alt={user.name} src={user.avatar} />
-                  <Typography variant="h5">Posting to EduConnect</Typography>
+                  <Typography variant="h5">
+                    Khi đăng bài ở nền tảng EduConnect của chúng tôi:
+                  </Typography>
                 </Stack>
                 <Divider />
-                <Typography variant="h6">1. Remember the human</Typography>
-                <Divider />
                 <Typography variant="h6">
-                  2. Behave like you would in real life
+                  1. Hãy nhớ rằng bạn đang giao tiếp với người khác.
                 </Typography>
                 <Divider />
                 <Typography variant="h6">
-                  3. Look for the original source of content
+                  2. Hãy cư xử đúng mực như khi bạn đang ở ngoài đời thật.
                 </Typography>
                 <Divider />
                 <Typography variant="h6">
-                  4. Search for duplicates before posting
+                  3. Hãy nhớ nguồn gốc ban đầu của nội dung bài viết của bạn.
                 </Typography>
                 <Divider />
                 <Typography variant="h6">
-                  5. Read the community’s rules
+                  4. Hãy tìm kiếm những bài đăng trùng lặp nếu có.
+                </Typography>
+                <Divider />
+                <Typography variant="h6">
+                  5. Hãy đọc quy tắc và tiêu chuẩn cộng đồng của chúng tôi.
                 </Typography>
               </Stack>
             </Paper>

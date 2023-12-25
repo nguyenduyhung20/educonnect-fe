@@ -8,6 +8,7 @@ import {
   useTheme
 } from '@mui/material';
 import Link from 'src/components/Link';
+import logo from 'public/static/images/logo/engemon.svg';
 
 const LogoWrapper = styled(Link)(
   ({ theme }) => `
@@ -98,16 +99,13 @@ function Logo() {
   const theme = useTheme();
 
   return (
-    <TooltipWrapper
-      title="Tokyo Free White Next.js Typescript Admin Dashboard"
-      arrow
-    >
+    <TooltipWrapper title="EduConnect" arrow>
       <LogoWrapper href="/">
         <Badge
           sx={{
             '.MuiBadge-badge': {
               fontSize: theme.typography.pxToRem(11),
-              right: -2,
+              right: -6,
               top: 8
             }
           }}
@@ -116,9 +114,7 @@ function Logo() {
           badgeContent="1.0"
         >
           <LogoSignWrapper>
-            <LogoSign>
-              <LogoSignInner />
-            </LogoSign>
+            <img src={logo} height={50} width={50} alt="Engemon Logo" />
           </LogoSignWrapper>
         </Badge>
       </LogoWrapper>

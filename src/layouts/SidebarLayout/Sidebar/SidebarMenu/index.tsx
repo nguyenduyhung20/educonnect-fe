@@ -174,31 +174,12 @@ function SidebarMenu() {
 
   return (
     <>
-      <MenuWrapper>
-        <List component="div">
-          <SubMenuWrapper>
-            <List component="div">
-              <ListItem component="div">
-                <NextLink href="/" passHref>
-                  <Button
-                    className={currentRoute === '="/' ? 'active' : ''}
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<DesignServicesTwoToneIcon />}
-                  >
-                    About Educonnect
-                  </Button>
-                </NextLink>
-              </ListItem>
-            </List>
-          </SubMenuWrapper>
-        </List>
+      <MenuWrapper sx={{ pt: 2 }}>
         <List
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
-              Communities
+              Cộng đồng
             </ListSubheader>
           }
         >
@@ -219,7 +200,7 @@ function SidebarMenu() {
                     onClick={closeSidebar}
                     startIcon={<HomeOutlinedIcon />}
                   >
-                    Home
+                    Trang chủ
                   </Button>
                 </NextLink>
               </ListItem>
@@ -238,7 +219,7 @@ function SidebarMenu() {
                     onClick={closeSidebar}
                     startIcon={<SearchOutlinedIcon />}
                   >
-                    Explore
+                    Khám phá
                   </Button>
                 </NextLink>
               </ListItem>
@@ -254,7 +235,7 @@ function SidebarMenu() {
                     onClick={closeSidebar}
                     startIcon={<GroupOutlinedIcon />}
                   >
-                    Groups
+                    Nhóm
                   </Button>
                 </NextLink>
               </ListItem>
@@ -265,7 +246,7 @@ function SidebarMenu() {
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
-              Elearning
+              Trang học tập
             </ListSubheader>
           }
         >
@@ -280,7 +261,7 @@ function SidebarMenu() {
                     onClick={closeSidebar}
                     startIcon={<SchoolOutlinedIcon />}
                   >
-                    Your school
+                    Trường của bạn
                   </Button>
                 </NextLink>
               </ListItem>
@@ -291,7 +272,7 @@ function SidebarMenu() {
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
-              Accounts
+              Tài khoản
             </ListSubheader>
           }
         >
@@ -308,7 +289,7 @@ function SidebarMenu() {
                     onClick={closeSidebar}
                     startIcon={<AccountCircleTwoToneIcon />}
                   >
-                    User Profile
+                    Trang cá nhân
                   </Button>
                 </NextLink>
               </ListItem>
@@ -325,7 +306,7 @@ function SidebarMenu() {
                     onClick={closeSidebar}
                     startIcon={<DisplaySettingsTwoToneIcon />}
                   >
-                    Account Settings
+                    Cài đặt
                   </Button>
                 </NextLink>
               </ListItem>

@@ -1,11 +1,11 @@
 {
-  "name": "tokyo-free-white-nextjs-admin-dashboard",
+  "name": "edu-connect-fe",
   "version": "1.0.0",
-  "title": "Tokyo Free White NextJS Typescript Admin Dashboard",
-  "description": "High performance React template built with lots of powerful MUI (Material-UI) components across multiple product niches for fast & perfect apps development processes",
+  "title": "EduConnect",
+  "description": "Social Media Support Learning And Connect School",
   "author": {
-    "name": "BloomUI.com",
-    "url": "https://bloomui.com"
+    "name": "BineTran, HaoPham, DuyHung",
+    "url": "https://educonnect.com"
   },
   "private": false,
   "dependencies": {
@@ -27,9 +27,11 @@
     "apexcharts": "3.35.3",
     "clsx": "1.1.1",
     "context-api": "0.0.2",
+    "cookies-next": "^4.1.0",
     "date-fns": "2.28.0",
     "next": "12.1.6",
     "next-images": "1.8.4",
+    "notistack": "^3.0.1",
     "nprogress": "0.2.0",
     "numeral": "2.0.6",
     "react": "17.0.2",

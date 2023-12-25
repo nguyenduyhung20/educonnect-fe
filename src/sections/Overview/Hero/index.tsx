@@ -127,7 +127,7 @@ function Hero() {
           >
             Try My Website
           </Button>
-          <Grid container spacing={3} mt={5}>
+          {/* <Grid container spacing={3} mt={5}>
             <Grid item md={4}>
               <MuiAvatar>
                 <img
@@ -176,7 +176,7 @@ function Hero() {
                 </Typography>
               </Typography>
             </Grid>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Grid>
     </Container>

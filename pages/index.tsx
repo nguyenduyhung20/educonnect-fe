@@ -66,7 +66,7 @@ function Overview() {
         </Container>
       </HeaderWrapper>
       <Hero />
-      <Container maxWidth="lg" sx={{ mt: 8 }}>
+      {/* <Container maxWidth="lg" sx={{ mt: 8 }}>
         <Typography textAlign="center" variant="subtitle1">
           Created by{' '}
           <Link
@@ -77,7 +77,7 @@ function Overview() {
             HCMUT's Student
           </Link>
         </Typography>
-      </Container>
+      </Container> */}
     </OverviewWrapper>
   );
 }

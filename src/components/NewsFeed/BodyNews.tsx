@@ -18,7 +18,7 @@ import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
 import Link from '../Link';
 export const BodyNews = () => {
   const user = {
-    name: 'Catherine Pike',
+    name: 'Trần Long Biên',
     avatar: '/static/images/avatars/1.jpg'
   };
   return (
