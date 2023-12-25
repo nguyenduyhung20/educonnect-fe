@@ -72,7 +72,6 @@ function ManagementUserSettings() {
           </Grid>
         </Grid>
       </Container>
-      <Footer />
     </>
   );
 }

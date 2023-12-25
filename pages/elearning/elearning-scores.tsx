@@ -100,7 +100,6 @@ function EleaningScoresPage() {
           </Table>
         </Box>
       </Container>
-      <Footer />
     </>
   );
 }

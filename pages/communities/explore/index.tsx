@@ -5,7 +5,6 @@ import SidebarLayout from '@/layouts/SidebarLayout';
 // import PageHeader from '@/sections/Dashboards/Crypto/PageHeader';
 // import PageTitleWrapper from '@/components/PageTitleWrapper';
 import {  Container, Grid } from '@mui/material';
-import Footer from '@/components/Footer';
 
 import { ExploreTrending } from '@/sections/dashboards/explore/explore-trending';
 import { ExploreWhoToFollow } from '@/sections/dashboards/explore/explore-who-to-follow';
@@ -34,7 +33,6 @@ function CommunitiesExplore() {
           </Grid>
         </Grid>
       </Container>
-      <Footer />
     </>
   );
 }

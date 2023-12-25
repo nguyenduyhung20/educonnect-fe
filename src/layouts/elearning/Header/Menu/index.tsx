@@ -94,7 +94,7 @@ function HeaderMenu() {
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
-              primary="Your subjects"
+              primary="Môn học của bạn"
             />
           </ListItem>
           <ListItem
@@ -105,7 +105,7 @@ function HeaderMenu() {
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
-              primary="Calender"
+              primary="Lịch học của bạn"
             />
           </ListItem>
           <ListItem
@@ -116,7 +116,7 @@ function HeaderMenu() {
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
-              primary="Scores"
+              primary="Điểm số của bạn"
             />
           </ListItem>
           {/* <ListItem

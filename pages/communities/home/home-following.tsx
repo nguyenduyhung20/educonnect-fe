@@ -5,7 +5,6 @@ import SidebarLayout from '@/layouts/SidebarLayout';
 import PageHeader from '@/sections/dashboards/Crypto/PageHeader';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import {  Container, Grid } from '@mui/material';
-import Footer from '@/components/Footer';
 
 // import AccountBalance from '@/content/Dashboards/Crypto/AccountBalance';
 // import Wallets from '@/content/Dashboards/Crypto/Wallets';
@@ -41,7 +40,6 @@ function CommunitiesHomeFollowing() {
           </Grid>
         </Grid>
       </Container>
-      <Footer />
     </>
   );
 }

@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import SidebarLayout from '@/layouts/SidebarLayout';
 import { Container, Grid } from '@mui/material';
-import Footer from '@/components/Footer';
 import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
 import { DiscoverGroups } from '@/sections/dashboards/groups/groups-discover';
 
@@ -29,7 +28,6 @@ function CommunitiesGroups() {
           </Grid>
         </Grid>
       </Container>
-      <Footer />
     </>
   );
 }

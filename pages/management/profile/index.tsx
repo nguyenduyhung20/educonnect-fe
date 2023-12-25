@@ -35,7 +35,6 @@ function ManagementUserProfile() {
       <Container sx={{ mt: 3 }} maxWidth="lg">
         <UserViewProfile user={user} />
       </Container>
-      <Footer />
     </>
   );
 }

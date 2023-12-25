@@ -1,13 +1,9 @@
 import Footer from '@/components/Footer';
-import PageTitleWrapper from '@/components/PageTitleWrapper';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import PageHeader from '@/sections/Management/Transactions/PageHeader';
 import { SearchOutlined } from '@mui/icons-material';
 import {
   Avatar,
   Box,
-  Button,
-  Card,
   Container,
   Divider,
   Grid,
@@ -87,13 +83,13 @@ function CreatePost() {
                     >
                       <Tab
                         label={'Bài viết'}
-                        value={'Bài viết'}
+                        value={'Post'}
                         icon={<PostAddIcon />}
                         iconPosition="start"
                       />
                       <Tab
                         label={'Hình ảnh'}
-                        value={'Hình ảnh'}
+                        value={'Image'}
                         icon={<ImageIcon />}
                         iconPosition="start"
                       />
@@ -153,7 +149,6 @@ function CreatePost() {
           </Grid>
         </Grid>
       </Container>
-      <Footer />
     </>
   );
 }

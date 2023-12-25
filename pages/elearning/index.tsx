@@ -1,19 +1,5 @@
 import Head from 'next/head';
-import SidebarLayout from '@/layouts/SidebarLayout';
-import {
-  Box,
-  Card,
-  CardContent,
-  CardHeader,
-  CardMedia,
-  Container,
-  Grid,
-  Stack,
-  Tab,
-  Tabs,
-  Typography
-} from '@mui/material';
-import Footer from '@/components/Footer';
+import { Container, Stack, Tab, Tabs } from '@mui/material';
 import { useState } from 'react';
 import ElearningLayout from '@/layouts/elearning';
 import { ElearningGradeTen } from '@/sections/dashboards/elearning/elearning-grade-ten';
@@ -65,13 +51,10 @@ function EleaningPage() {
           {tab === tabs[2].key && <ElearningGradeTwelve />}
         </Stack>
       </Container>
-      <Footer />
     </>
   );
 }
 
-EleaningPage.getLayout = (page) => (
-  <ElearningLayout>{page}</ElearningLayout>
-);
+EleaningPage.getLayout = (page) => <ElearningLayout>{page}</ElearningLayout>;
 
 export default EleaningPage;
