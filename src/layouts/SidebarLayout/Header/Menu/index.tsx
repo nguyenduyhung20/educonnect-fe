@@ -94,7 +94,7 @@ function HeaderMenu() {
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
-              primary="For you"
+              primary="Dành cho bạn"
             />
           </ListItem>
           <ListItem
@@ -105,7 +105,7 @@ function HeaderMenu() {
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
-              primary="Following"
+              primary="Những người bạn theo dõi"
             />
           </ListItem>
         </List>

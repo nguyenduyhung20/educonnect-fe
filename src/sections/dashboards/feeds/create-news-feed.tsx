@@ -30,7 +30,7 @@ export const CreateNewsFeed = () => {
           href={'/management/profile'}
         />
         <TextField
-          placeholder="Create Your Post"
+          placeholder="Tạo bài viết của bạn"
           fullWidth
           onClick={(e) => handleLinkClick(e)}
         />

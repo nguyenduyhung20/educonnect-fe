@@ -22,9 +22,9 @@ export const TrendingNewsItem = () => {
       >
         <Link href={'/communities/explore/explore-choose-trend'}>
           <Box sx={{ width: 1 }}>
-            <Typography variant="subtitle1">Trending</Typography>
+            <Typography variant="subtitle1">Xu hướng</Typography>
             <Typography variant="h4">Lionel Messi</Typography>
-            <Typography variant="subtitle2">321K posts</Typography>
+            <Typography variant="subtitle2">321K bài viết</Typography>
           </Box>
         </Link>
         <Box>

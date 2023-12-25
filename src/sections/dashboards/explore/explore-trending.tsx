@@ -47,7 +47,7 @@ export const ExploreTrending = () => {
               fontSize: 23
             }}
           >
-            Trends for you
+            Xu hướng dành cho bạn
           </Typography>
 
           <Stack direction={'column'} spacing={1}>
