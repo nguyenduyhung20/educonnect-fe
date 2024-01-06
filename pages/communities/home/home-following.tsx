@@ -18,7 +18,7 @@ function CommunitiesHomeFollowing() {
   return (
     <>
       <Head>
-        <title>Crypto Dashboard</title>
+        <title>EduConnect</title>
       </Head>
       <PageTitleWrapper>
         <PageHeader />

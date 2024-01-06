@@ -1,89 +1,51 @@
-import {
-  Typography,
-  Box,
-  Card,
-  Container,
-  Button,
-  styled
-} from '@mui/material';
-import type { ReactElement } from 'react';
-import BaseLayout from 'src/layouts/BaseLayout';
-
-import Link from 'src/components/Link';
 import Head from 'next/head';
 
-import Logo from 'src/components/LogoSign';
-import Hero from '@/sections/overview/hero';
+import SidebarLayout from '@/layouts/SidebarLayout';
 
-const HeaderWrapper = styled(Card)(
-  ({ theme }) => `
-  width: 100%;
-  display: flex;
-  align-items: center;
-  height: ${theme.spacing(10)};
-  margin-bottom: ${theme.spacing(10)};
-`
-);
+import PageHeader from '@/sections/dashboards/Crypto/PageHeader';
+import PageTitleWrapper from '@/components/PageTitleWrapper';
+import { Container, Grid } from '@mui/material';
 
-const OverviewWrapper = styled(Box)(
-  ({ theme }) => `
-    overflow: auto;
-    background: ${theme.palette.common.white};
-    flex: 1;
-    overflow-x: hidden;
-`
-);
+import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
+import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
+import { CreateNewsFeed } from '@/sections/dashboards/feeds/create-news-feed';
+import PostsProvider from '@/contexts/posts/posts-context';
+import { useAuth } from '@/hooks/use-auth';
 
-function Overview() {
+function CommunitiesHome() {
+  const { user } = useAuth();
+
   return (
-    <OverviewWrapper>
+    <>
       <Head>
         <title>EduConnect</title>
       </Head>
-      <HeaderWrapper>
-        <Container maxWidth="lg">
-          <Box display="flex" alignItems="center">
-            <Logo />
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-              flex={1}
-            >
-              <Box />
-              <Box>
-                <Button
-                  component={Link}
-                  href="/communities/home"
-                  variant="contained"
-                  sx={{ ml: 2 }}
-                >
-                  Explore My Platform
-                </Button>
-              </Box>
-            </Box>
-          </Box>
-        </Container>
-      </HeaderWrapper>
-      <Hero />
-      {/* <Container maxWidth="lg" sx={{ mt: 8 }}>
-        <Typography textAlign="center" variant="subtitle1">
-          Created by{' '}
-          <Link
-            href="https://hcmut.edu.vn/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            HCMUT's Student
-          </Link>
-        </Typography>
-      </Container> */}
-    </OverviewWrapper>
+      <PageTitleWrapper>{user ? <PageHeader /> : <></>}</PageTitleWrapper>
+      <Container maxWidth="lg">
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="stretch"
+          spacing={3}
+        >
+          <Grid item xs={12} md={7}>
+            <CreateNewsFeed />
+            <NewsFeed />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <TrendingNews />
+          </Grid>
+        </Grid>
+      </Container>
+    </>
   );
 }
 
-export default Overview;
+CommunitiesHome.getLayout = (page) => (
+  <SidebarLayout>
+    <PostsProvider>{page}</PostsProvider>
+  </SidebarLayout>
+);
 
-Overview.getLayout = function getLayout(page: ReactElement) {
-  return <BaseLayout>{page}</BaseLayout>;
-};
+export default CommunitiesHome;

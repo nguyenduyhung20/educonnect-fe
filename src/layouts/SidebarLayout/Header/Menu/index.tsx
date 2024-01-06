@@ -1,16 +1,6 @@
-import {
-  Box,
-  List,
-  ListItem,
-  ListItemText,
-  Menu,
-  MenuItem,
-  styled
-} from '@mui/material';
+import { Box, List, ListItem, ListItemText, styled } from '@mui/material';
 import { useRef, useState } from 'react';
 import Link from 'src/components/Link';
-
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 
 const ListWrapper = styled(Box)(
   ({ theme }) => `
@@ -64,17 +54,6 @@ const ListWrapper = styled(Box)(
 );
 
 function HeaderMenu() {
-  const ref = useRef<any>(null);
-  const [isOpen, setOpen] = useState<boolean>(false);
-
-  const handleOpen = (): void => {
-    setOpen(true);
-  };
-
-  const handleClose = (): void => {
-    setOpen(false);
-  };
-
   return (
     <>
       <ListWrapper

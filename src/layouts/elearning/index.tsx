@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import Sidebar from './Sidebar';
 import Header from './Header';
+import { useAuth } from '@/hooks/use-auth';
 
 interface ElearningLayoutProps {
   children?: ReactNode;
@@ -11,6 +12,8 @@ interface ElearningLayoutProps {
 
 const ElearningLayout: FC<ElearningLayoutProps> = ({ children }) => {
   const theme = useTheme();
+
+  const { user } = useAuth();
 
   return (
     <>
@@ -41,7 +44,7 @@ const ElearningLayout: FC<ElearningLayoutProps> = ({ children }) => {
           }
         }}
       >
-        <Header/>
+        <Header />
         <Sidebar />
         <Box
           sx={{

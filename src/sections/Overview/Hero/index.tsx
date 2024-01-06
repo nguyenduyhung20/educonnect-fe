@@ -3,6 +3,8 @@ import {
   Button,
   Container,
   Grid,
+  Stack,
+  TextField,
   Typography,
   styled
 } from '@mui/material';
@@ -115,68 +117,29 @@ function Hero() {
             color="text.secondary"
             fontWeight="normal"
           >
-            Social network that supports learning and links schools helps high
-            school teachers and students connect with each other, supporting
-            online teaching platforms for schools. 
+            {`Mạng xã hội EduConnect giúp hỗ trợ học tập hiệu quả, tạo cộng đồng kết nối các bạn học
+            sinh, giáo viên, phụ huynh, và hỗ trợ hệ thống học tập trực tuyến cho các
+            trường cấp 3 trên cả nước. `}
           </TypographyH2>
+          <Stack spacing={2} sx={{ padding: 2 }}>
+            <Stack alignItems={'flex-start'} spacing={1}>
+              <Typography variant="h4">Tên đăng nhập</Typography>
+              <TextField fullWidth />
+            </Stack>
+
+            <Stack alignItems={'flex-start'} spacing={1}>
+              <Typography variant="h4">Mật khẩu</Typography>
+              <TextField fullWidth />
+            </Stack>
+          </Stack>
           <Button
             component={Link}
             href="/communities/home"
             size="large"
             variant="contained"
           >
-            Try My Website
+            Đăng nhập
           </Button>
-          {/* <Grid container spacing={3} mt={5}>
-            <Grid item md={4}>
-              <MuiAvatar>
-                <img
-                  src="/static/images/logo/material-ui.svg"
-                  alt="Material-UI"
-                />
-              </MuiAvatar>
-              <Typography variant="h4">
-                <Box sx={{ pb: 2 }}>
-                  <b>Powered by MUI (Material-UI)</b>
-                </Box>
-                <Typography component="span" variant="subtitle2">
-                  A simple and customizable component library to build faster,
-                  beautiful, and accessible React apps.
-                </Typography>
-              </Typography>
-            </Grid>
-            <Grid item md={4}>
-              <NextJsAvatar>
-                <img src="/static/images/logo/next-js.svg" alt="NextJS" />
-              </NextJsAvatar>
-              <Typography variant="h4">
-                <Box sx={{ pb: 2 }}>
-                  <b>Built with Next.js</b>
-                </Box>
-                <Typography component="span" variant="subtitle2">
-                  Next.js gives you the best developer experience with all the
-                  features you need for production.
-                </Typography>
-              </Typography>
-            </Grid>
-            <Grid item md={4}>
-              <TsAvatar>
-                <img
-                  src="/static/images/logo/typescript.svg"
-                  alt="Typescript"
-                />
-              </TsAvatar>
-              <Typography variant="h4">
-                <Box sx={{ pb: 2 }}>
-                  <b>Built with Typescript</b>
-                </Box>
-                <Typography component="span" variant="subtitle2">
-                  EduConnect features a modern technology stack and is
-                  built with React + Typescript.
-                </Typography>
-              </Typography>
-            </Grid>
-          </Grid> */}
         </Grid>
       </Grid>
     </Container>

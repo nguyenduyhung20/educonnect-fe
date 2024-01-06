@@ -14,20 +14,24 @@ import React, { useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import GroupAvatarsMembers from './groups-avatar-members';
 import { SearchBar } from '@/components/dashboards/search-bar';
+import { GroupsInfo } from './groups-info';
+
+const user = {
+  name: 'Trần Long Biên',
+  avatar: '/static/images/avatars/1.jpg'
+};
+
+interface ExpandMoreProps extends IconButtonProps {
+  expand: boolean;
+}
 
 export const DiscoverGroups = () => {
-  const user = {
-    name: 'Trần Long Biên',
-    avatar: '/static/images/avatars/1.jpg'
-  };
   const theme = useTheme();
-  interface ExpandMoreProps extends IconButtonProps {
-    expand: boolean;
-  }
+
   const ExpandMore = styled((props: ExpandMoreProps) => {
     const { expand, ...other } = props;
     return <IconButton {...other} />;
-  })(({ theme, expand }) => ({
+  })(({ theme }) => ({
     transition: theme.transitions.create('transform', {
       duration: theme.transitions.duration.shortest
     })
@@ -67,38 +71,14 @@ export const DiscoverGroups = () => {
                 }
               }}
             >
-              <Stack direction={'row'} spacing={1}>
-                <Avatar
-                  sx={{
-                    mr: 2,
-                    width: theme.spacing(11),
-                    height: theme.spacing(11)
-                  }}
-                  variant="rounded"
-                  alt={user.name}
-                  src={user.avatar}
-                />
-                <Stack justifyContent={'space-between'}>
-                  <Stack spacing={0.5}>
-                    <Typography variant="h4">
-                      Cộng đồng toán học Việt Nam
-                    </Typography>
-                    <Stack direction={'row'} spacing={1}>
-                      <Typography variant="h5">321 </Typography>
-                      <Typography variant="body2">members </Typography>
-                    </Stack>
-                  </Stack>
-                  <Stack justifyContent={'flex-start'} direction={'row'}>
-                    <GroupAvatarsMembers />
-                  </Stack>
-                </Stack>
-              </Stack>
+              <GroupsInfo />
               <Box>
                 <IconButton aria-label="settings">
                   <MoreVertIcon />
                 </IconButton>
               </Box>
             </Stack>
+
             <Stack
               direction={'row'}
               justifyContent={'space-between'}
@@ -111,38 +91,14 @@ export const DiscoverGroups = () => {
                 }
               }}
             >
-              <Stack direction={'row'} spacing={1}>
-                <Avatar
-                  sx={{
-                    mr: 2,
-                    width: theme.spacing(11),
-                    height: theme.spacing(11)
-                  }}
-                  variant="rounded"
-                  alt={user.name}
-                  src={user.avatar}
-                />
-                <Stack justifyContent={'space-between'}>
-                  <Stack spacing={0.5}>
-                    <Typography variant="h4">
-                      Cộng đồng toán học Việt Nam
-                    </Typography>
-                    <Stack direction={'row'} spacing={1}>
-                      <Typography variant="h5">321 </Typography>
-                      <Typography variant="body2">members </Typography>
-                    </Stack>
-                  </Stack>
-                  <Stack justifyContent={'flex-start'} direction={'row'}>
-                    <GroupAvatarsMembers />
-                  </Stack>
-                </Stack>
-              </Stack>
+              <GroupsInfo />
               <Box>
                 <IconButton aria-label="settings">
                   <MoreVertIcon />
                 </IconButton>
               </Box>
             </Stack>
+
             <Stack
               direction={'row'}
               justifyContent={'space-between'}
@@ -155,38 +111,14 @@ export const DiscoverGroups = () => {
                 }
               }}
             >
-              <Stack direction={'row'} spacing={1}>
-                <Avatar
-                  sx={{
-                    mr: 2,
-                    width: theme.spacing(11),
-                    height: theme.spacing(11)
-                  }}
-                  variant="rounded"
-                  alt={user.name}
-                  src={user.avatar}
-                />
-                <Stack justifyContent={'space-between'}>
-                  <Stack spacing={0.5}>
-                    <Typography variant="h4">
-                      Cộng đồng toán học Việt Nam
-                    </Typography>
-                    <Stack direction={'row'} spacing={1}>
-                      <Typography variant="h5">321 </Typography>
-                      <Typography variant="body2">members </Typography>
-                    </Stack>
-                  </Stack>
-                  <Stack justifyContent={'flex-start'} direction={'row'}>
-                    <GroupAvatarsMembers />
-                  </Stack>
-                </Stack>
-              </Stack>
+              <GroupsInfo />
               <Box>
                 <IconButton aria-label="settings">
                   <MoreVertIcon />
                 </IconButton>
               </Box>
             </Stack>
+
             <Stack
               direction={'row'}
               justifyContent={'space-between'}
@@ -199,38 +131,14 @@ export const DiscoverGroups = () => {
                 }
               }}
             >
-              <Stack direction={'row'} spacing={1}>
-                <Avatar
-                  sx={{
-                    mr: 2,
-                    width: theme.spacing(11),
-                    height: theme.spacing(11)
-                  }}
-                  variant="rounded"
-                  alt={user.name}
-                  src={user.avatar}
-                />
-                <Stack justifyContent={'space-between'}>
-                  <Stack spacing={0.5}>
-                    <Typography variant="h4">
-                      Cộng đồng toán học Việt Nam
-                    </Typography>
-                    <Stack direction={'row'} spacing={1}>
-                      <Typography variant="h5">321 </Typography>
-                      <Typography variant="body2">members </Typography>
-                    </Stack>
-                  </Stack>
-                  <Stack justifyContent={'flex-start'} direction={'row'}>
-                    <GroupAvatarsMembers />
-                  </Stack>
-                </Stack>
-              </Stack>
+              <GroupsInfo />
               <Box>
                 <IconButton aria-label="settings">
                   <MoreVertIcon />
                 </IconButton>
               </Box>
             </Stack>
+
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <Stack direction={'column'} spacing={3}>
                 <Stack

@@ -27,7 +27,7 @@ function EleaningPage() {
   return (
     <>
       <Head>
-        <title>Crypto Dashboard</title>
+        <title>EduConnect</title>
       </Head>
 
       <Container maxWidth="lg">
