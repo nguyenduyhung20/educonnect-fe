@@ -1,5 +1,5 @@
 export interface User {
-  id: string;
+  id: number;
   role: 'admin' | 'user' | 'student' | 'teacher' | 'parent';
   avatar: string;
   name: string;

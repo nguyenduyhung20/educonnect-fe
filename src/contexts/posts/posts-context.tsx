@@ -13,9 +13,11 @@ import useFunction, {
 
 import { PostsApi } from '@/api/posts';
 import { Post } from '@/types/post';
+import { useAuth } from '@/hooks/use-auth';
 
 interface ContextValue {
   getPostsApi: UseFunctionReturnType<FormData, { data: Post[] }>;
+  getNewsFeedApi: UseFunctionReturnType<{ id: number }, { data: Post[] }>;
 
   createPost: (requests: Post) => Promise<void>;
   updatePost: (post: Post) => Promise<void>;
@@ -24,6 +26,7 @@ interface ContextValue {
 
 export const PostsContext = createContext<ContextValue>({
   getPostsApi: DEFAULT_FUNCTION_RETURN,
+  getNewsFeedApi: DEFAULT_FUNCTION_RETURN,
 
   createPost: async () => {},
   updatePost: async () => {},
@@ -31,7 +34,11 @@ export const PostsContext = createContext<ContextValue>({
 });
 
 const PostsProvider = ({ children }: { children: ReactNode }) => {
+  const { user } = useAuth();
+
   const getPostsApi = useFunction(PostsApi.getPosts);
+
+  const getNewsFeedApi = useFunction(PostsApi.getNewsFeed);
 
   const createPost = useCallback(
     async (request: Post) => {
@@ -74,7 +81,7 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
   );
 
   useEffect(() => {
-    getPostsApi.call(new FormData());
+    getNewsFeedApi.call({ id: user?.id || 0 });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -82,6 +89,7 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
     <PostsContext.Provider
       value={{
         getPostsApi,
+        getNewsFeedApi,
 
         createPost,
         updatePost,

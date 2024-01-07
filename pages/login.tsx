@@ -1,16 +1,13 @@
-import {
-  Box,
-  Card,
-  Container,
-  styled
-} from '@mui/material';
-import type { ReactElement } from 'react';
+import { Box, Card, Container, styled } from '@mui/material';
+import { useEffect, type ReactElement } from 'react';
 import BaseLayout from 'src/layouts/BaseLayout';
 
 import Head from 'next/head';
 
 import Logo from 'src/components/LogoSign';
 import Hero from '@/sections/overview/hero';
+import { useAuth } from '@/hooks/use-auth';
+import { useRouter } from 'next/router';
 
 const HeaderWrapper = styled(Card)(
   ({ theme }) => `
@@ -32,6 +29,13 @@ const OverviewWrapper = styled(Box)(
 );
 
 function LoginPage() {
+  const { isAuthenticated } = useAuth();
+  const router = useRouter();
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.replace('/');
+    }
+  }, [isAuthenticated]);
   return (
     <OverviewWrapper>
       <Head>

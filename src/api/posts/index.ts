@@ -12,6 +12,11 @@ export class PostsApi {
     return response;
   }
 
+  static async getNewsFeed(request: { id: number }): Promise<{ data: Post[] }> {
+    const response = await apiGet(`/user/${request.id}/newsfeed`);
+    return response;
+  }
+
   static async getPostsByID(id: string): Promise<{ data: Post }> {
     const response = await apiGet(`/posts/${id}`);
     return response;

@@ -41,7 +41,8 @@ export class UsersApi {
   }
 
   static async me(): Promise<User> {
-    return await apiGet('/users/info');
+    const response = await apiGet('/user/info');
+    return response.data;
   }
 
   static async updatePassword(payload: {

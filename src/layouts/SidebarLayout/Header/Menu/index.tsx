@@ -1,5 +1,4 @@
 import { Box, List, ListItem, ListItemText, styled } from '@mui/material';
-import { useRef, useState } from 'react';
 import Link from 'src/components/Link';
 
 const ListWrapper = styled(Box)(
@@ -69,7 +68,7 @@ function HeaderMenu() {
             classes={{ root: 'MuiListItem-indicators' }}
             button
             component={Link}
-            href="/communities/home"
+            href="/"
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
