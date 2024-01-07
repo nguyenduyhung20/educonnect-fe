@@ -1,9 +1,7 @@
 import {
-  Typography,
   Box,
   Card,
   Container,
-  Button,
   styled
 } from '@mui/material';
 import type { ReactElement } from 'react';

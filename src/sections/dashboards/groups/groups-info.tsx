@@ -1,14 +1,12 @@
 import { Avatar, Stack, Typography, useTheme } from '@mui/material';
 import React from 'react';
 import GroupAvatarsMembers from './groups-avatar-members';
-
-const user = {
-  name: 'Trần Long Biên',
-  avatar: '/static/images/avatars/1.jpg'
-};
+import { useAuth } from '@/hooks/use-auth';
 
 export const GroupsInfo = () => {
   const theme = useTheme();
+
+  const { user } = useAuth();
 
   return (
     <Stack direction={'row'} spacing={1}>
@@ -19,8 +17,8 @@ export const GroupsInfo = () => {
           height: theme.spacing(11)
         }}
         variant="rounded"
-        alt={user.name}
-        src={user.avatar}
+        alt={user?.name}
+        src={user?.avatar}
       />
       <Stack justifyContent={'space-between'}>
         <Stack spacing={0.5}>

@@ -16,11 +16,9 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
 import Link from '../Link';
+import { useAuth } from '@/hooks/use-auth';
 export const BodyNews = () => {
-  const user = {
-    name: 'Trần Long Biên',
-    avatar: '/static/images/avatars/1.jpg'
-  };
+  const { user } = useAuth();
   return (
     <Card>
       <CardHeader
@@ -28,8 +26,8 @@ export const BodyNews = () => {
           <Avatar
             component={Link}
             variant="rounded"
-            alt={user.name}
-            src={user.avatar}
+            alt={user?.name}
+            src={user?.avatar}
             href={'/management/profile'}
           />
         }
@@ -43,7 +41,7 @@ export const BodyNews = () => {
               '&:hover': { textDecoration: 'underline' }
             }}
           >
-            Trần Long Biên
+            {user?.name}
           </Typography>
         }
         subheader="17 phút"

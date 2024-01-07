@@ -22,6 +22,7 @@ import ImageIcon from '@mui/icons-material/Image';
 import { CreateNewsFeedPost } from '@/sections/dashboards/feeds/create-news-feed-post';
 import { CreateNewsFeedImage } from '@/sections/dashboards/feeds/create-news-feed-image';
 import { CreateNewsFeedLink } from '@/sections/dashboards/feeds/create-news-feed-link';
+import { useAuth } from '@/hooks/use-auth';
 
 function CreatePost() {
   const tabs = [
@@ -35,10 +36,7 @@ function CreatePost() {
   };
 
   const [currentTab, setCurrentTab] = useState<string>('Post');
-  const user = {
-    name: 'Trần Long Biên',
-    avatar: '/static/images/avatars/1.jpg'
-  };
+  const { user } = useAuth();
   return (
     <>
       <Head>

@@ -83,21 +83,14 @@ const ProfileCover = ({ user }) => {
     <>
       <Box display="flex" mb={3}>
         <Tooltip arrow placement="top" title="Go back">
-          <IconButton color="primary" sx={{ p: 2, mr: 2 }}>
+          <IconButton color="primary" >
             <ArrowBackTwoToneIcon />
           </IconButton>
         </Tooltip>
-        <Box>
-          <Typography variant="h3" component="h3" gutterBottom>
-            Profile for {user.name}
-          </Typography>
-          <Typography variant="subtitle2">
-            This is a profile page. Easy to modify, always blazing fast
-          </Typography>
-        </Box>
+        
       </Box>
       <CardCover>
-        <CardMedia image={user.coverImg} />
+        <CardMedia image={user?.coverImg} />
         <CardCoverAction>
           <Input accept="image/*" id="change-cover" multiple type="file" />
           <label htmlFor="change-cover">
@@ -112,7 +105,7 @@ const ProfileCover = ({ user }) => {
         </CardCoverAction>
       </CardCover>
       <AvatarWrapper>
-        <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+        <Avatar variant="rounded" alt={user?.name} src={user?.avatar} />
         <ButtonUploadWrapper>
           <Input
             accept="image/*"
@@ -129,9 +122,9 @@ const ProfileCover = ({ user }) => {
       </AvatarWrapper>
       <Box py={2} pl={2} mb={3}>
         <Typography gutterBottom variant="h4">
-          {user.name}
+          {user?.name}
         </Typography>
-        <Typography variant="subtitle2">{user.description}</Typography>
+        <Typography variant="subtitle2">{user?.description}</Typography>
       </Box>
     </>
   );

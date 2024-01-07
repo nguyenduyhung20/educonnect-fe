@@ -33,7 +33,7 @@ export class UsersApi {
   }
 
   static async signIn(request: SignInRequest): SignInResponse {
-    return await apiPost('/users/login', request);
+    return await apiPost('/auth/login', request);
   }
 
   static async signUp(request: SignUpRequest): SignUpResponse {

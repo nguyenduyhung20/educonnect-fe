@@ -1,12 +1,10 @@
 import { Typography, Button, Grid } from '@mui/material';
 
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
+import { useAuth } from '@/hooks/use-auth';
 
 function PageHeader() {
-  const user = {
-    name: 'Trần Long Biên',
-    avatar: '/static/images/avatars/1.jpg'
-  };
+  const { user } = useAuth();
   return (
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
@@ -14,7 +12,7 @@ function PageHeader() {
           Transactions
         </Typography>
         <Typography variant="subtitle2">
-          {user.name}, these are your recent transactions
+          {user?.name}, these are your recent transactions
         </Typography>
       </Grid>
       <Grid item>
