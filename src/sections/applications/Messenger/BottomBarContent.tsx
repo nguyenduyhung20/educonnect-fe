@@ -43,8 +43,8 @@ function BottomBarContent() {
       <Box flexGrow={1} display="flex" alignItems="center">
         <Avatar
           sx={{ display: { xs: 'none', sm: 'flex' }, mr: 1 }}
-          alt={user.name}
-          src={user.avatar}
+          alt={user?.name}
+          src={user?.avatar}
         />
         <MessageInputWrapper
           autoFocus

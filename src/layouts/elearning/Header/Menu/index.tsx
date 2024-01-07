@@ -3,14 +3,10 @@ import {
   List,
   ListItem,
   ListItemText,
-  Menu,
-  MenuItem,
   styled
 } from '@mui/material';
-import { useRef, useState } from 'react';
 import Link from 'src/components/Link';
 
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 
 const ListWrapper = styled(Box)(
   ({ theme }) => `
@@ -64,16 +60,6 @@ const ListWrapper = styled(Box)(
 );
 
 function HeaderMenu() {
-  const ref = useRef<any>(null);
-  const [isOpen, setOpen] = useState<boolean>(false);
-
-  const handleOpen = (): void => {
-    setOpen(true);
-  };
-
-  const handleClose = (): void => {
-    setOpen(false);
-  };
 
   return (
     <>
@@ -94,7 +80,7 @@ function HeaderMenu() {
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
-              primary="Your subjects"
+              primary="Môn học của bạn"
             />
           </ListItem>
           <ListItem
@@ -105,7 +91,7 @@ function HeaderMenu() {
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
-              primary="Calender"
+              primary="Lịch học của bạn"
             />
           </ListItem>
           <ListItem
@@ -116,7 +102,7 @@ function HeaderMenu() {
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
-              primary="Scores"
+              primary="Điểm số của bạn"
             />
           </ListItem>
           {/* <ListItem

@@ -24,6 +24,7 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 // import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
+import { useAuth } from '@/hooks/use-auth';
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -171,27 +172,26 @@ function SidebarMenu() {
   const { closeSidebar } = useContext(SidebarContext);
   const router = useRouter();
   const currentRoute = router.pathname;
-  console.log(currentRoute);
+  const { user } = useAuth();
   return (
     <>
-      <MenuWrapper>
+      <MenuWrapper sx={{ pt: 2 }}>
         <List
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
-              Communities
+              Cộng đồng
             </ListSubheader>
           }
         >
           <SubMenuWrapper>
             <List component="div">
               <ListItem component="div">
-                <NextLink href="/communities/home" passHref>
+                <NextLink href="/" passHref>
                   <Button
                     className={
                       currentRoute ===
-                      ('/communities/home' ||
-                        '/communities/home/home-following')
+                      ('/' || '/communities/home/home-following')
                         ? 'active'
                         : ''
                     }
@@ -200,7 +200,7 @@ function SidebarMenu() {
                     onClick={closeSidebar}
                     startIcon={<HomeOutlinedIcon />}
                   >
-                    Home
+                    Trang chủ
                   </Button>
                 </NextLink>
               </ListItem>
@@ -215,7 +215,7 @@ function SidebarMenu() {
                     onClick={closeSidebar}
                     startIcon={<SearchOutlinedIcon />}
                   >
-                    Explore
+                    Khám phá
                   </Button>
                 </NextLink>
               </ListItem>
@@ -231,89 +231,98 @@ function SidebarMenu() {
                     onClick={closeSidebar}
                     startIcon={<GroupOutlinedIcon />}
                   >
-                    Groups
+                    Nhóm
                   </Button>
                 </NextLink>
               </ListItem>
             </List>
           </SubMenuWrapper>
         </List>
-        <List
-          component="div"
-          subheader={
-            <ListSubheader component="div" disableSticky>
-              Elearning
-            </ListSubheader>
-          }
-        >
-          <SubMenuWrapper>
-            <List component="div">
-              <ListItem component="div">
-                <NextLink href="/elearning" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/elearning' ||
-                      currentRoute === '/elearning/elearning-scores'
-                        ? 'active'
-                        : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<SchoolOutlinedIcon />}
-                  >
-                    Your school
-                  </Button>
-                </NextLink>
-              </ListItem>
-            </List>
-          </SubMenuWrapper>
-        </List>
-        <List
-          component="div"
-          subheader={
-            <ListSubheader component="div" disableSticky>
-              Accounts
-            </ListSubheader>
-          }
-        >
-          <SubMenuWrapper>
-            <List component="div">
-              <ListItem component="div">
-                <NextLink href="/management/profile" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/management/profile' ? 'active' : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<AccountCircleTwoToneIcon />}
-                  >
-                    User Profile
-                  </Button>
-                </NextLink>
-              </ListItem>
-              <ListItem component="div">
-                <NextLink href="/management/profile/settings" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/management/profile/settings'
-                        ? 'active'
-                        : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<DisplaySettingsTwoToneIcon />}
-                  >
-                    Account Settings
-                  </Button>
-                </NextLink>
-              </ListItem>
-            </List>
-          </SubMenuWrapper>
-        </List>
+
+        {user ? (
+          <List
+            component="div"
+            subheader={
+              <ListSubheader component="div" disableSticky>
+                Trang học tập
+              </ListSubheader>
+            }
+          >
+            <SubMenuWrapper>
+              <List component="div">
+                <ListItem component="div">
+                  <NextLink href="/elearning" passHref>
+                    <Button
+                      className={
+                        currentRoute === '/elearning' ||
+                        currentRoute === '/elearning/elearning-scores'
+                          ? 'active'
+                          : ''
+                      }
+                      disableRipple
+                      component="a"
+                      onClick={closeSidebar}
+                      startIcon={<SchoolOutlinedIcon />}
+                    >
+                      Trường của bạn
+                    </Button>
+                  </NextLink>
+                </ListItem>
+              </List>
+            </SubMenuWrapper>
+          </List>
+        ) : (
+          <></>
+        )}
+        {user ? (
+          <List
+            component="div"
+            subheader={
+              <ListSubheader component="div" disableSticky>
+                Tài khoản
+              </ListSubheader>
+            }
+          >
+            <SubMenuWrapper>
+              <List component="div">
+                <ListItem component="div">
+                  <NextLink href="/management/profile" passHref>
+                    <Button
+                      className={
+                        currentRoute === '/management/profile' ? 'active' : ''
+                      }
+                      disableRipple
+                      component="a"
+                      onClick={closeSidebar}
+                      startIcon={<AccountCircleTwoToneIcon />}
+                    >
+                      Trang cá nhân
+                    </Button>
+                  </NextLink>
+                </ListItem>
+                <ListItem component="div">
+                  <NextLink href="/management/profile/settings" passHref>
+                    <Button
+                      className={
+                        currentRoute === '/management/profile/settings'
+                          ? 'active'
+                          : ''
+                      }
+                      disableRipple
+                      component="a"
+                      onClick={closeSidebar}
+                      startIcon={<DisplaySettingsTwoToneIcon />}
+                    >
+                      Cài đặt
+                    </Button>
+                  </NextLink>
+                </ListItem>
+              </List>
+            </SubMenuWrapper>
+          </List>
+        ) : (
+          <></>
+        )}
       </MenuWrapper>
     </>
   );

@@ -16,7 +16,7 @@ function EleaningScoresPage() {
   return (
     <>
       <Head>
-        <title>Crypto Dashboard</title>
+        <title>EduConnect</title>
       </Head>
 
       <Container maxWidth="lg">
@@ -100,7 +100,6 @@ function EleaningScoresPage() {
           </Table>
         </Box>
       </Container>
-      <Footer />
     </>
   );
 }

@@ -1,9 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import { Container, Grid } from '@mui/material';
-import Footer from '@/components/Footer';
 import { ExploreWhoToFollow } from '@/sections/dashboards/explore/explore-who-to-follow';
-import { ExploreTrending } from '@/sections/dashboards/explore/explore-trending';
 import SidebarLayout from '@/layouts/SidebarLayout';
 import { ExploreSpecificTrending } from '@/sections/dashboards/explore/explore-specific-trending';
 
@@ -11,7 +9,7 @@ function ExploreUserChooseTrend() {
   return (
     <>
       <Head>
-        <title>Crypto Dashboard</title>
+        <title>EduConnect</title>
       </Head>
 
       <Container maxWidth="lg">
@@ -31,7 +29,6 @@ function ExploreUserChooseTrend() {
           </Grid>
         </Grid>
       </Container>
-      <Footer />
     </>
   );
 }

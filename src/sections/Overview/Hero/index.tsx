@@ -2,12 +2,22 @@ import {
   Box,
   Button,
   Container,
+  FormHelperText,
   Grid,
+  Stack,
+  TextField,
   Typography,
   styled
 } from '@mui/material';
 
-import Link from 'src/components/Link';
+import { useFormik } from 'formik';
+
+import * as Yup from 'yup';
+
+import { AuthContextType } from '@/contexts/auth/jwt-context';
+import { useAuth } from '@/hooks/use-auth';
+import { useMounted } from '@/hooks/use-mounted';
+import { useRouter } from 'next/router';
 
 const TypographyH1 = styled(Typography)(
   ({ theme }) => `
@@ -35,67 +45,42 @@ const LabelWrapper = styled(Box)(
 `
 );
 
-const MuiAvatar = styled(Box)(
-  ({ theme }) => `
-    width: ${theme.spacing(8)};
-    height: ${theme.spacing(8)};
-    border-radius: ${theme.general.borderRadius};
-    background-color: #e5f7ff;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto ${theme.spacing(2)};
-
-    img {
-      width: 60%;
-      height: 60%;
-      display: block;
-    }
-`
-);
-
-const TsAvatar = styled(Box)(
-  ({ theme }) => `
-    width: ${theme.spacing(8)};
-    height: ${theme.spacing(8)};
-    border-radius: ${theme.general.borderRadius};
-    background-color: #dfebf6;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto ${theme.spacing(2)};
-
-    img {
-      width: 60%;
-      height: 60%;
-      display: block;
-    }
-`
-);
-
-const NextJsAvatar = styled(Box)(
-  ({ theme }) => `
-  width: ${theme.spacing(8)};
-  height: ${theme.spacing(8)};
-  border-radius: ${theme.general.borderRadius};
-  background-color: #dfebf6;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto ${theme.spacing(2)};
-
-    img {
-      width: 60%;
-      height: 60%;
-      display: block;
-    }
-`
-);
-
 function Hero() {
+  const initialValues = {
+    username: '',
+    password: '',
+    submit: null
+  };
+
+  const validationSchema = Yup.object({
+    username: Yup.string().max(255).required('Tên đăng nhập là bắt buộc'),
+    password: Yup.string().max(255).required('Mật khẩu là bắt buộc')
+  });
+
+  const { signIn } = useAuth<AuthContextType>();
+
+  const isMounted = useMounted();
+
+  const router = useRouter();
+
+  const formik = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: async (values, helpers): Promise<void> => {
+      try {
+        const user = await signIn(values.username, values.password);
+        if (isMounted() && user) {
+          router.push('/');
+        }
+      } catch (error) {
+        console.log(error);
+        helpers.setStatus({ success: false });
+        helpers.setErrors({ submit: error.message });
+        helpers.setSubmitting(false);
+      }
+    }
+  });
+
   return (
     <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
       <Grid
@@ -115,68 +100,59 @@ function Hero() {
             color="text.secondary"
             fontWeight="normal"
           >
-            Social network that supports learning and links schools helps high
-            school teachers and students connect with each other, supporting
-            online teaching platforms for schools. 
+            {`Mạng xã hội EduConnect giúp hỗ trợ học tập hiệu quả, tạo cộng đồng kết nối các bạn học
+            sinh, giáo viên, phụ huynh, và hỗ trợ hệ thống học tập trực tuyến cho các
+            trường cấp 3 trên cả nước. `}
           </TypographyH2>
-          <Button
-            component={Link}
-            href="/communities/home"
-            size="large"
-            variant="contained"
-          >
-            Try My Website
-          </Button>
-          {/* <Grid container spacing={3} mt={5}>
-            <Grid item md={4}>
-              <MuiAvatar>
-                <img
-                  src="/static/images/logo/material-ui.svg"
-                  alt="Material-UI"
+
+          <form onSubmit={formik.handleSubmit}>
+            <Stack spacing={2} sx={{ padding: 2 }}>
+              <Stack alignItems={'flex-start'} spacing={1}>
+                <Typography variant="h4">Tên đăng nhập</Typography>
+                <TextField
+                  fullWidth
+                  autoFocus
+                  error={!!(formik.touched.username && formik.errors.username)}
+                  helperText={formik.touched.username && formik.errors.username}
+                  name="username"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  value={formik.values.username}
+                  placeholder="Nhập tên đăng nhập"
                 />
-              </MuiAvatar>
-              <Typography variant="h4">
-                <Box sx={{ pb: 2 }}>
-                  <b>Powered by MUI (Material-UI)</b>
-                </Box>
-                <Typography component="span" variant="subtitle2">
-                  A simple and customizable component library to build faster,
-                  beautiful, and accessible React apps.
-                </Typography>
-              </Typography>
-            </Grid>
-            <Grid item md={4}>
-              <NextJsAvatar>
-                <img src="/static/images/logo/next-js.svg" alt="NextJS" />
-              </NextJsAvatar>
-              <Typography variant="h4">
-                <Box sx={{ pb: 2 }}>
-                  <b>Built with Next.js</b>
-                </Box>
-                <Typography component="span" variant="subtitle2">
-                  Next.js gives you the best developer experience with all the
-                  features you need for production.
-                </Typography>
-              </Typography>
-            </Grid>
-            <Grid item md={4}>
-              <TsAvatar>
-                <img
-                  src="/static/images/logo/typescript.svg"
-                  alt="Typescript"
+              </Stack>
+
+              <Stack alignItems={'flex-start'} spacing={1}>
+                <Typography variant="h4">Mật khẩu</Typography>
+                <TextField
+                  fullWidth
+                  error={!!(formik.touched.password && formik.errors.password)}
+                  helperText={formik.touched.password && formik.errors.password}
+                  name="password"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  type="password"
+                  value={formik.values.password}
+                  placeholder="Nhập mật khẫu"
                 />
-              </TsAvatar>
-              <Typography variant="h4">
-                <Box sx={{ pb: 2 }}>
-                  <b>Built with Typescript</b>
-                </Box>
-                <Typography component="span" variant="subtitle2">
-                  EduConnect features a modern technology stack and is
-                  built with React + Typescript.
-                </Typography>
-              </Typography>
-            </Grid>
-          </Grid> */}
+              </Stack>
+
+              {formik.errors.submit && (
+                <FormHelperText error sx={{ mt: 1 }}>
+                  {formik.errors.submit as string}
+                </FormHelperText>
+              )}
+            </Stack>
+
+            <Button
+              disabled={formik.isSubmitting}
+              size="large"
+              variant="contained"
+              type="submit"
+            >
+              Đăng nhập
+            </Button>
+          </form>
         </Grid>
       </Grid>
     </Container>

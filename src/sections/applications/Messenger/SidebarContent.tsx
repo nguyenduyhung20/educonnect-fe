@@ -125,7 +125,7 @@ function SidebarContent() {
   return (
     <RootWrapper>
       <Box display="flex" alignItems="flex-start">
-        <Avatar alt={user.name} src={user.avatar} />
+        <Avatar alt={user?.name} src={user?.avatar} />
         <Box
           sx={{
             ml: 1.5,
@@ -139,10 +139,10 @@ function SidebarContent() {
           >
             <Box>
               <Typography variant="h5" noWrap>
-                {user.name}
+                {user?.name}
               </Typography>
               <Typography variant="subtitle1" noWrap>
-                {user.jobtitle}
+                {user?.jobtitle}
               </Typography>
             </Box>
             <IconButton

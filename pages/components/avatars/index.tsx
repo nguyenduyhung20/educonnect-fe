@@ -157,7 +157,6 @@ function Avatars() {
           </Grid>
         </Grid>
       </Container>
-      <Footer />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 import NextLink from 'next/link';
 
@@ -22,6 +22,7 @@ import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
 import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
+import { useAuth } from '@/hooks/use-auth';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -59,11 +60,7 @@ const UserBoxDescription = styled(Typography)(
 );
 
 function HeaderUserbox() {
-  const user = {
-    name: 'Trần Long Biên',
-    avatar: '/static/images/avatars/1.jpg',
-    jobtitle: 'Học sinh'
-  };
+  const { user } = useAuth();
 
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
@@ -76,16 +73,28 @@ function HeaderUserbox() {
     setOpen(false);
   };
 
+  const role = useMemo(() => {
+    return user?.role == 'student'
+      ? 'Học sinh'
+      : user?.role == 'admin'
+      ? 'Quản trị viên'
+      : user?.role == 'parent'
+      ? 'Phụ huynh'
+      : user?.role == 'teacher'
+      ? 'Giáo viên'
+      : '';
+  }, [user]);
+
+  const { signOut } = useAuth();
+
   return (
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-        <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+        <Avatar variant="rounded" alt={user?.name} src={user?.avatar} />
         <Hidden mdDown>
           <UserBoxText>
-            <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
-            <UserBoxDescription variant="body2">
-              {user.jobtitle}
-            </UserBoxDescription>
+            <UserBoxLabel variant="body1">{user?.name}</UserBoxLabel>
+            <UserBoxDescription variant="body2">{role}</UserBoxDescription>
           </UserBoxText>
         </Hidden>
         <Hidden smDown>
@@ -106,12 +115,10 @@ function HeaderUserbox() {
         }}
       >
         <MenuUserBox sx={{ minWidth: 210 }} display="flex">
-          <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+          <Avatar variant="rounded" alt={user?.name} src={user?.avatar} />
           <UserBoxText>
-            <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
-            <UserBoxDescription variant="body2">
-              {user.jobtitle}
-            </UserBoxDescription>
+            <UserBoxLabel variant="body1">{user?.name}</UserBoxLabel>
+            <UserBoxDescription variant="body2">{role}</UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>
         <Divider sx={{ mb: 0 }} />
@@ -119,27 +126,22 @@ function HeaderUserbox() {
           <NextLink href="/management/profile" passHref>
             <ListItem button>
               <AccountBoxTwoToneIcon fontSize="small" />
-              <ListItemText primary="My Profile" />
+              <ListItemText primary="Trang cá nhân" />
             </ListItem>
           </NextLink>
-          <NextLink href="/communities/groups" passHref>
-            <ListItem button>
-              <InboxTwoToneIcon fontSize="small" />
-              <ListItemText primary="Messenger" />
-            </ListItem>
-          </NextLink>
+
           <NextLink href="/management/profile/settings" passHref>
             <ListItem button>
               <AccountTreeTwoToneIcon fontSize="small" />
-              <ListItemText primary="Account Settings" />
+              <ListItemText primary="Cài đặt" />
             </ListItem>
           </NextLink>
         </List>
         <Divider />
         <Box sx={{ m: 1 }}>
-          <Button color="primary" fullWidth>
+          <Button color="primary" fullWidth onClick={() => signOut()}>
             <LockOpenTwoToneIcon sx={{ mr: 1 }} />
-            Sign out
+            Đăng xuất
           </Button>
         </Box>
       </Popover>

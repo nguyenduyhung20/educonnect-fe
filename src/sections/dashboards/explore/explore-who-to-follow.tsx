@@ -9,17 +9,10 @@ import {
 } from '@mui/material';
 import React from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-
-
+import { useAuth } from '@/hooks/use-auth';
 
 export const ExploreWhoToFollow = () => {
-  const theme = useTheme();
-  const user = {
-    name: 'Trần Long Biên',
-    avatar: '/static/images/avatars/1.jpg'
-  };
-
-  
+  const { user } = useAuth();
 
   return (
     <Box>
@@ -38,10 +31,10 @@ export const ExploreWhoToFollow = () => {
           <Stack direction={'column'} spacing={2}>
             <Stack direction={'row'} justifyContent={'space-between'} width={1}>
               <Stack direction={'row'} spacing={1}>
-                <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+                <Avatar variant="rounded" alt={user?.name} src={user?.avatar} />
                 <Stack>
-                    <Typography variant='h5'>Võ Quốc Bá Cẩn</Typography>
-                    <Typography variant='subtitle1'>124k follower</Typography>
+                  <Typography variant="h5">Võ Quốc Bá Cẩn</Typography>
+                  <Typography variant="subtitle1">124k follower</Typography>
                 </Stack>
               </Stack>
               <Box>
@@ -53,10 +46,10 @@ export const ExploreWhoToFollow = () => {
 
             <Stack direction={'row'} justifyContent={'space-between'} width={1}>
               <Stack direction={'row'} spacing={1}>
-                <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+                <Avatar variant="rounded" alt={user?.name} src={user?.avatar} />
                 <Stack>
-                    <Typography variant='h5'>Võ Quốc Bá Cẩn</Typography>
-                    <Typography variant='subtitle1'>124k follower</Typography>
+                  <Typography variant="h5">Võ Quốc Bá Cẩn</Typography>
+                  <Typography variant="subtitle1">124k follower</Typography>
                 </Stack>
               </Stack>
               <Box>
@@ -68,10 +61,10 @@ export const ExploreWhoToFollow = () => {
 
             <Stack direction={'row'} justifyContent={'space-between'} width={1}>
               <Stack direction={'row'} spacing={1}>
-                <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+                <Avatar variant="rounded" alt={user?.name} src={user?.avatar} />
                 <Stack>
-                    <Typography variant='h5'>Võ Quốc Bá Cẩn</Typography>
-                    <Typography variant='subtitle1'>124k follower</Typography>
+                  <Typography variant="h5">Võ Quốc Bá Cẩn</Typography>
+                  <Typography variant="subtitle1">124k follower</Typography>
                 </Stack>
               </Stack>
               <Box>
@@ -83,10 +76,10 @@ export const ExploreWhoToFollow = () => {
 
             <Stack direction={'row'} justifyContent={'space-between'} width={1}>
               <Stack direction={'row'} spacing={1}>
-                <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+                <Avatar variant="rounded" alt={user?.name} src={user?.avatar} />
                 <Stack>
-                    <Typography variant='h5'>Võ Quốc Bá Cẩn</Typography>
-                    <Typography variant='subtitle1'>124k follower</Typography>
+                  <Typography variant="h5">Võ Quốc Bá Cẩn</Typography>
+                  <Typography variant="subtitle1">124k follower</Typography>
                 </Stack>
               </Stack>
               <Box>
@@ -95,7 +88,6 @@ export const ExploreWhoToFollow = () => {
                 </IconButton>
               </Box>
             </Stack>
-
           </Stack>
         </Stack>
       </Paper>

@@ -16,11 +16,11 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
 import Link from '../Link';
-export const BodyNews = () => {
-  const user = {
-    name: 'Trần Long Biên',
-    avatar: '/static/images/avatars/1.jpg'
-  };
+import { useAuth } from '@/hooks/use-auth';
+import { Post } from '@/types/post';
+
+export const BodyNews = ({ post }: { post: Post }) => {
+  const { user } = useAuth();
   return (
     <Card>
       <CardHeader
@@ -28,8 +28,8 @@ export const BodyNews = () => {
           <Avatar
             component={Link}
             variant="rounded"
-            alt={user.name}
-            src={user.avatar}
+            alt={post.user.name}
+            src={post.user.avatar}
             href={'/management/profile'}
           />
         }
@@ -43,7 +43,7 @@ export const BodyNews = () => {
               '&:hover': { textDecoration: 'underline' }
             }}
           >
-            Trần Long Biên
+            {post.user.name}
           </Typography>
         }
         subheader="17 phút"
@@ -60,7 +60,7 @@ export const BodyNews = () => {
         }
       />
       <CardContent>
-        <Typography variant="h6">Chào anh em đứng đây từ chiều</Typography>
+        <Typography variant="h6">{post.content}</Typography>
       </CardContent>
       <CardActions>
         <Box
@@ -79,7 +79,7 @@ export const BodyNews = () => {
             <IconButton aria-label="delete">
               <Stack direction={'row'} alignItems={'center'} spacing={0.5}>
                 <FavoriteBorderIcon />
-                <Typography>123</Typography>
+                <Typography>{post.interactCount}</Typography>
               </Stack>
             </IconButton>
           </Box>
@@ -93,22 +93,7 @@ export const BodyNews = () => {
             <IconButton aria-label="delete">
               <Stack direction={'row'} alignItems={'center'} spacing={0.5}>
                 <ForumOutlinedIcon />
-                <Typography>123</Typography>
-              </Stack>
-            </IconButton>
-          </Box>
-
-          <Box
-            sx={{
-              width: 1,
-              display: 'flex',
-              justifyContent: 'center'
-            }}
-          >
-            <IconButton aria-label="delete">
-              <Stack direction={'row'} spacing={0.5} alignItems={'center'}>
-                <ReplyOutlinedIcon />
-                <Typography>123</Typography>
+                <Typography>{post.commentCount}</Typography>
               </Stack>
             </IconButton>
           </Box>

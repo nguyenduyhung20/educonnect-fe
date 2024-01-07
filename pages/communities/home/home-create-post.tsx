@@ -1,13 +1,9 @@
 import Footer from '@/components/Footer';
-import PageTitleWrapper from '@/components/PageTitleWrapper';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import PageHeader from '@/sections/Management/Transactions/PageHeader';
 import { SearchOutlined } from '@mui/icons-material';
 import {
   Avatar,
   Box,
-  Button,
-  Card,
   Container,
   Divider,
   Grid,
@@ -26,6 +22,7 @@ import ImageIcon from '@mui/icons-material/Image';
 import { CreateNewsFeedPost } from '@/sections/dashboards/feeds/create-news-feed-post';
 import { CreateNewsFeedImage } from '@/sections/dashboards/feeds/create-news-feed-image';
 import { CreateNewsFeedLink } from '@/sections/dashboards/feeds/create-news-feed-link';
+import { useAuth } from '@/hooks/use-auth';
 
 function CreatePost() {
   const tabs = [
@@ -39,14 +36,11 @@ function CreatePost() {
   };
 
   const [currentTab, setCurrentTab] = useState<string>('Post');
-  const user = {
-    name: 'Trần Long Biên',
-    avatar: '/static/images/avatars/1.jpg'
-  };
+  const { user } = useAuth();
   return (
     <>
       <Head>
-        <title>Crypto Dashboard</title>
+        <title>EduConnect</title>
       </Head>
 
       <Container maxWidth="lg">
@@ -87,13 +81,13 @@ function CreatePost() {
                     >
                       <Tab
                         label={'Bài viết'}
-                        value={'Bài viết'}
+                        value={'Post'}
                         icon={<PostAddIcon />}
                         iconPosition="start"
                       />
                       <Tab
                         label={'Hình ảnh'}
-                        value={'Hình ảnh'}
+                        value={'Image'}
                         icon={<ImageIcon />}
                         iconPosition="start"
                       />
@@ -153,7 +147,6 @@ function CreatePost() {
           </Grid>
         </Grid>
       </Container>
-      <Footer />
     </>
   );
 }
