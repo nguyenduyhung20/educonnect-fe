@@ -14,7 +14,6 @@ import { useFormik } from 'formik';
 
 import * as Yup from 'yup';
 
-import Link from 'src/components/Link';
 import { AuthContextType } from '@/contexts/auth/jwt-context';
 import { useAuth } from '@/hooks/use-auth';
 import { useMounted } from '@/hooks/use-mounted';

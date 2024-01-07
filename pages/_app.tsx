@@ -14,6 +14,7 @@ import { SidebarProvider } from 'src/contexts/SidebarContext';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { AuthConsumer, AuthProvider } from '@/contexts/auth/jwt-context';
+import { SplashScreen } from './components/splash-screen';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -34,6 +35,7 @@ function TokyoApp(props: TokyoAppProps) {
   Router.events.on('routeChangeError', nProgress.done);
   Router.events.on('routeChangeComplete', nProgress.done);
 
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -44,25 +46,25 @@ function TokyoApp(props: TokyoAppProps) {
         />
       </Head>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <SidebarProvider>
-          <AuthProvider>
-            <AuthConsumer>
-              {(auth) => {
-                const showSlashScreen = !auth.isInitialized;
-                return (
+        <AuthProvider>
+          <AuthConsumer>
+            {(auth) => {
+              const showSlashScreen = !auth.isInitialized;
+              return (
+                <SidebarProvider>
                   <ThemeProvider>
                     <CssBaseline />
                     {showSlashScreen ? (
-                      <></>
+                      <SplashScreen />
                     ) : (
                       <> {getLayout(<Component {...pageProps} />)}</>
                     )}
                   </ThemeProvider>
-                );
-              }}
-            </AuthConsumer>
-          </AuthProvider>
-        </SidebarProvider>
+                </SidebarProvider>
+              );
+            }}
+          </AuthConsumer>
+        </AuthProvider>
       </LocalizationProvider>
     </CacheProvider>
   );

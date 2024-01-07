@@ -16,7 +16,6 @@ import {
   Typography
 } from '@mui/material';
 
-import InboxTwoToneIcon from '@mui/icons-material/InboxTwoTone';
 import { styled } from '@mui/material/styles';
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
@@ -85,6 +84,8 @@ function HeaderUserbox() {
       : '';
   }, [user]);
 
+  const { signOut } = useAuth();
+
   return (
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
@@ -124,27 +125,22 @@ function HeaderUserbox() {
           <NextLink href="/management/profile" passHref>
             <ListItem button>
               <AccountBoxTwoToneIcon fontSize="small" />
-              <ListItemText primary="My Profile" />
+              <ListItemText primary="Trang cá nhân" />
             </ListItem>
           </NextLink>
-          <NextLink href="/communities/groups" passHref>
-            <ListItem button>
-              <InboxTwoToneIcon fontSize="small" />
-              <ListItemText primary="Messenger" />
-            </ListItem>
-          </NextLink>
+
           <NextLink href="/management/profile/settings" passHref>
             <ListItem button>
               <AccountTreeTwoToneIcon fontSize="small" />
-              <ListItemText primary="Account Settings" />
+              <ListItemText primary="Cài đặt" />
             </ListItem>
           </NextLink>
         </List>
         <Divider />
         <Box sx={{ m: 1 }}>
-          <Button color="primary" fullWidth>
+          <Button color="primary" fullWidth onClick={() => signOut()}>
             <LockOpenTwoToneIcon sx={{ mr: 1 }} />
-            Sign out
+            Đăng xuất
           </Button>
         </Box>
       </Popover>
