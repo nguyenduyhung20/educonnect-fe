@@ -6,8 +6,6 @@ function PageHeader() {
   const { user } = useAuth();
   const theme = useTheme();
 
-  console.log(user);
-
   return (
     <Grid container alignItems="center">
       <Grid item>
