@@ -12,5 +12,5 @@ export interface Post {
 }
 
 export interface PostDetail extends Post {
-    comment: []
+  comment: Post[];
 }

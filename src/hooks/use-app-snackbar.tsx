@@ -1,13 +1,13 @@
-import { useSnackbar } from "notistack";
-import { useCallback, useMemo } from "react";
+import { useSnackbar } from 'notistack';
+import { useCallback, useMemo } from 'react';
 
 function getErrorString(errorRaw: any): string {
-  if (typeof errorRaw == "string") {
+  if (typeof errorRaw == 'string') {
     return errorRaw;
-  } else if (errorRaw && typeof errorRaw == "object") {
+  } else if (errorRaw && typeof errorRaw == 'object') {
     return String(errorRaw.message);
   } else {
-    return errorRaw ? String(errorRaw) : "";
+    return errorRaw ? String(errorRaw) : '';
   }
 }
 
@@ -17,8 +17,8 @@ function useAppSnackbar() {
   const showSnackbarError = useCallback(
     (error: any) => {
       enqueueSnackbar(getErrorString(error), {
-        variant: "error",
-        style: { whiteSpace: "pre" },
+        variant: 'error',
+        style: { whiteSpace: 'pre' }
       });
     },
     [enqueueSnackbar]
@@ -26,9 +26,10 @@ function useAppSnackbar() {
 
   const showSnackbarSuccess = useCallback(
     (successString: any) => {
+      console.log(1);
       enqueueSnackbar(getErrorString(successString), {
-        variant: "success",
-        style: { whiteSpace: "pre" },
+        variant: 'success',
+        style: { whiteSpace: 'pre' }
       });
     },
     [enqueueSnackbar]
@@ -37,7 +38,7 @@ function useAppSnackbar() {
   return useMemo(
     () => ({
       showSnackbarError,
-      showSnackbarSuccess,
+      showSnackbarSuccess
     }),
     [showSnackbarError, showSnackbarSuccess]
   );

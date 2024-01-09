@@ -12,14 +12,17 @@ import useFunction, {
 } from 'src/hooks/use-function';
 
 import { PostsApi } from '@/api/posts';
-import { Post } from '@/types/post';
+import { Post, PostDetail } from '@/types/post';
 import { useAuth } from '@/hooks/use-auth';
+import { getFormData } from '@/utils/api-request';
 
 interface ContextValue {
   getPostsApi: UseFunctionReturnType<FormData, { data: Post[] }>;
   getNewsFeedApi: UseFunctionReturnType<{ id: number }, { data: Post[] }>;
+  getHotPostsApi: UseFunctionReturnType<FormData, { data: Post[] }>;
+  getDetailPostApi: UseFunctionReturnType<{ id: number }, { data: PostDetail }>;
 
-  createPost: (requests: Post) => Promise<void>;
+  createPost: (requests: Partial<Post>) => Promise<void>;
   updatePost: (post: Post) => Promise<void>;
   deletePost: (id: string) => Promise<void>;
 }
@@ -27,6 +30,8 @@ interface ContextValue {
 export const PostsContext = createContext<ContextValue>({
   getPostsApi: DEFAULT_FUNCTION_RETURN,
   getNewsFeedApi: DEFAULT_FUNCTION_RETURN,
+  getHotPostsApi: DEFAULT_FUNCTION_RETURN,
+  getDetailPostApi: DEFAULT_FUNCTION_RETURN,
 
   createPost: async () => {},
   updatePost: async () => {},
@@ -34,14 +39,18 @@ export const PostsContext = createContext<ContextValue>({
 });
 
 const PostsProvider = ({ children }: { children: ReactNode }) => {
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
 
   const getPostsApi = useFunction(PostsApi.getPosts);
 
   const getNewsFeedApi = useFunction(PostsApi.getNewsFeed);
 
+  const getHotPostsApi = useFunction(PostsApi.getHotPosts);
+
+  const getDetailPostApi = useFunction(PostsApi.getPostsByID);
+
   const createPost = useCallback(
-    async (request: Post) => {
+    async (request: Partial<Post>) => {
       try {
         const response = await PostsApi.postPost(request);
         if (response) {
@@ -81,7 +90,11 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
   );
 
   useEffect(() => {
-    getNewsFeedApi.call({ id: user?.id || 0 });
+    if (isAuthenticated) {
+      getNewsFeedApi.call({ id: user?.id || 0 });
+    }
+    getHotPostsApi.call(getFormData({}));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -90,6 +103,8 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
       value={{
         getPostsApi,
         getNewsFeedApi,
+        getHotPostsApi,
+        getDetailPostApi,
 
         createPost,
         updatePost,

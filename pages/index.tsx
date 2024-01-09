@@ -6,25 +6,25 @@ import PageHeader from '@/sections/dashboards/Crypto/PageHeader';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import { Container, Grid } from '@mui/material';
 
-import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
 import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
 import { CreateNewsFeed } from '@/sections/dashboards/feeds/create-news-feed';
 import PostsProvider from '@/contexts/posts/posts-context';
 import { useAuth } from '@/hooks/use-auth';
 import { io } from 'socket.io-client';
+import { HotPosts } from '@/sections/dashboards/feeds/hot-feed';
 
 function CommunitiesHome() {
   const { user, isAuthenticated } = useAuth();
 
   // From a different domain
-  if (isAuthenticated) {
-    const socket = io('http://localhost:5001/');
-    socket.emit('newUser', `${user.id}`);
+  // if (isAuthenticated) {
+  //   const socket = io('http://localhost:5001/');
+  //   socket.emit('newUser', `${user.id}`);
 
-    socket.on('disconnect', () => {
-      console.log(socket.id); // undefined
-    });
-  }
+  //   socket.on('disconnect', () => {
+  //     console.log(socket.id); // undefined
+  //   });
+  // }
 
   return (
     <>
@@ -42,7 +42,7 @@ function CommunitiesHome() {
         >
           <Grid item xs={12} md={7}>
             <CreateNewsFeed />
-            <NewsFeed />
+            <HotPosts />
           </Grid>
           <Grid item xs={12} md={4}>
             <TrendingNews />

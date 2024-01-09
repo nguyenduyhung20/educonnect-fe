@@ -4,7 +4,7 @@ import SidebarLayout from '@/layouts/SidebarLayout';
 
 import PageHeader from '@/sections/dashboards/Crypto/PageHeader';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
-import {  Container, Grid } from '@mui/material';
+import { Container, Grid } from '@mui/material';
 
 // import AccountBalance from '@/content/Dashboards/Crypto/AccountBalance';
 // import Wallets from '@/content/Dashboards/Crypto/Wallets';
@@ -13,6 +13,7 @@ import {  Container, Grid } from '@mui/material';
 import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
 import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
 import { CreateNewsFeed } from '@/sections/dashboards/feeds/create-news-feed';
+import PostsProvider from '@/contexts/posts/posts-context';
 
 function CommunitiesHomeFollowing() {
   return (
@@ -32,7 +33,7 @@ function CommunitiesHomeFollowing() {
           spacing={3}
         >
           <Grid item xs={12} md={7}>
-            <CreateNewsFeed/>
+            <CreateNewsFeed />
             <NewsFeed />
           </Grid>
           <Grid item xs={12} md={4}>
@@ -44,6 +45,10 @@ function CommunitiesHomeFollowing() {
   );
 }
 
-CommunitiesHomeFollowing.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
+CommunitiesHomeFollowing.getLayout = (page) => (
+  <SidebarLayout>
+    <PostsProvider>{page}</PostsProvider>
+  </SidebarLayout>
+);
 
 export default CommunitiesHomeFollowing;

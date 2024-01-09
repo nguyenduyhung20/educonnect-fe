@@ -15,6 +15,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { AuthConsumer, AuthProvider } from '@/contexts/auth/jwt-context';
 import { SplashScreen } from './components/splash-screen';
+import { SnackbarProvider } from 'notistack';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -35,7 +36,6 @@ function TokyoApp(props: TokyoAppProps) {
   Router.events.on('routeChangeError', nProgress.done);
   Router.events.on('routeChangeComplete', nProgress.done);
 
-
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -45,27 +45,29 @@ function TokyoApp(props: TokyoAppProps) {
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
       </Head>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <AuthProvider>
-          <AuthConsumer>
-            {(auth) => {
-              const showSlashScreen = !auth.isInitialized;
-              return (
-                <SidebarProvider>
-                  <ThemeProvider>
-                    <CssBaseline />
-                    {showSlashScreen ? (
-                      <SplashScreen />
-                    ) : (
-                      <> {getLayout(<Component {...pageProps} />)}</>
-                    )}
-                  </ThemeProvider>
-                </SidebarProvider>
-              );
-            }}
-          </AuthConsumer>
-        </AuthProvider>
-      </LocalizationProvider>
+      <SnackbarProvider>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <AuthProvider>
+            <AuthConsumer>
+              {(auth) => {
+                const showSlashScreen = !auth.isInitialized;
+                return (
+                  <SidebarProvider>
+                    <ThemeProvider>
+                      <CssBaseline />
+                      {showSlashScreen ? (
+                        <SplashScreen />
+                      ) : (
+                        <> {getLayout(<Component {...pageProps} />)}</>
+                      )}
+                    </ThemeProvider>
+                  </SidebarProvider>
+                );
+              }}
+            </AuthConsumer>
+          </AuthProvider>
+        </LocalizationProvider>
+      </SnackbarProvider>
     </CacheProvider>
   );
 }

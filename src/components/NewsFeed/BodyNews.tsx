@@ -9,18 +9,21 @@ import {
   Stack,
   Typography
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import ClearIcon from '@mui/icons-material/Clear';
 import IconButton from '@mui/material/IconButton';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
-import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
 import Link from '../Link';
 import { useAuth } from '@/hooks/use-auth';
 import { Post } from '@/types/post';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { useRouter } from 'next/router';
 
 export const BodyNews = ({ post }: { post: Post }) => {
   const { user } = useAuth();
+  const [like, setLike] = useState(false);
+  const router = useRouter();
   return (
     <Card>
       <CardHeader
@@ -76,9 +79,9 @@ export const BodyNews = ({ post }: { post: Post }) => {
               justifyContent: 'center'
             }}
           >
-            <IconButton aria-label="delete">
+            <IconButton onClick={() => setLike(!like)}>
               <Stack direction={'row'} alignItems={'center'} spacing={0.5}>
-                <FavoriteBorderIcon />
+                {like ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                 <Typography>{post.interactCount}</Typography>
               </Stack>
             </IconButton>
@@ -90,7 +93,12 @@ export const BodyNews = ({ post }: { post: Post }) => {
               justifyContent: 'center'
             }}
           >
-            <IconButton aria-label="delete">
+            <IconButton
+              aria-label="delete"
+              onClick={() => {
+                router.push(`/communities/home/${post.id}`);
+              }}
+            >
               <Stack direction={'row'} alignItems={'center'} spacing={0.5}>
                 <ForumOutlinedIcon />
                 <Typography>{post.commentCount}</Typography>

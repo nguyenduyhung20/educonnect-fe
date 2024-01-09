@@ -1,5 +1,5 @@
-import { useState, useCallback } from "react";
-import useAppSnackbar from "./use-app-snackbar";
+import { useState, useCallback } from 'react';
+import useAppSnackbar from './use-app-snackbar';
 
 type ApiFunction<P, T> = (payload: P) => Promise<T>;
 export interface UseFunctionOptions {
@@ -26,7 +26,7 @@ export const DEFAULT_FUNCTION_RETURN: UseFunctionReturnType<any, any> = {
   loading: false,
   error: null,
   data: undefined,
-  setData: () => {},
+  setData: () => {}
 };
 
 function useFunction<P, T>(
@@ -42,6 +42,7 @@ function useFunction<P, T>(
   const onRequestSuccess = useCallback(
     (result: T) => {
       if (options?.successMessage) {
+        console.log(1);
         showSnackbarSuccess(options?.successMessage);
       }
       if (!options?.disableSaving) {
@@ -66,10 +67,11 @@ function useFunction<P, T>(
           options?.fixedPayload
             ? {
                 ...payload,
-                ...options?.fixedPayload,
+                ...options?.fixedPayload
               }
             : payload
         );
+
         return onRequestSuccess(result);
       } catch (error) {
         if (options?.cacheKey) {
