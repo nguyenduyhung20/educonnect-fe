@@ -11,9 +11,20 @@ import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
 import { CreateNewsFeed } from '@/sections/dashboards/feeds/create-news-feed';
 import PostsProvider from '@/contexts/posts/posts-context';
 import { useAuth } from '@/hooks/use-auth';
+import { io } from 'socket.io-client';
 
 function CommunitiesHome() {
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
+
+  // From a different domain
+  if (isAuthenticated) {
+    const socket = io('http://localhost:5001/');
+    socket.emit('newUser', `${user.id}`);
+
+    socket.on('disconnect', () => {
+      console.log(socket.id); // undefined
+    });
+  }
 
   return (
     <>

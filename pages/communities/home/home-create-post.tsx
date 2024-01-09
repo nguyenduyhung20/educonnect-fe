@@ -1,8 +1,6 @@
-import Footer from '@/components/Footer';
 import SidebarLayout from '@/layouts/SidebarLayout';
 import { SearchOutlined } from '@mui/icons-material';
 import {
-  Avatar,
   Box,
   Container,
   Divider,
@@ -21,7 +19,6 @@ import PostAddIcon from '@mui/icons-material/PostAdd';
 import { CreateNewsFeedPost } from '@/sections/dashboards/feeds/create-news-feed-post';
 import { CreateNewsFeedLink } from '@/sections/dashboards/feeds/create-news-feed-link';
 import { RuleCommunities } from './rule-communities';
-import { useFormik } from 'formik';
 
 function CreatePost() {
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
@@ -30,7 +27,6 @@ function CreatePost() {
 
   const [currentTab, setCurrentTab] = useState<string>('Post');
 
-  
   return (
     <>
       <Head>
