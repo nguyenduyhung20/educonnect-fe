@@ -11,13 +11,13 @@ import {
     UseFunctionReturnType
   } from 'src/hooks/use-function';
   
-import { Group } from '@/types/groups';
+import { Group, GroupDetail } from '@/types/groups';
 
 import { GroupsApi } from '@/api/groups';
   
   interface ContextValue {
     getGroupsApi: UseFunctionReturnType<FormData, { data: Group[] }>;
-  
+    getGroupsApiById: UseFunctionReturnType<{ id: number }, { data: Group }>;
     createGroup: (requests: Group) => Promise<void>;
     // updateGroup: (Group: Group) => Promise<void>;
     deleteGroup: (id: string) => Promise<void>;
@@ -25,7 +25,7 @@ import { GroupsApi } from '@/api/groups';
   
   export const GroupsContext = createContext<ContextValue>({
     getGroupsApi: DEFAULT_FUNCTION_RETURN,
-  
+    getGroupsApiById: DEFAULT_FUNCTION_RETURN,
     createGroup: async () => {},
     // updateGroup: async () => {},
     deleteGroup: async () => {}
@@ -33,6 +33,8 @@ import { GroupsApi } from '@/api/groups';
   
   const GroupsProvider = ({ children }: { children: ReactNode }) => {
     const getGroupsApi = useFunction(GroupsApi.getGroups);
+
+    const getGroupsApiById = useFunction(GroupsApi.getGroupsByID);
   
     const createGroup = useCallback(
       async (request: Group) => {
@@ -83,7 +85,7 @@ import { GroupsApi } from '@/api/groups';
       <GroupsContext.Provider
         value={{
           getGroupsApi,
-  
+          getGroupsApiById,
           createGroup,
         //   updateGroup,
           deleteGroup
