@@ -1,7 +1,7 @@
 import SidebarLayout from '@/layouts/SidebarLayout';
 import { Grid, Stack } from '@mui/material';
 import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
-import RecentActivity from '@/sections/Management/Users/details/RecentActivity';
+import RecentActivity from '@/sections/management/user/details/RecentActivity';
 import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
 import React, { useEffect, useMemo } from 'react';
 import GroupCover from '@/sections/dashboards/groups/GroupCover';

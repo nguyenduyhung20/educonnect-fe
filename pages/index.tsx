@@ -2,7 +2,6 @@ import Head from 'next/head';
 
 import SidebarLayout from '@/layouts/SidebarLayout';
 
-import PageHeader from '@/sections/dashboards/Crypto/PageHeader';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import { Container, Grid } from '@mui/material';
 
@@ -12,6 +11,7 @@ import PostsProvider from '@/contexts/posts/posts-context';
 import { useAuth } from '@/hooks/use-auth';
 import { io } from 'socket.io-client';
 import { HotPosts } from '@/sections/dashboards/feeds/hot-feed';
+import PageHeader from '@/sections/dashboards/feeds/page-header-feed';
 
 function CommunitiesHome() {
   const { user, isAuthenticated } = useAuth();

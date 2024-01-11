@@ -1,5 +1,5 @@
-import ProfileCover from '@/sections/Management/Users/details/ProfileCover';
-import RecentActivity from '@/sections/Management/Users/details/RecentActivity';
+import ProfileCover from '@/sections/management/user/details/ProfileCover';
+import RecentActivity from '@/sections/management/user/details/RecentActivity';
 import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
 import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
 import { Grid, Stack } from '@mui/material';
