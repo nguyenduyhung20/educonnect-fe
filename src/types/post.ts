@@ -9,6 +9,7 @@ export interface Post {
   postUuid: string;
   interactCount: number;
   commentCount: number;
+  userInteract: string;
 }
 
 export interface PostDetail extends Post {

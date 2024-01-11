@@ -19,11 +19,20 @@ import { useAuth } from '@/hooks/use-auth';
 import { Post } from '@/types/post';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useRouter } from 'next/router';
+import { usePostsContext } from '@/contexts/posts/posts-context';
 
-export const BodyNews = ({ post }: { post: Post }) => {
-  const { user } = useAuth();
-  const [like, setLike] = useState(false);
+export const BodyNews = ({
+  post,
+  type
+}: {
+  post: Post;
+  type: 'hotpost' | 'newsfeed';
+}) => {
+  const { isAuthenticated } = useAuth();
+  const [isLiked, setIsLiked] = useState(post.userInteract ? true : false);
   const router = useRouter();
+  const { reactPost } = usePostsContext();
+
   return (
     <Card>
       <CardHeader
@@ -79,9 +88,22 @@ export const BodyNews = ({ post }: { post: Post }) => {
               justifyContent: 'center'
             }}
           >
-            <IconButton onClick={() => setLike(!like)}>
+            <IconButton
+              onClick={async () => {
+                if (!isAuthenticated) {
+                  router.push('/login');
+                } else {
+                  await reactPost(
+                    { id: post.id, type: 'like' },
+                    isLiked ? 'dislike' : 'like',
+                    type
+                  );
+                  setIsLiked(!isLiked);
+                }
+              }}
+            >
               <Stack direction={'row'} alignItems={'center'} spacing={0.5}>
-                {like ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                 <Typography>{post.interactCount}</Typography>
               </Stack>
             </IconButton>
@@ -96,7 +118,11 @@ export const BodyNews = ({ post }: { post: Post }) => {
             <IconButton
               aria-label="delete"
               onClick={() => {
-                router.push(`/communities/home/${post.id}`);
+                if (!isAuthenticated) {
+                  router.push('/login');
+                } else {
+                  router.push(`/communities/home/${post.id}`);
+                }
               }}
             >
               <Stack direction={'row'} alignItems={'center'} spacing={0.5}>

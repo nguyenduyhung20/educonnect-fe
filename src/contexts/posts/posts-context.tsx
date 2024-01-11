@@ -21,7 +21,13 @@ interface ContextValue {
   getNewsFeedApi: UseFunctionReturnType<{ id: number }, { data: Post[] }>;
   getHotPostsApi: UseFunctionReturnType<FormData, { data: Post[] }>;
   getDetailPostApi: UseFunctionReturnType<{ id: number }, { data: PostDetail }>;
+  getHotPostsApiByUserID: UseFunctionReturnType<FormData, { data: Post[] }>;
 
+  reactPost: (
+    request: { id: number; type: string },
+    action: 'like' | 'dislike',
+    type: 'detail' | 'newsfeed' | 'hotpost'
+  ) => Promise<void>;
   createPost: (requests: Partial<Post>) => Promise<void>;
   updatePost: (post: Post) => Promise<void>;
   deletePost: (id: string) => Promise<void>;
@@ -32,7 +38,9 @@ export const PostsContext = createContext<ContextValue>({
   getNewsFeedApi: DEFAULT_FUNCTION_RETURN,
   getHotPostsApi: DEFAULT_FUNCTION_RETURN,
   getDetailPostApi: DEFAULT_FUNCTION_RETURN,
+  getHotPostsApiByUserID: DEFAULT_FUNCTION_RETURN,
 
+  reactPost: async () => {},
   createPost: async () => {},
   updatePost: async () => {},
   deletePost: async () => {}
@@ -47,6 +55,8 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
 
   const getHotPostsApi = useFunction(PostsApi.getHotPosts);
 
+  const getHotPostsApiByUserID = useFunction(PostsApi.getHotPostsByUserID);
+
   const getDetailPostApi = useFunction(PostsApi.getPostsByID);
 
   const createPost = useCallback(
@@ -60,6 +70,67 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
       }
     },
     [getPostsApi]
+  );
+
+  const reactPost = useCallback(
+    async (
+      request: { id: number; type: string },
+      action: 'like' | 'dislike',
+      type: 'detail' | 'newsfeed' | 'hotpost'
+    ) => {
+      try {
+        const response = await PostsApi.reactPost(request);
+        if (response) {
+          if (type == 'detail') {
+            const postDetail = getDetailPostApi.data.data;
+            getDetailPostApi.setData({
+              data: {
+                ...postDetail,
+                interactCount:
+                  action == 'like'
+                    ? postDetail.interactCount + 1
+                    : postDetail.interactCount - 1
+              }
+            });
+          } else if (type == 'newsfeed') {
+            const newData = getNewsFeedApi.data.data.map((item) => {
+              if (item.id == request.id) {
+                return {
+                  ...item,
+                  interactCount:
+                    action == 'like'
+                      ? item.interactCount + 1
+                      : item.interactCount - 1
+                };
+              }
+              return item;
+            });
+            getNewsFeedApi.setData({
+              data: [...newData]
+            });
+          } else if (type == 'hotpost') {
+            const newData = getHotPostsApiByUserID.data.data.map((item) => {
+              if (item.id == request.id) {
+                return {
+                  ...item,
+                  interactCount:
+                    action == 'like'
+                      ? item.interactCount + 1
+                      : item.interactCount - 1
+                };
+              }
+              return item;
+            });
+            getHotPostsApiByUserID.setData({
+              data: [...newData]
+            });
+          }
+        }
+      } catch (error) {
+        throw error;
+      }
+    },
+    [getDetailPostApi, getHotPostsApiByUserID, getNewsFeedApi]
   );
 
   const updatePost = useCallback(
@@ -92,8 +163,10 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (isAuthenticated) {
       getNewsFeedApi.call({ id: user?.id || 0 });
+      getHotPostsApiByUserID.call(new FormData());
+    } else {
+      getHotPostsApi.call(getFormData({}));
     }
-    getHotPostsApi.call(getFormData({}));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -105,7 +178,9 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
         getNewsFeedApi,
         getHotPostsApi,
         getDetailPostApi,
+        getHotPostsApiByUserID,
 
+        reactPost,
         createPost,
         updatePost,
         deletePost

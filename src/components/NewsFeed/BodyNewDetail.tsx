@@ -9,6 +9,7 @@ import {
   CardMedia,
   Paper,
   Stack,
+  TextField,
   Typography
 } from '@mui/material';
 import React, { useState } from 'react';
@@ -19,9 +20,14 @@ import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 import Link from '../Link';
 import { PostDetail } from '@/types/post';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { CommentsList } from '@/sections/dashboards/feeds/comments-list';
+import { usePostsContext } from '@/contexts/posts/posts-context';
 
 export const BodyNewDetail = ({ post }: { post: PostDetail }) => {
-  const [like, setLike] = useState(false);
+  const [isLiked, setIsLiked] = useState(post.userInteract ? true : false);
+
+  const { reactPost } = usePostsContext();
+
   return (
     <Card>
       <CardHeader
@@ -63,8 +69,9 @@ export const BodyNewDetail = ({ post }: { post: PostDetail }) => {
       <CardContent>
         <Typography variant="h6">{post.content}</Typography>
       </CardContent>
+
       <CardActions>
-        <Stack width={1} direction={'column'}>
+        <Stack width={1} direction={'column'} spacing={1}>
           <Stack width={1} direction={'row'}>
             <Box
               sx={{
@@ -73,13 +80,23 @@ export const BodyNewDetail = ({ post }: { post: PostDetail }) => {
                 justifyContent: 'center'
               }}
             >
-              <IconButton onClick={() => setLike(!like)}>
+              <IconButton
+                onClick={async () => {
+                  await reactPost(
+                    { id: post.id, type: 'like' },
+                    isLiked ? 'dislike' : 'like',
+                    'detail'
+                  );
+                  setIsLiked(!isLiked);
+                }}
+              >
                 <Stack direction={'row'} alignItems={'center'} spacing={0.5}>
-                  {like ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                  {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                   <Typography>{post.interactCount}</Typography>
                 </Stack>
               </IconButton>
             </Box>
+
             <Box
               sx={{
                 width: 1,
@@ -96,46 +113,7 @@ export const BodyNewDetail = ({ post }: { post: PostDetail }) => {
             </Box>
           </Stack>
 
-          <Stack direction={'column'} width={1} spacing={2}>
-            {post.comment.map((item, index) => {
-              return (
-                <Stack direction={'row'} spacing={1} key={index}>
-                  <Avatar
-                    component={Link}
-                    variant="rounded"
-                    alt={item.user.name}
-                    src={item.user.avatar}
-                    href={'/management/profile'}
-                  />
-                  <Stack sx={{ width: 1 }}>
-                    <Stack>
-                      <Box>
-                        <Typography
-                          variant="h4"
-                          component={Link}
-                          href={'/management/profile'}
-                          sx={{
-                            color: 'black',
-                            '&:hover': { textDecoration: 'underline' },
-                            pl: 1
-                          }}
-                        >
-                          {item.user.name}
-                        </Typography>
-                      </Box>
-
-                      <Typography sx={{ pl: 1 }}>{item.content}</Typography>
-
-                      <Box>
-                        <Button>Thích</Button>
-                        <Button>Trả lời</Button>
-                      </Box>
-                    </Stack>
-                  </Stack>
-                </Stack>
-              );
-            })}
-          </Stack>
+          <CommentsList post={post} />
         </Stack>
       </CardActions>
     </Card>

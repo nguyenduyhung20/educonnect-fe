@@ -22,16 +22,31 @@ export class PostsApi {
     return response;
   }
 
-  static async getPostsByID(request: { id: number }): Promise<{ data: PostDetail }> {
+  static async getHotPostsByUserID(
+    request: FormData
+  ): Promise<{ data: Post[] }> {
+    const response = await apiGet(`/user/hot-post`);
+    return response;
+  }
+
+  static async getPostsByID(request: {
+    id: number;
+  }): Promise<{ data: PostDetail }> {
     const response = await apiGet(`/post/${request.id}`);
     return response;
   }
 
   static async updatePosts(request: { id: string }) {
-    return await apiPatch(`/posts/${request.id}`, request);
+    return await apiPatch(`/post/${request.id}`, request);
   }
 
   static async deletePost(request: { id: string }) {
-    return await apiDelete(`/posts/${request.id}`, request);
+    return await apiDelete(`/post/${request.id}`, request);
+  }
+
+  static async reactPost(request: { id: number; type: string }) {
+    return await apiPost(`/post/${request.id}/interact`, {
+      type: request.type
+    });
   }
 }

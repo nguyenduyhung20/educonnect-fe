@@ -13,7 +13,7 @@ export const NewsFeed = () => {
   return (
     <Stack direction={'column'} spacing={2}>
       {listNewsFeeds.map((newsfeed, index) => {
-        return <BodyNews post={newsfeed} key={index} />;
+        return <BodyNews post={newsfeed} key={index} type="newsfeed" />;
       })}
     </Stack>
   );
