@@ -122,7 +122,7 @@ const GroupCover = ({ group }) => {
       </AvatarWrapper>
       <Box py={2} pl={2} mb={3}>
         <Typography gutterBottom variant="h4">
-          {group?.name}
+          {group?.title}
         </Typography>
         <Typography variant="subtitle2">{group?.meta_title}</Typography>
       </Box>
