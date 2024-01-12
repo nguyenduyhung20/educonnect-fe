@@ -2,11 +2,10 @@ import { Avatar, Stack, Typography, useTheme } from '@mui/material';
 import React from 'react';
 import GroupAvatarsMembers from './groups-avatar-members';
 import { useAuth } from '@/hooks/use-auth';
+import { Group } from '@/types/groups';
 
-export const GroupsInfo = () => {
+export const GroupsInfo = ({ group }: { group: Group }) => {
   const theme = useTheme();
-
-  const { user } = useAuth();
 
   return (
     <Stack direction={'row'} spacing={1}>
@@ -17,19 +16,19 @@ export const GroupsInfo = () => {
           height: theme.spacing(11)
         }}
         variant="rounded"
-        alt={user?.name}
-        src={user?.avatar}
+        alt={group?.title}
+        src={group?.avatar}
       />
       <Stack justifyContent={'space-between'}>
         <Stack spacing={0.5}>
-          <Typography variant="h4">Cộng đồng toán học Việt Nam</Typography>
+          <Typography variant="h4">{group?.title}</Typography>
           <Stack direction={'row'} spacing={1}>
-            <Typography variant="h5">321 </Typography>
+            <Typography variant="h5">{group?.memberCount}</Typography>
             <Typography variant="body2">members </Typography>
           </Stack>
         </Stack>
         <Stack justifyContent={'flex-start'} direction={'row'}>
-          <GroupAvatarsMembers />
+          <GroupAvatarsMembers members={group?.members} />
         </Stack>
       </Stack>
     </Stack>
