@@ -1,4 +1,12 @@
-import { forwardRef, Ref, useState, ReactElement, ChangeEvent } from 'react';
+import {
+  forwardRef,
+  Ref,
+  useState,
+  ReactElement,
+  ChangeEvent,
+  useEffect,
+  useMemo
+} from 'react';
 import {
   Avatar,
   Link,
@@ -27,6 +35,9 @@ import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 import FindInPageTwoToneIcon from '@mui/icons-material/FindInPageTwoTone';
 
 import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone';
+import { useDebounce } from '@/hooks/use-debounce';
+import useFunction from '@/hooks/use-function';
+import { SearchApi } from '@/api/search';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & { children: ReactElement<any, any> },
@@ -68,16 +79,38 @@ function HeaderSearch() {
   const [openSearchResults, setOpenSearchResults] = useState(false);
   const [searchValue, setSearchValue] = useState('');
 
+  const debouncedSearchValue = useDebounce(searchValue, 500);
+
+  const searchUserApi = useFunction(SearchApi.searchUser);
+
+  const searchResult = useMemo(() => {
+    return searchUserApi.data;
+  }, [searchUserApi.data]);
+
+  useEffect(() => {
+    console.log(debouncedSearchValue ?? 'empty');
+
+    const searchUser = async () => {
+      if (debouncedSearchValue && debouncedSearchValue !== '') {
+        try {
+          await searchUserApi.call({
+            userInput: debouncedSearchValue
+          });
+        } catch (error) {
+          console.error(error);
+          // Handle error state here if needed
+        }
+        setOpenSearchResults(true);
+      } else {
+        setOpenSearchResults(false);
+      }
+    };
+
+    searchUser();
+  }, [debouncedSearchValue]);
+
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setSearchValue(event.target.value);
-
-    if (event.target.value) {
-      if (!openSearchResults) {
-        setOpenSearchResults(true);
-      }
-    } else {
-      setOpenSearchResults(false);
-    }
   };
 
   const [open, setOpen] = useState(false);
@@ -140,13 +173,19 @@ function HeaderSearch() {
                   variant="body1"
                   component="span"
                 >
-                  {searchValue}
+                  {debouncedSearchValue}
                 </Typography>
               </Typography>
               <Link href="#" variant="body2" underline="hover">
                 Advanced search
               </Link>
             </Box>
+            <div className='flex flex-col'>
+              {searchResult && searchResult.map((user) => (
+              <div key={user.id}>{user.name}</div>
+            ))}
+            </div>
+            
             <Divider sx={{ my: 1 }} />
             <List disablePadding>
               <ListItem button>
