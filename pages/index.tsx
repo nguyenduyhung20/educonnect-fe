@@ -7,11 +7,13 @@ import { Container, Grid } from '@mui/material';
 
 import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
 import { CreateNewsFeed } from '@/sections/dashboards/feeds/create-news-feed';
-import PostsProvider from '@/contexts/posts/posts-context';
+import PostsProvider, { usePostsContext } from '@/contexts/posts/posts-context';
 import { useAuth } from '@/hooks/use-auth';
 import { io } from 'socket.io-client';
 import { HotPosts } from '@/sections/dashboards/feeds/hot-feed';
 import PageHeader from '@/sections/dashboards/feeds/page-header-feed';
+import { useMemo } from 'react';
+import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
 
 function CommunitiesHome() {
   const { user, isAuthenticated } = useAuth();
@@ -25,6 +27,15 @@ function CommunitiesHome() {
   //     console.log(socket.id); // undefined
   //   });
   // }
+
+  const { getHotPostsApi, getHotPostsApiByUserID } = usePostsContext();
+
+  const listHotPosts = useMemo(() => {
+    if (isAuthenticated) {
+      return getHotPostsApiByUserID.data?.data || [];
+    }
+    return getHotPostsApi.data?.data || [];
+  }, [getHotPostsApi]);
 
   return (
     <>
@@ -42,7 +53,7 @@ function CommunitiesHome() {
         >
           <Grid item xs={12} md={7}>
             <CreateNewsFeed />
-            <HotPosts />
+            <NewsFeed listNewsFeeds={listHotPosts} />
           </Grid>
           <Grid item xs={12} md={4}>
             <TrendingNews />

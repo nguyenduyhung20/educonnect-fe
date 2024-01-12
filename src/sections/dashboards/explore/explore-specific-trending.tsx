@@ -11,7 +11,7 @@ export const ExploreSpecificTrending = () => {
           <SearchBar />
         </Paper>
 
-        <NewsFeed />
+        {/* <NewsFeed /> */}
       </Stack>
     </Box>
   );
