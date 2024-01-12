@@ -8,9 +8,16 @@ import PageHeader from '@/sections/dashboards/feeds/page-header-feed';
 import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
 import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
 import { CreateNewsFeed } from '@/sections/dashboards/feeds/create-news-feed';
-import PostsProvider from '@/contexts/posts/posts-context';
+import PostsProvider, { usePostsContext } from '@/contexts/posts/posts-context';
+import { useMemo } from 'react';
 
 function CommunitiesHomeFollowing() {
+  const { getNewsFeedApi } = usePostsContext();
+
+  const listNewsFeeds = useMemo(() => {
+    return getNewsFeedApi.data?.data || [];
+  }, [getNewsFeedApi]);
+
   return (
     <>
       <Head>
@@ -29,7 +36,7 @@ function CommunitiesHomeFollowing() {
         >
           <Grid item xs={12} md={7}>
             <CreateNewsFeed />
-            <NewsFeed />
+            <NewsFeed listNewsFeeds={listNewsFeeds} />
           </Grid>
           <Grid item xs={12} md={4}>
             <TrendingNews />

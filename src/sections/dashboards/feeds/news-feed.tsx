@@ -1,15 +1,9 @@
 import { BodyNews } from '@/components/NewsFeed/BodyNews';
-import { usePostsContext } from '@/contexts/posts/posts-context';
+import { Post } from '@/types/post';
 import { Stack } from '@mui/material';
-import React, { useMemo } from 'react';
+import React from 'react';
 
-export const NewsFeed = () => {
-  const { getNewsFeedApi } = usePostsContext();
-
-  const listNewsFeeds = useMemo(() => {
-    return getNewsFeedApi.data?.data || [];
-  }, [getNewsFeedApi]);
-
+export const NewsFeed = ({ listNewsFeeds }: { listNewsFeeds: Post[] }) => {
   return (
     <Stack direction={'column'} spacing={2}>
       {listNewsFeeds.map((newsfeed, index) => {
