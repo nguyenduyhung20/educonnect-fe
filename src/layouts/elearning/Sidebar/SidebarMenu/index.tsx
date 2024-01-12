@@ -286,10 +286,12 @@ function SidebarMenu() {
             <SubMenuWrapper>
               <List component="div">
                 <ListItem component="div">
-                  <NextLink href="/management/profile" passHref>
+                  <NextLink href={`/management/profile/${user.id}`} passHref>
                     <Button
                       className={
-                        currentRoute === '/management/profile' ? 'active' : ''
+                        currentRoute === `/management/profile/[userID]`
+                          ? 'active'
+                          : ''
                       }
                       disableRipple
                       component="a"

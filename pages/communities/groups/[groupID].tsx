@@ -45,7 +45,7 @@ const CommunitiesGroups = () => {
           {/* <PopularTags /> */}
           <Stack spacing={3}>
             <TrendingNews />
-            <RecentActivity />
+            {/* <RecentActivity /> */}
           </Stack>
         </Grid>
       </Grid>

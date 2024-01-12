@@ -19,11 +19,11 @@ import React, { ChangeEvent, useCallback, useState } from 'react';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import { CreateNewsFeedPost } from '@/sections/dashboards/feeds/create-news-feed-post';
 import { CreateNewsFeedLink } from '@/sections/dashboards/feeds/create-news-feed-link';
-import { RuleCommunities } from './rule-communities';
 import { useFormik } from 'formik';
 import PostsProvider, { usePostsContext } from '@/contexts/posts/posts-context';
 import { Post } from '@/types/post';
 import useFunction from '@/hooks/use-function';
+import { RuleCommunities } from '@/sections/dashboards/feeds/rule-communities';
 
 function CreatePost() {
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
@@ -34,24 +34,26 @@ function CreatePost() {
 
   const { createPost } = usePostsContext();
 
-  const formik = useFormik<Partial<Post>>({
+  const formik = useFormik<Partial<Post> & { uploadedFiles: File[] }>({
     initialValues: {
       title: '',
-      content: ''
+      content: '',
+      uploadedFiles: null
     },
     onSubmit: async (values) => {
       const { error } = await handleSubmitHelper.call(values);
       if (!error) {
         formik.setValues({
           title: '',
-          content: ''
+          content: '',
+          uploadedFiles: null
         });
       }
     }
   });
 
   const onSubmit = useCallback(
-    async (values: Partial<Post>) => {
+    async (values: Partial<Post> & { uploadedFiles: File[] }) => {
       try {
         const response = await createPost(values);
       } catch (error) {

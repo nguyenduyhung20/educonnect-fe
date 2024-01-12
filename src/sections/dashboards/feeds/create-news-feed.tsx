@@ -34,7 +34,7 @@ export const CreateNewsFeed = () => {
         >
           <TextField
             InputProps={{ readOnly: true }}
-            placeholder="Create Your Post"
+            placeholder="Tạo bài viết của bạn"
             fullWidth
           />
         </Link>

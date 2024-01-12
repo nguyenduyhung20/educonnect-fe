@@ -28,7 +28,9 @@ interface ContextValue {
     action: 'like' | 'dislike',
     type: 'detail' | 'newsfeed' | 'hotpost'
   ) => Promise<void>;
-  createPost: (requests: Partial<Post>) => Promise<void>;
+  createPost: (
+    requests: Partial<Post> & { uploadedFiles: File[] }
+  ) => Promise<void>;
   updatePost: (post: Post) => Promise<void>;
   deletePost: (id: string) => Promise<void>;
 }
@@ -60,7 +62,7 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
   const getDetailPostApi = useFunction(PostsApi.getPostsByID);
 
   const createPost = useCallback(
-    async (request: Partial<Post>) => {
+    async (request: Partial<Post> & { uploadedFiles: File[] }) => {
       try {
         const response = await PostsApi.postPost(request);
         if (response) {
@@ -136,10 +138,6 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
   const updatePost = useCallback(
     async (post: Post) => {
       try {
-        const response = await PostsApi.postPost(post);
-
-        if (response) {
-        }
       } catch (error) {
         throw error;
       }

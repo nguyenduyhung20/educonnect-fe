@@ -3,7 +3,9 @@ import { apiGet, apiPost, apiDelete, apiPatch } from 'src/utils/api-request';
 import { Post, PostDetail } from '@/types/post';
 
 export class PostsApi {
-  static async postPost(request: Partial<Post>): Promise<string> {
+  static async postPost(
+    request: Partial<Post> & { uploadedFiles: File[] }
+  ): Promise<string> {
     return await apiPost('/post', request);
   }
 

@@ -11,6 +11,7 @@ import { FeedDetail } from '@/sections/dashboards/feeds/feed-detail';
 function PostDetail() {
   const { user } = useAuth();
 
+
   return (
     <>
       <Head>

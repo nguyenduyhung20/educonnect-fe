@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 
 import ShoppingBagTwoToneIcon from '@mui/icons-material/ShoppingBagTwoTone';
+import { UserDetail } from '@/types/user';
 
 const AvatarPrimary = styled(Avatar)(
   ({ theme }) => `
@@ -20,7 +21,7 @@ const AvatarPrimary = styled(Avatar)(
 `
 );
 
-function RecentActivity() {
+function RecentActivity({ user }: { user: UserDetail }) {
   const theme = useTheme();
 
   return (
