@@ -51,4 +51,8 @@ export class UsersApi {
   }): Promise<User> {
     return await apiPost('/users/password', payload);
   }
+
+  static async getUserProfile(id: number) {
+    return await apiGet(`/user/${id}`);
+  }
 }

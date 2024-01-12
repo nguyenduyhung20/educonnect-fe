@@ -49,7 +49,7 @@ export const BodyNews = ({
           <Typography
             variant="h4"
             component={Link}
-            href={'/management/profile'}
+            href={`/management/profile/${post.user.id}`}
             sx={{
               color: 'black',
               '&:hover': { textDecoration: 'underline' }

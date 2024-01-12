@@ -15,6 +15,8 @@ import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
 import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
 import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
 import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
+import { UserDetail } from '@/types/user';
+import { useRouter } from 'next/router';
 
 const Input = styled('input')({
   display: 'none'
@@ -78,19 +80,24 @@ const CardCoverAction = styled(Box)(
 `
 );
 
-const ProfileCover = ({ user }) => {
+const ProfileCover = ({ user }: { user: UserDetail }) => {
+  const router = useRouter();
   return (
     <>
       <Box display="flex" mb={3}>
         <Tooltip arrow placement="top" title="Go back">
-          <IconButton color="primary" >
+          <IconButton
+            color="primary"
+            onClick={() => {
+              router.back();
+            }}
+          >
             <ArrowBackTwoToneIcon />
           </IconButton>
         </Tooltip>
-        
       </Box>
       <CardCover>
-        <CardMedia image={user?.coverImg} />
+        <CardMedia image={user?.avatar} />
         <CardCoverAction>
           <Input accept="image/*" id="change-cover" multiple type="file" />
           <label htmlFor="change-cover">
@@ -99,7 +106,7 @@ const ProfileCover = ({ user }) => {
               variant="contained"
               component="span"
             >
-              Change cover
+              Thay đổi ảnh bìa
             </Button>
           </label>
         </CardCoverAction>
@@ -124,7 +131,6 @@ const ProfileCover = ({ user }) => {
         <Typography gutterBottom variant="h4">
           {user?.name}
         </Typography>
-        <Typography variant="subtitle2">{user?.description}</Typography>
       </Box>
     </>
   );
