@@ -1,34 +1,8 @@
+import { GroupSearch } from '@/types/groups';
+import { UserSearch } from '@/types/user';
 import { apiGet } from '@/utils/api-request';
 
-type UserSearch = {
-  id: number;
-  name: string;
-  avatar?: any;
-  email: string;
-  birthday: string;
-  sex: string;
-  createAt: string;
-};
-
 type UserSearchResponse = UserSearch[];
-
-interface GroupSearch {
-  id: number;
-  title: string;
-  metaTitle?: string | null;
-  members: Members;
-  createAt: string;
-}
-
-interface Members {
-  users: User[];
-  count: number;
-}
-
-interface User {
-  id: number;
-  name: string;
-}
 
 type GroupSearchResponse = GroupSearch[];
 

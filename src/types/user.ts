@@ -26,3 +26,14 @@ export type UserProfile = {
   user: UserDetail;
   newsfeed: Post[];
 };
+
+
+export type UserSearch = {
+  id: number;
+  name: string;
+  avatar?: any;
+  email: string;
+  birthday: string;
+  sex: string;
+  createAt: string;
+};
