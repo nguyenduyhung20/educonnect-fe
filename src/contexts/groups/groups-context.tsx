@@ -11,7 +11,7 @@ import {
     UseFunctionReturnType
   } from 'src/hooks/use-function';
   
-import { Group } from '@/types/groups';
+import { Group, Member } from '@/types/groups';
 
 import { GroupsApi } from '@/api/groups';
 import { Post } from '@/types/post';
@@ -22,6 +22,7 @@ import { Post } from '@/types/post';
     getGroupsApiById: UseFunctionReturnType<{ id: number }, { data: Group }>;
     getPostByGroupId: UseFunctionReturnType<{ id: number }, { data: Post[] }>;
     createGroup: (requests: Group) => Promise<void>;
+    joinGroup: (requests: Member) => Promise<void>;
     // updateGroup: (Group: Group) => Promise<void>;
     deleteGroup: (id: string) => Promise<void>;
   }
@@ -32,6 +33,7 @@ import { Post } from '@/types/post';
     getGroupsApiById: DEFAULT_FUNCTION_RETURN,
     getPostByGroupId: DEFAULT_FUNCTION_RETURN,
     createGroup: async () => {},
+    joinGroup: async () => {},
     // updateGroup: async () => {},
     deleteGroup: async () => {},
   });
@@ -49,6 +51,19 @@ import { Post } from '@/types/post';
       async (request: Group) => {
         try {
           const response = await GroupsApi.postGroup(request);
+          if (response) {
+          }
+        } catch (error) {
+          throw error;
+        }
+      },
+      [getGroupsApi]
+    );
+
+    const joinGroup = useCallback(
+      async (request: Member) => {
+        try {
+          const response = await GroupsApi.joinGroup(request);
           if (response) {
           }
         } catch (error) {
@@ -98,6 +113,7 @@ import { Post } from '@/types/post';
           getGroupsApiById,
           getPostByGroupId,
           createGroup,
+          joinGroup,
         //   updateGroup,
           deleteGroup
         }}

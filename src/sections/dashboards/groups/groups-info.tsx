@@ -19,6 +19,7 @@ export const GroupsInfo = ({ group }: { group: Group }) => {
         alt={group?.title}
         src={group?.avatar}
       />
+      
       <Stack justifyContent={'space-between'}>
         <Stack spacing={0.5}>
           <Typography variant="h4">{group?.title}</Typography>

@@ -11,20 +11,22 @@ import PostsProvider, { usePostsContext } from '@/contexts/posts/posts-context';
 import { useAuth } from '@/hooks/use-auth';
 import { io } from 'socket.io-client';
 import PageHeader from '@/sections/dashboards/feeds/page-header-feed';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
 
 function CommunitiesHome() {
   const { user, isAuthenticated } = useAuth();
 
   // From a different domain
-  // if (isAuthenticated) {
-  //   const socket = io('http://localhost:5001/');
-  //   socket.emit('newUser', `${user.id}`);
-  //   socket.on('disconnect', () => {
-  //     console.log(socket.id); // undefined
-  //   });
-  // }
+  useEffect(() => {
+    if (isAuthenticated) {
+      const socket = io('http://localhost:5001/');
+      socket.emit('newUser', `${user.id}`);
+      socket.on('disconnect', () => {
+        console.log(socket.id); // undefined
+      });
+    }
+  }, [])
 
   const { getHotPostsApi, getHotPostsApiByUserID } = usePostsContext();
 

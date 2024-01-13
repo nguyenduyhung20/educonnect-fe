@@ -14,7 +14,6 @@ import { useAuth } from '@/hooks/use-auth';
 const CommunitiesGroups = () => {
   const router = useRouter();
   const { getGroupsApiById } = useGroupsContext();
-  console.log(router.query);
 
   const group = useMemo(() => {
     return getGroupsApiById.data?.data;
@@ -32,10 +31,12 @@ const CommunitiesGroups = () => {
     if (!isAuthenticated) {
       router.push('/login');
     } else {
-      getGroupsApiById.call({ id: Number(router.query.groupID) });
-      getPostByGroupId.call({ id: Number(router.query.groupID) });
+      if (router.query.groupID) {
+        getGroupsApiById.call({ id: Number(router.query.groupID) });
+        getPostByGroupId.call({ id: Number(router.query.groupID) });
+      }
     }
-  }, []);
+  }, [router.query.groupID]);
   return (
     <>
       <Container sx={{ mt: 3 }} maxWidth="lg">
@@ -50,7 +51,7 @@ const CommunitiesGroups = () => {
             {group && <GroupCover group={group} />}
           </Grid>
           <Grid item xs={12} md={7}>
-            <NewsFeed listNewsFeeds={listNewsFeeds} />
+            <NewsFeed listNewsFeeds={listNewsFeeds} detail={true} />
           </Grid>
           <Grid item xs={12} md={5}>
             {/* <PopularTags /> */}
