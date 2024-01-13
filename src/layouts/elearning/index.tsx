@@ -32,7 +32,10 @@ const ElearningLayout: FC<ElearningLayoutProps> = ({ children }) => {
   handleNotifyFunction.current = useCallback(
     (data: NotiData) => {
       const newData = {
-        data: [...listNoti, { message: data.content, create_at: '' }]
+        data: [
+          ...listNoti,
+          { message: data.content, create_at: new Date().toISOString() }
+        ]
       };
       getNotificationApi.setData(newData);
       showSnackbarNoti(data);
