@@ -44,7 +44,6 @@ export const DiscoverGroups = () => {
   };
 
   const [searchValue, setSearchValue] = useState('');
-
   const debouncedSearchValue = useDebounce(searchValue, 500);
 
   const searchGroupApi = useFunction(SearchApi.searchGroup);
@@ -54,8 +53,6 @@ export const DiscoverGroups = () => {
   }, [searchGroupApi.data]);
 
   useEffect(() => {
-    console.log(debouncedSearchValue ?? 'empty');
-
     const searchUser = async () => {
       if (debouncedSearchValue && debouncedSearchValue !== '') {
         try {
@@ -68,7 +65,6 @@ export const DiscoverGroups = () => {
         }
       }
     };
-
     searchUser();
   }, [debouncedSearchValue]);
 
