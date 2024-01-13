@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Collapse,
   IconButton,
@@ -13,17 +12,13 @@ import {
 } from '@mui/material';
 import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import GroupAvatarsMembers from './groups-avatar-members';
 import { GroupsInfo } from './groups-info';
 import { useDebounce } from '@/hooks/use-debounce';
 import useFunction from '@/hooks/use-function';
 import { SearchApi } from '@/api/search';
 import { Search } from '@mui/icons-material';
-
-const user = {
-  name: 'Trần Long Biên',
-  avatar: '/static/images/avatars/1.jpg'
-};
+import { useRouter } from 'next/router';
+import { useGroupsContext } from '@/contexts/groups/groups-context';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -42,6 +37,7 @@ export const DiscoverGroups = () => {
   }));
 
   const [expanded, setExpanded] = useState(false);
+  const router = useRouter();
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -79,6 +75,17 @@ export const DiscoverGroups = () => {
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setSearchValue(event.target.value);
   };
+
+  // list hot group
+  const { getHotGroups } = useGroupsContext();
+
+  const listGroups = useMemo(() => {
+    return getHotGroups.data?.data || [];
+  }, [getHotGroups]);
+
+  useEffect(() => {
+    getHotGroups.call(new FormData());
+  }, []);
 
   return (
     <Box>
@@ -118,176 +125,63 @@ export const DiscoverGroups = () => {
               })}
           </div>
           <Stack direction={'column'} spacing={3}>
-            <Stack
-              direction={'row'}
-              justifyContent={'space-between'}
-              width={1}
-              sx={{
-                p: 1,
-                '&:hover': {
-                  background: `${theme.colors.primary.lighter}`,
-                  borderRadius: 1
-                }
-              }}
-            >
-              <GroupsInfo />
-              <Box>
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              </Box>
-            </Stack>
-
-            <Stack
-              direction={'row'}
-              justifyContent={'space-between'}
-              width={1}
-              sx={{
-                p: 1,
-                '&:hover': {
-                  background: `${theme.colors.primary.lighter}`,
-                  borderRadius: 1
-                }
-              }}
-            >
-              <GroupsInfo />
-              <Box>
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              </Box>
-            </Stack>
-
-            <Stack
-              direction={'row'}
-              justifyContent={'space-between'}
-              width={1}
-              sx={{
-                p: 1,
-                '&:hover': {
-                  background: `${theme.colors.primary.lighter}`,
-                  borderRadius: 1
-                }
-              }}
-            >
-              <GroupsInfo />
-              <Box>
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              </Box>
-            </Stack>
-
-            <Stack
-              direction={'row'}
-              justifyContent={'space-between'}
-              width={1}
-              sx={{
-                p: 1,
-                '&:hover': {
-                  background: `${theme.colors.primary.lighter}`,
-                  borderRadius: 1
-                }
-              }}
-            >
-              <GroupsInfo />
-              <Box>
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              </Box>
-            </Stack>
+            {listGroups.slice(0, 4).map((group, index) => {
+              return (
+                <Stack
+                  onClick={() => {
+                    router.push(`/communities/groups/${group.id}`);
+                  }}
+                  key={index}
+                  direction={'row'}
+                  justifyContent={'space-between'}
+                  width={1}
+                  sx={{
+                    p: 1,
+                    '&:hover': {
+                      background: `${theme.colors.primary.lighter}`,
+                      borderRadius: 1
+                    }
+                  }}
+                >
+                  <GroupsInfo group={group} />
+                  <Box>
+                    <IconButton aria-label="settings">
+                      <MoreVertIcon />
+                    </IconButton>
+                  </Box>
+                </Stack>
+              );
+            })}
 
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <Stack direction={'column'} spacing={3}>
-                <Stack
-                  direction={'row'}
-                  justifyContent={'space-between'}
-                  width={1}
-                  sx={{
-                    p: 1,
-                    '&:hover': {
-                      background: `${theme.colors.primary.lighter}`,
-                      borderRadius: 1
-                    }
-                  }}
-                >
-                  <Stack direction={'row'} spacing={1}>
-                    <Avatar
-                      sx={{
-                        mr: 2,
-                        width: theme.spacing(11),
-                        height: theme.spacing(11)
+                {listGroups.slice(3, -1).map((group, index) => {
+                  return (
+                    <Stack
+                      onClick={() => {
+                        router.push(`/communities/groups/${group.id}`);
                       }}
-                      variant="rounded"
-                      alt={user.name}
-                      src={user.avatar}
-                    />
-                    <Stack justifyContent={'space-between'}>
-                      <Stack spacing={0.5}>
-                        <Typography variant="h4">
-                          Cộng đồng toán học Việt Nam
-                        </Typography>
-                        <Stack direction={'row'} spacing={1}>
-                          <Typography variant="h5">321 </Typography>
-                          <Typography variant="body2">members </Typography>
-                        </Stack>
-                      </Stack>
-                      <Stack justifyContent={'flex-start'} direction={'row'}>
-                        <GroupAvatarsMembers />
-                      </Stack>
-                    </Stack>
-                  </Stack>
-                  <Box>
-                    <IconButton aria-label="settings">
-                      <MoreVertIcon />
-                    </IconButton>
-                  </Box>
-                </Stack>
-                <Stack
-                  direction={'row'}
-                  justifyContent={'space-between'}
-                  width={1}
-                  sx={{
-                    p: 1,
-                    '&:hover': {
-                      background: `${theme.colors.primary.lighter}`,
-                      borderRadius: 1
-                    }
-                  }}
-                >
-                  <Stack direction={'row'} spacing={1}>
-                    <Avatar
+                      key={index}
+                      direction={'row'}
+                      justifyContent={'space-between'}
+                      width={1}
                       sx={{
-                        mr: 2,
-                        width: theme.spacing(11),
-                        height: theme.spacing(11)
+                        p: 1,
+                        '&:hover': {
+                          background: `${theme.colors.primary.lighter}`,
+                          borderRadius: 1
+                        }
                       }}
-                      variant="rounded"
-                      alt={user.name}
-                      src={user.avatar}
-                    />
-                    <Stack justifyContent={'space-between'}>
-                      <Stack spacing={0.5}>
-                        <Typography variant="h4">
-                          Cộng đồng toán học Việt Nam
-                        </Typography>
-                        <Stack direction={'row'} spacing={1}>
-                          <Typography variant="h5">321 </Typography>
-                          <Typography variant="body2">members </Typography>
-                        </Stack>
-                      </Stack>
-                      <Stack justifyContent={'flex-start'} direction={'row'}>
-                        <GroupAvatarsMembers />
-                      </Stack>
+                    >
+                      <GroupsInfo group={group} />
+                      <Box>
+                        <IconButton aria-label="settings">
+                          <MoreVertIcon />
+                        </IconButton>
+                      </Box>
                     </Stack>
-                  </Stack>
-                  <Box>
-                    <IconButton aria-label="settings">
-                      <MoreVertIcon />
-                    </IconButton>
-                  </Box>
-                </Stack>
+                  );
+                })}
               </Stack>
             </Collapse>
             <Stack justifyContent={'center'} direction={'row'}>

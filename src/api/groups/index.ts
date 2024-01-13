@@ -1,6 +1,7 @@
 import { apiGet, apiPost, apiDelete, apiPatch } from 'src/utils/api-request';
 
 import { Group } from '@/types/groups';
+import { Post } from '@/types/post';
 
 export class GroupsApi {
   static async postGroup(request: Omit<Group, 'id'>): Promise<string> {
@@ -12,8 +13,18 @@ export class GroupsApi {
     return response;
   }
 
+  static async getHotGroups(request: FormData): Promise<{ data: Group[] }> {
+    const response = await apiGet('/public/hot-group', request);
+    return response;
+  }
+
   static async getGroupsByID(request: { id: number }): Promise<{ data: Group }> {
     const response = await apiGet(`/group/${request.id}`);
+    return response;
+  }
+
+  static async getPostByGroupId(request: { id: number }): Promise<{ data: Post[] }> {
+    const response = await apiGet(`/group/${request.id}/posts`);
     return response;
   }
 

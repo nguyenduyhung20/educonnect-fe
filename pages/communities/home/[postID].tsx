@@ -4,13 +4,30 @@ import SidebarLayout from '@/layouts/SidebarLayout';
 
 import { Box, Container, Stack } from '@mui/material';
 
-import PostsProvider from '@/contexts/posts/posts-context';
+import PostsProvider, { usePostsContext } from '@/contexts/posts/posts-context';
 import { useAuth } from '@/hooks/use-auth';
-import { FeedDetail } from '@/sections/dashboards/feeds/feed-detail';
+import { useRouter } from 'next/router';
+import { useEffect, useMemo } from 'react';
+import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
 
 function PostDetail() {
   const { user } = useAuth();
+  const router = useRouter();
+  const { getDetailPostApi } = usePostsContext();
 
+  const listNewsFeeds = useMemo(() => {
+    return [getDetailPostApi.data?.data] || [];
+  }, [getDetailPostApi.data]);
+
+  const { isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push('/login');
+    } else {
+      getDetailPostApi.call({ id: Number(router.query.postID) });
+    }
+  }, []);
 
   return (
     <>
@@ -20,7 +37,7 @@ function PostDetail() {
       <Container maxWidth="lg" sx={{ pt: 2 }}>
         <Stack width={1} justifyContent={'center'} alignItems={'center'}>
           <Stack width={2 / 3}>
-            <FeedDetail />
+            <NewsFeed listNewsFeeds={listNewsFeeds} detail={true} />
           </Stack>
         </Stack>
       </Container>

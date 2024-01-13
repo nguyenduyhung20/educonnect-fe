@@ -3,6 +3,7 @@ import SidebarLayout from '@/layouts/SidebarLayout';
 import { Container, Grid } from '@mui/material';
 import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
 import { DiscoverGroups } from '@/sections/dashboards/groups/groups-discover';
+import GroupsProvider from '@/contexts/groups/groups-context';
 
 function CommunitiesGroups() {
   return (
@@ -32,6 +33,10 @@ function CommunitiesGroups() {
   );
 }
 
-CommunitiesGroups.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
+CommunitiesGroups.getLayout = (page) => (
+  <SidebarLayout>
+    <GroupsProvider>{page}</GroupsProvider>
+  </SidebarLayout>
+);
 
 export default CommunitiesGroups;

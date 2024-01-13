@@ -69,7 +69,12 @@ export const CreateNewsFeedPost = ({
           spacing={1}
         >
           <div {...getRootProps()}>
-            <input id="upload-image" name="upload-image" {...getInputProps()} />
+            <input
+              id="upload-image"
+              name="upload-image"
+              type="file"
+              {...getInputProps()}
+            />
             {isDragActive ? (
               <Typography color={'primary'} variant="h4" fontWeight={10}>
                 Thả ảnh vào đây

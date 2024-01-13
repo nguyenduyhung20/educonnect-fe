@@ -10,6 +10,7 @@ export interface Post {
   interactCount: number;
   commentCount: number;
   userInteract: string;
+  fileContent: string[];
 }
 
 export interface PostDetail extends Post {
