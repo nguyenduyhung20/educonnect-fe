@@ -65,12 +65,13 @@ export const BodyNews = ({
           </IconButton>
         }
       />
-      <CardMedia
-        component={'img'}
-        image={
-          '/static/images/feeds/392825007_691969853024257_4320526996950590956_n.jpg'
-        }
-      />
+      <CardMedia>
+        {post.fileContent.map((item, index) => {
+          return <img src={item} key={index} style={{ maxWidth: '100%' }} />;
+        })}
+      </CardMedia>
+
+      <CardMedia component={'img'} image={post.fileContent[0]}></CardMedia>
       <CardContent>
         <Typography variant="h6">{post.content}</Typography>
       </CardContent>

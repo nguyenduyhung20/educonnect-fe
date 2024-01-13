@@ -30,7 +30,7 @@ export const GroupsInfo = () => {
         </Stack>
         <Stack justifyContent={'flex-start'} direction={'row'}>
           <GroupAvatarsMembers />
-        </Stack>
+        </Stack> 
       </Stack>
     </Stack>
   );

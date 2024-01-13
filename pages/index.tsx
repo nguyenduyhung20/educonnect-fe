@@ -10,7 +10,6 @@ import { CreateNewsFeed } from '@/sections/dashboards/feeds/create-news-feed';
 import PostsProvider, { usePostsContext } from '@/contexts/posts/posts-context';
 import { useAuth } from '@/hooks/use-auth';
 import { io } from 'socket.io-client';
-import { HotPosts } from '@/sections/dashboards/feeds/hot-feed';
 import PageHeader from '@/sections/dashboards/feeds/page-header-feed';
 import { useMemo } from 'react';
 import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
@@ -22,7 +21,6 @@ function CommunitiesHome() {
   // if (isAuthenticated) {
   //   const socket = io('http://localhost:5001/');
   //   socket.emit('newUser', `${user.id}`);
-
   //   socket.on('disconnect', () => {
   //     console.log(socket.id); // undefined
   //   });
@@ -53,7 +51,7 @@ function CommunitiesHome() {
         >
           <Grid item xs={12} md={7}>
             <CreateNewsFeed />
-            <NewsFeed listNewsFeeds={listHotPosts} />
+            <NewsFeed listNewsFeeds={listHotPosts} detail={false}/>
           </Grid>
           <Grid item xs={12} md={4}>
             <TrendingNews />

@@ -64,7 +64,7 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
   const createPost = useCallback(
     async (request: Partial<Post> & { uploadedFiles: File[] }) => {
       try {
-        const response = await PostsApi.postPost(request);
+        const response = await PostsApi.postPost(getFormData(request));
         if (response) {
         }
       } catch (error) {
