@@ -26,7 +26,14 @@ interface ContextValue {
   reactPost: (
     request: { id: number; type: string },
     action: 'like' | 'dislike',
-    type: 'detail' | 'newsfeed' | 'hotpost'
+    type: 'detail' | 'newsfeed' | 'hotpost',
+    info: {
+      senderName: string;
+      senderAvatar: string;
+      receiverID: number;
+      itemType: 'post' | 'comment';
+      postID: number;
+    }
   ) => Promise<void>;
   createPost: (
     requests: Partial<Post> & { uploadedFiles: File[] }
@@ -78,10 +85,17 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
     async (
       request: { id: number; type: string },
       action: 'like' | 'dislike',
-      type: 'detail' | 'newsfeed' | 'hotpost'
+      type: 'detail' | 'newsfeed' | 'hotpost',
+      info: {
+        senderName: string;
+        senderAvatar: string;
+        receiverID: number;
+        itemType: 'post' | 'comment';
+        postID: number;
+      }
     ) => {
       try {
-        const response = await PostsApi.reactPost(request);
+        const response = await PostsApi.reactPost(request, action, info);
         if (response) {
           if (type == 'detail') {
             const postDetail = getDetailPostApi.data.data;

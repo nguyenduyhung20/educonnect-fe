@@ -42,7 +42,6 @@ function useFunction<P, T>(
   const onRequestSuccess = useCallback(
     (result: T) => {
       if (options?.successMessage) {
-        console.log(1);
         showSnackbarSuccess(options?.successMessage);
       }
       if (!options?.disableSaving) {

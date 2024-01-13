@@ -6,10 +6,12 @@ import React from 'react';
 
 export const NewsFeed = ({
   listNewsFeeds,
-  detail
+  detail,
+  type
 }: {
   listNewsFeeds: Post[] | PostDetail[];
   detail: boolean;
+  type: 'hotpost' | 'newsfeed';
 }) => {
   return (
     <Stack direction={'column'} spacing={2}>
@@ -17,7 +19,7 @@ export const NewsFeed = ({
         return detail ? (
           newsfeed && <BodyNewDetail post={newsfeed} key={index} />
         ) : (
-          <BodyNews post={newsfeed} key={index} type="newsfeed" />
+          <BodyNews post={newsfeed} key={index} type={type} />
         );
       })}
     </Stack>

@@ -1,5 +1,6 @@
 import {
   alpha,
+  Avatar,
   Badge,
   Box,
   Divider,
@@ -7,14 +8,18 @@ import {
   List,
   ListItem,
   Popover,
+  Stack,
   Tooltip,
   Typography
 } from '@mui/material';
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import NotificationsActiveTwoToneIcon from '@mui/icons-material/NotificationsActiveTwoTone';
 import { styled } from '@mui/material/styles';
 
 import { formatDistance, subDays } from 'date-fns';
+import useFunction from '@/hooks/use-function';
+import { NotificationsApi } from '@/api/notication';
+import { useNotificationContext } from '@/contexts/notification/noti-context';
 
 const NotificationsBadge = styled(Badge)(
   ({ theme }) => `
@@ -52,12 +57,18 @@ function HeaderNotifications() {
     setOpen(false);
   };
 
+  const { getNotificationApi } = useNotificationContext();
+
+  const listNoti = useMemo(() => {
+    return getNotificationApi.data?.data || [];
+  }, [getNotificationApi.data]);
+
   return (
     <>
       <Tooltip arrow title="Notifications">
         <IconButton color="primary" ref={ref} onClick={handleOpen}>
           <NotificationsBadge
-            badgeContent={1}
+            badgeContent={listNoti.length}
             anchorOrigin={{
               vertical: 'top',
               horizontal: 'right'
@@ -86,34 +97,31 @@ function HeaderNotifications() {
           alignItems="center"
           justifyContent="space-between"
         >
-          <Typography variant="h5">Notifications</Typography>
+          <Typography variant="h5">Thông báo</Typography>
         </Box>
         <Divider />
         <List sx={{ p: 0 }}>
-          <ListItem
-            sx={{ p: 2, minWidth: 350, display: { xs: 'block', sm: 'flex' } }}
-          >
-            <Box flex="1">
-              <Box display="flex" justifyContent="space-between">
-                <Typography sx={{ fontWeight: 'bold' }}>
-                  Messaging Platform
-                </Typography>
-                <Typography variant="caption" sx={{ textTransform: 'none' }}>
-                  {formatDistance(subDays(new Date(), 3), new Date(), {
-                    addSuffix: true
-                  })}
-                </Typography>
+          {listNoti.map((item, index) => (
+            <ListItem
+              sx={{ p: 2, minWidth: 350, display: { xs: 'block', sm: 'flex' } }}
+              key={index}
+            >
+              <Box flex="1">
+                <Stack display="flex" justifyContent="space-between">
+                  <Stack>
+                    <Typography sx={{ fontWeight: 'bold' }}>
+                      {item.message}
+                    </Typography>
+                  </Stack>
+                  <Typography variant="caption" sx={{ textTransform: 'none' }}>
+                    {formatDistance(new Date(item.create_at), new Date(), {
+                      addSuffix: true
+                    })}
+                  </Typography>
+                </Stack>
               </Box>
-              <Typography
-                component="span"
-                variant="body2"
-                color="text.secondary"
-              >
-                {' '}
-                new messages in your inbox
-              </Typography>
-            </Box>
-          </ListItem>
+            </ListItem>
+          ))}
         </List>
       </Popover>
     </>

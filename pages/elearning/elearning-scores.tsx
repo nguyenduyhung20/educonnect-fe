@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import Footer from '@/components/Footer';
 import ElearningLayout from '@/layouts/elearning';
+import NotificationsProvider from '@/contexts/notification/noti-context';
 
 function EleaningScoresPage() {
   return (
@@ -105,7 +106,9 @@ function EleaningScoresPage() {
 }
 
 EleaningScoresPage.getLayout = (page) => (
-  <ElearningLayout>{page}</ElearningLayout>
+  <ElearningLayout>
+    <>{page}</>
+  </ElearningLayout>
 );
 
 export default EleaningScoresPage;
