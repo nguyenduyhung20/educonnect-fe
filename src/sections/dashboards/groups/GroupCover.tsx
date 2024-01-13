@@ -15,6 +15,7 @@ import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
 import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
 import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
 import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
+import { useRouter } from 'next/router';
 
 const Input = styled('input')({
   display: 'none'
@@ -79,11 +80,17 @@ const CardCoverAction = styled(Box)(
 );
 
 const GroupCover = ({ group }) => {
+  const router = useRouter();
   return (
     <>
       <Box display="flex" mb={3}>
         <Tooltip arrow placement="top" title="Go back">
-          <IconButton color="primary" >
+          <IconButton 
+          color="primary" 
+            onClick={() => {
+              router.back();
+            }}
+          >
             <ArrowBackTwoToneIcon />
           </IconButton>
         </Tooltip>
