@@ -28,3 +28,22 @@ export const ViMemberStatus = {
   active: 'Đã tham gia',
   pending: 'Đang chờ phê duyệt',
 }
+
+
+export interface GroupSearch {
+  id: number;
+  title: string;
+  metaTitle?: string | null;
+  members: GroupSearchMembers;
+  createAt: string;
+}
+
+interface GroupSearchMembers {
+  users: GroupSearchUser[];
+  count: number;
+}
+
+interface GroupSearchUser {
+  id: number;
+  name: string;
+}

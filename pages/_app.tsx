@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from 'react';
+import { useEffect, type ReactElement, type ReactNode } from 'react';
 
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
@@ -15,7 +15,9 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { AuthConsumer, AuthProvider } from '@/contexts/auth/jwt-context';
 import { SplashScreen } from './components/splash-screen';
-import { SnackbarProvider } from 'notistack';
+import { MaterialDesignContent, SnackbarProvider } from 'notistack';
+import styled from '@emotion/styled';
+import NotificationsProvider from '@/contexts/notification/noti-context';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -23,19 +25,27 @@ type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
 
-interface TokyoAppProps extends AppProps {
+interface EduConnectAppProps extends AppProps {
   emotionCache?: EmotionCache;
   Component: NextPageWithLayout;
 }
 
-function TokyoApp(props: TokyoAppProps) {
+const StyledMaterialDesignContent = styled(MaterialDesignContent)(() => ({
+  '&.notistack-MuiContent-success': {
+    backgroundColor: '#f5f1f0'
+  },
+  '&.notistack-MuiContent-error': {
+    backgroundColor: '#970C0C'
+  }
+}));
+
+function EduConnectApp(props: EduConnectAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page) => page);
 
   Router.events.on('routeChangeStart', nProgress.start);
   Router.events.on('routeChangeError', nProgress.done);
   Router.events.on('routeChangeComplete', nProgress.done);
-
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -45,7 +55,13 @@ function TokyoApp(props: TokyoAppProps) {
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
       </Head>
-      <SnackbarProvider>
+      <SnackbarProvider
+        Components={{
+          success: StyledMaterialDesignContent,
+          error: StyledMaterialDesignContent
+        }}
+        hideIconVariant
+      >
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <AuthProvider>
             <AuthConsumer>
@@ -58,7 +74,9 @@ function TokyoApp(props: TokyoAppProps) {
                       {showSlashScreen ? (
                         <SplashScreen />
                       ) : (
-                        <> {getLayout(<Component {...pageProps} />)}</>
+                        <NotificationsProvider>
+                          <> {getLayout(<Component {...pageProps} />)}</>
+                        </NotificationsProvider>
                       )}
                     </ThemeProvider>
                   </SidebarProvider>
@@ -72,4 +90,4 @@ function TokyoApp(props: TokyoAppProps) {
   );
 }
 
-export default TokyoApp;
+export default EduConnectApp;

@@ -5,14 +5,18 @@ import {
   IconButtonProps,
   Paper,
   Stack,
+  TextField,
   Typography,
   styled,
   useTheme
 } from '@mui/material';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { SearchBar } from '@/components/dashboards/search-bar';
 import { GroupsInfo } from './groups-info';
+import { useDebounce } from '@/hooks/use-debounce';
+import useFunction from '@/hooks/use-function';
+import { SearchApi } from '@/api/search';
+import { Search } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import { useGroupsContext } from '@/contexts/groups/groups-context';
 
@@ -39,6 +43,35 @@ export const DiscoverGroups = () => {
     setExpanded(!expanded);
   };
 
+  const [searchValue, setSearchValue] = useState('');
+  const debouncedSearchValue = useDebounce(searchValue, 500);
+
+  const searchGroupApi = useFunction(SearchApi.searchGroup);
+
+  const searchResult = useMemo(() => {
+    return searchGroupApi.data;
+  }, [searchGroupApi.data]);
+
+  useEffect(() => {
+    const searchUser = async () => {
+      if (debouncedSearchValue && debouncedSearchValue !== '') {
+        try {
+          await searchGroupApi.call({
+            userInput: debouncedSearchValue
+          });
+        } catch (error) {
+          console.error(error);
+          // Handle error state here if needed
+        }
+      }
+    };
+    searchUser();
+  }, [debouncedSearchValue]);
+
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    setSearchValue(event.target.value);
+  };
+
   // list hot group
   const { getHotGroups } = useGroupsContext();
 
@@ -54,7 +87,23 @@ export const DiscoverGroups = () => {
     <Box>
       <Paper elevation={5} sx={{ p: 2 }}>
         <Stack direction={'column'} spacing={2}>
-          <SearchBar />
+          <TextField
+            placeholder="Search"
+            sx={{ width: 1 }}
+            value={searchValue}
+            onChange={handleSearchChange}
+            InputProps={{
+              startAdornment: (
+                <Stack
+                  sx={{ mr: 1 }}
+                  justifyContent={'center'}
+                  alignItems={'center'}
+                >
+                  <Search />
+                </Stack>
+              )
+            }}
+          />
           <Typography
             variant="h3"
             sx={{
@@ -65,6 +114,12 @@ export const DiscoverGroups = () => {
             Groups
           </Typography>
 
+          <div>
+            {searchResult &&
+              searchResult.map((group, index) => {
+                return <div key={group.title + index}>{group.title}</div>;
+              })}
+          </div>
           <Stack direction={'column'} spacing={3}>
             {listGroups.slice(0, 4).map((group, index) => {
               return (
