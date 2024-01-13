@@ -22,7 +22,7 @@ export const UserViewProfile = ({ userData }: { userData: UserProfile }) => {
           <ProfileCover user={userData.user} />
         </Grid>
         <Grid item xs={12} md={7}>
-          <NewsFeed listNewsFeeds={userData.newsfeed} />
+          <NewsFeed listNewsFeeds={userData.newsfeed} detail={false} />
         </Grid>
         <Grid item xs={12} md={5}>
           <Stack spacing={3}>
