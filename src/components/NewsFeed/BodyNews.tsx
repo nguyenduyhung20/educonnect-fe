@@ -28,7 +28,7 @@ export const BodyNews = ({
   post: Post;
   type: 'hotpost' | 'newsfeed';
 }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const [isLiked, setIsLiked] = useState(post.userInteract ? true : false);
   const router = useRouter();
   const { reactPost } = usePostsContext();
@@ -97,7 +97,14 @@ export const BodyNews = ({
                   await reactPost(
                     { id: post.id, type: 'like' },
                     isLiked ? 'dislike' : 'like',
-                    type
+                    type,
+                    {
+                      senderName: user.name,
+                      senderAvatar: user.avatar,
+                      receiverID: post.user.id,
+                      postID: post.id,
+                      itemType: 'post'
+                    }
                   );
                   setIsLiked(!isLiked);
                 }

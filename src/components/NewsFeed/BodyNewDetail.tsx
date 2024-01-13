@@ -22,11 +22,14 @@ import { PostDetail } from '@/types/post';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { CommentsList } from '@/sections/dashboards/feeds/comments-list';
 import { usePostsContext } from '@/contexts/posts/posts-context';
+import { useAuth } from '@/hooks/use-auth';
 
 export const BodyNewDetail = ({ post }: { post: PostDetail }) => {
   const [isLiked, setIsLiked] = useState(post.userInteract ? true : false);
 
   const { reactPost } = usePostsContext();
+
+  const { user } = useAuth();
 
   return (
     <Card>
@@ -85,7 +88,14 @@ export const BodyNewDetail = ({ post }: { post: PostDetail }) => {
                   await reactPost(
                     { id: post.id, type: 'like' },
                     isLiked ? 'dislike' : 'like',
-                    'detail'
+                    'detail',
+                    {
+                      senderName: user.name,
+                      senderAvatar: user.avatar,
+                      receiverID: post.user.id,
+                      itemType: 'post',
+                      postID: post.id
+                    }
                   );
                   setIsLiked(!isLiked);
                 }}

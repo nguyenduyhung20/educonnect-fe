@@ -44,9 +44,24 @@ export class PostsApi {
     return await apiDelete(`/post/${request.id}`, request);
   }
 
-  static async reactPost(request: { id: number; type: string }) {
+  static async reactPost(
+    request: {
+      id: number;
+      type: string;
+    },
+    action: string,
+    info: {
+      senderName: string;
+      senderAvatar: string;
+      receiverID: number;
+      itemType: 'post' | 'comment';
+      postID: number;
+    }
+  ) {
     return await apiPost(`/post/${request.id}/interact`, {
-      type: request.type
+      type: request.type,
+      action: action,
+      info: info
     });
   }
 }
