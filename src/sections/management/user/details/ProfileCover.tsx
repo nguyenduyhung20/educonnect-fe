@@ -17,6 +17,13 @@ import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
 import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
 import { UserDetail } from '@/types/user';
 import { useRouter } from 'next/router';
+import { Check } from '@mui/icons-material';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import useFunction from '@/hooks/use-function';
+import { UsersApi } from '@/api/users';
+import { useEffect, useState } from 'react';
+import { LoadingButton } from '@mui/lab';
+import { useAuth } from '@/hooks/use-auth';
 
 const Input = styled('input')({
   display: 'none'
@@ -80,8 +87,35 @@ const CardCoverAction = styled(Box)(
 `
 );
 
-const ProfileCover = ({ user }: { user: UserDetail }) => {
+const ProfileCover = ({ user: user }: { user: UserDetail }) => {
+  const [isFollowed, setIsFollowed] = useState<boolean | null>(false);
+
   const router = useRouter();
+  const followUserApi = useFunction(UsersApi.followUser);
+  const followListApi = useFunction(UsersApi.followList);
+  const { user: currentUser } = useAuth();
+
+  const handleUserFollow = async () => {
+    const response = await followUserApi.call({ userId: user.id });
+    if (response) {
+      setIsFollowed(true);
+    }
+  };
+
+  useEffect(() => {
+    const getFollowList = async () => {
+      const followList = await followListApi.call(null);
+      if (
+        followList.data.userFolloweds.user.some(
+          (followed) => followed.id === user.id
+        )
+      ) {
+        setIsFollowed(true);
+      }
+    };
+    getFollowList();
+  }, []);
+
   return (
     <>
       <Box display="flex" mb={3}>
@@ -111,23 +145,47 @@ const ProfileCover = ({ user }: { user: UserDetail }) => {
           </label>
         </CardCoverAction>
       </CardCover>
-      <AvatarWrapper>
-        <Avatar variant="rounded" alt={user?.name} src={user?.avatar} />
-        <ButtonUploadWrapper>
-          <Input
-            accept="image/*"
-            id="icon-button-file"
-            name="icon-button-file"
-            type="file"
-          />
-          <label htmlFor="icon-button-file">
-            <IconButton component="span" color="primary">
-              <UploadTwoToneIcon />
-            </IconButton>
-          </label>
-        </ButtonUploadWrapper>
-      </AvatarWrapper>
-      <Box py={2} pl={2} mb={3}>
+
+      <Box display={'flex'} justifyContent={'space-between'}>
+        <AvatarWrapper>
+          <Avatar variant="rounded" alt={user?.name} src={user?.avatar} />
+          <ButtonUploadWrapper>
+            <Input
+              accept="image/*"
+              id="icon-button-file"
+              name="icon-button-file"
+              type="file"
+            />
+            <label htmlFor="icon-button-file">
+              <IconButton component="span" color="primary">
+                <UploadTwoToneIcon />
+              </IconButton>
+            </label>
+          </ButtonUploadWrapper>
+        </AvatarWrapper>
+
+        {currentUser.id !== user.id && (
+          <Box mt={2} mx={2}>
+            <LoadingButton
+              onClick={!isFollowed ? handleUserFollow : undefined}
+              loading={followUserApi.loading}
+              variant={isFollowed ? 'outlined' : 'contained'}
+              color="primary"
+              startIcon={isFollowed ? <Check /> : <PersonAddIcon />}
+            >
+              {isFollowed ? 'Đã theo dõi' : 'Theo dõi'}
+            </LoadingButton>
+          </Box>
+        )}
+      </Box>
+
+      <Box
+        display={'flex'}
+        justifyContent={'space-between'}
+        py={2}
+        pl={2}
+        mb={3}
+      >
         <Typography gutterBottom variant="h4">
           {user?.name}
         </Typography>

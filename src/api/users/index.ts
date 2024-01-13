@@ -22,6 +22,25 @@ type SignUpResponse = Promise<{
   accessToken: string;
 }>;
 
+interface FollowListResponse {
+  data: {
+    userFollowers: UserFollowers;
+    userFolloweds: UserFollowers;
+  };
+}
+
+interface UserFollowers {
+  user: User[];
+  count: number;
+}
+
+interface User {
+  id: number;
+  uuid: string;
+  name: string;
+  avatar?: string;
+}
+
 export class UsersApi {
   static async postUser(request: Omit<User, 'id'>): Promise<{ id: string }> {
     return await apiPost('/users', request);
@@ -54,5 +73,15 @@ export class UsersApi {
 
   static async getUserProfile(id: number) {
     return await apiGet(`/user/${id}`);
+  }
+
+  static async followUser({ userId }: { userId: number }) {
+    const response = await apiPost(`/user/follow/${userId}`, {});
+    return response;
+  }
+
+  static async followList() {
+    const response: FollowListResponse = await apiGet(`/user/follow`, {});
+    return response.data;
   }
 }
