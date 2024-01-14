@@ -12,25 +12,21 @@ import {
 import { styled } from '@mui/material/styles';
 
 import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
-import CheckIcon from '@mui/icons-material/Check';
-import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
 import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
-import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
 import AddIcon from '@mui/icons-material/Add';
-import CloseIcon from '@mui/icons-material/Close';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import { useRouter } from 'next/router';
 import useFunction from '@/hooks/use-function';
 import { GroupsApi } from '@/api/groups';
 import { useAuth } from '@/hooks/use-auth';
-import { Group, Member, MemberRole, MemberStatus } from '@/types/groups';
-import { useEffect, useMemo, useState } from 'react';
+import { Group, Member } from '@/types/groups';
+import { useEffect, useMemo } from 'react';
 import { ViMemberStatus } from '@/types/groups';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+
+import { useDialog } from '@/hooks/use-dialog';
+
+import CheckIcon from '@mui/icons-material/Check';
+import { GroupOutDialog } from './group-out-dialog';
 
 const Input = styled('input')({
   display: 'none'
@@ -134,20 +130,7 @@ const GroupCover = ({ group }: { group: Group }) => {
     }
   }, [user]);
 
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleConfirm = () => {
-    joinGroup();
-    handleClose();
-  };
+  const outGroupDialog = useDialog();
 
   return (
     <>
@@ -177,7 +160,7 @@ const GroupCover = ({ group }: { group: Group }) => {
               variant="contained"
               component="span"
             >
-              Change cover
+              Thay đổi ảnh bìa
             </Button>
           </label>
         </CardCoverAction>
@@ -217,39 +200,18 @@ const GroupCover = ({ group }: { group: Group }) => {
             <Box>
               <Button
                 startIcon={
-                  member.status === 'active' ? <CheckIcon /> : <HourglassEmptyIcon />
+                  member.status === 'active' ? (
+                    <CheckIcon />
+                  ) : (
+                    <HourglassEmptyIcon />
+                  )
                 }
                 sx={{ width: '100%' }}
-                onClick={handleOpen}
+                onClick={() => outGroupDialog.handleOpen(group)}
                 variant="outlined"
               >
                 {ViMemberStatus[member.status]}
               </Button>
-
-              <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Xác nhận</DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    Bạn có chắc chắn muốn ngừng tham gia nhóm?
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button
-                    onClick={handleClose}
-                    startIcon={<CloseIcon />}
-                    variant="outlined"
-                  >
-                    Hủy bỏ
-                  </Button>
-                  <Button
-                    onClick={handleConfirm}
-                    startIcon={<CheckIcon />}
-                    variant="contained"
-                  >
-                    Xác nhận
-                  </Button>
-                </DialogActions>
-              </Dialog>
             </Box>
           ) : (
             <Button
@@ -270,6 +232,15 @@ const GroupCover = ({ group }: { group: Group }) => {
         </Typography>
         <Typography variant="subtitle2">{group?.meta_title}</Typography>
       </Box>
+
+      <GroupOutDialog
+        open={outGroupDialog.open}
+        group={group}
+        onClose={outGroupDialog.handleClose}
+        onConfirm={async () => {
+          joinGroup();
+        }}
+      />
     </>
   );
 };

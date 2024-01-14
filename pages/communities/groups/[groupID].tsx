@@ -1,10 +1,9 @@
 import SidebarLayout from '@/layouts/SidebarLayout';
 import { Container, Grid, Stack } from '@mui/material';
 import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
-import RecentActivity from '@/sections/management/user/details/RecentActivity';
 import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
 import React, { useEffect, useMemo } from 'react';
-import GroupCover from '@/sections/dashboards/groups/GroupCover';
+import GroupCover from '@/sections/dashboards/groups/group-cover';
 import { useRouter } from 'next/router';
 import GroupsProvider, {
   useGroupsContext
