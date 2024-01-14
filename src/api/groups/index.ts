@@ -1,6 +1,6 @@
 import { apiGet, apiPost, apiDelete, apiPatch } from 'src/utils/api-request';
 
-import { Group } from '@/types/groups';
+import { Group, Member } from '@/types/groups';
 import { Post } from '@/types/post';
 
 export class GroupsApi {
@@ -34,5 +34,20 @@ export class GroupsApi {
 
   static async deleteGroup(request: { id: string }) {
     return await apiDelete(`/group/${request.id}`, request);
+  }
+
+  //member
+  static async joinGroup(request: Member) {
+    return await apiPost(`/group/${request.groupId}/members`, request);
+  }
+  static async leaveGroup(request: Member) {
+    return await apiDelete(`/group/${request.groupId}/members`, request);
+  }
+  static async approveMember(request: Member) {
+    return await apiPatch(`/group/${request.groupId}/members`, request);
+  }
+
+  static async checkJoinGroup(request: Member): Promise<{ data: Member}> {
+    return await apiGet(`/group/${request.groupId}/members/${request.memberId}`)
   }
 }
