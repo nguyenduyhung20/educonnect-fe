@@ -12,9 +12,11 @@ import useFunction, {
 } from 'src/hooks/use-function';
 
 import { PostsApi } from '@/api/posts';
-import { Post, PostDetail } from '@/types/post';
+import { Post, PostDetail, TypePost } from '@/types/post';
 import { useAuth } from '@/hooks/use-auth';
 import { getFormData } from '@/utils/api-request';
+import { useGroupsContext } from '../groups/groups-context';
+import { useUserContext } from '../user/user-context';
 
 interface ContextValue {
   getPostsApi: UseFunctionReturnType<FormData, { data: Post[] }>;
@@ -26,7 +28,7 @@ interface ContextValue {
   reactPost: (
     request: { id: number; type: string },
     action: 'like' | 'dislike',
-    type: 'detail' | 'newsfeed' | 'hotpost',
+    type: TypePost,
     info: {
       senderName: string;
       senderAvatar: string;
@@ -68,11 +70,16 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
 
   const getDetailPostApi = useFunction(PostsApi.getPostsByID);
 
+  const { getPostByGroupId } = useGroupsContext();
+  const { getUsersProfile } = useUserContext();
+
   const createPost = useCallback(
     async (request: Partial<Post> & { uploadedFiles: File[] }) => {
       try {
         const response = await PostsApi.postPost(getFormData(request));
         if (response) {
+          getNewsFeedApi.call({ id: user?.id || 0 });
+          getHotPostsApiByUserID.call(new FormData());
         }
       } catch (error) {
         throw error;
@@ -85,7 +92,7 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
     async (
       request: { id: number; type: string },
       action: 'like' | 'dislike',
-      type: 'detail' | 'newsfeed' | 'hotpost',
+      type: TypePost,
       info: {
         senderName: string;
         senderAvatar: string;
@@ -140,18 +147,62 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
             getHotPostsApiByUserID.setData({
               data: [...newData]
             });
+          } else if (type == 'group') {
+            // If user doesn't pass value, we don't process.
+            const newData = getPostByGroupId.data.data.map((item) => {
+              if (item.id == request.id) {
+                return {
+                  ...item,
+                  interactCount:
+                    action == 'like'
+                      ? item.interactCount + 1
+                      : item.interactCount - 1
+                };
+              }
+              return item;
+            });
+            getPostByGroupId.setData({
+              data: [...newData]
+            });
+          } else if (type == 'profile') {
+            console.log(getUsersProfile.data);
+            const newData = getUsersProfile.data?.data.newsfeed.map((item) => {
+              if (item.id == request.id) {
+                return {
+                  ...item,
+                  interactCount:
+                    action == 'like'
+                      ? item.interactCount + 1
+                      : item.interactCount - 1
+                };
+              }
+              return item;
+            });
+            getUsersProfile.setData({
+              data: {
+                user: getUsersProfile.data?.data.user,
+                newsfeed: [...(newData || [])]
+              }
+            });
           }
         }
       } catch (error) {
         throw error;
       }
     },
-    [getDetailPostApi, getHotPostsApiByUserID, getNewsFeedApi]
+    [
+      getDetailPostApi,
+      getHotPostsApiByUserID,
+      getNewsFeedApi,
+      getPostByGroupId,
+      getUsersProfile
+    ]
   );
 
   const updatePost = useCallback(
     async (post: Post) => {
       try {
+        console.log(post);
       } catch (error) {
         throw error;
       }

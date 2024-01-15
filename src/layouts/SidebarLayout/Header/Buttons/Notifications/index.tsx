@@ -1,6 +1,5 @@
 import {
   alpha,
-  Avatar,
   Badge,
   Box,
   Divider,
@@ -12,13 +11,11 @@ import {
   Tooltip,
   Typography
 } from '@mui/material';
-import { useMemo, useRef, useState } from 'react';
+import { SetStateAction, useEffect, useMemo, useRef, useState } from 'react';
 import NotificationsActiveTwoToneIcon from '@mui/icons-material/NotificationsActiveTwoTone';
 import { styled } from '@mui/material/styles';
 
-import { formatDistance, subDays } from 'date-fns';
-import useFunction from '@/hooks/use-function';
-import { NotificationsApi } from '@/api/notication';
+import { formatDistance } from 'date-fns';
 import { useNotificationContext } from '@/contexts/notification/noti-context';
 
 const NotificationsBadge = styled(Badge)(
@@ -45,7 +42,13 @@ const NotificationsBadge = styled(Badge)(
 `
 );
 
-function HeaderNotifications() {
+function HeaderNotifications({
+  isSeen,
+  setIsSeen
+}: {
+  isSeen: boolean;
+  setIsSeen: React.Dispatch<SetStateAction<boolean>>;
+}) {
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
 
@@ -54,6 +57,7 @@ function HeaderNotifications() {
   };
 
   const handleClose = (): void => {
+    setIsSeen(true);
     setOpen(false);
   };
 
@@ -68,7 +72,7 @@ function HeaderNotifications() {
       <Tooltip arrow title="Notifications">
         <IconButton color="primary" ref={ref} onClick={handleOpen}>
           <NotificationsBadge
-            badgeContent={listNoti.length}
+            badgeContent={!isSeen ? listNoti.length : 0}
             anchorOrigin={{
               vertical: 'top',
               horizontal: 'right'

@@ -1,10 +1,8 @@
 import {
   Box,
-  IconButton,
   Paper,
   Stack,
   Typography,
-  useTheme
 } from '@mui/material';
 import React from 'react';
 

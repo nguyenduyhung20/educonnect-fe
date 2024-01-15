@@ -13,7 +13,6 @@ import {
 import NextLink from 'next/link';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 
-import DesignServicesTwoToneIcon from '@mui/icons-material/DesignServicesTwoTone';
 // import BrightnessLowTwoToneIcon from '@mui/icons-material/BrightnessLowTwoTone';
 // import MmsTwoToneIcon from '@mui/icons-material/MmsTwoTone';
 // import TableChartTwoToneIcon from '@mui/icons-material/TableChartTwoTone';
@@ -173,8 +172,6 @@ function SidebarMenu() {
   const router = useRouter();
   const currentRoute = router.pathname;
 
-  console.log(currentRoute);
-
   const { user } = useAuth();
 
   return (
@@ -305,7 +302,7 @@ function SidebarMenu() {
                     </Button>
                   </NextLink>
                 </ListItem>
-                <ListItem component="div">
+                {/* <ListItem component="div">
                   <NextLink href="/management/profile/settings" passHref>
                     <Button
                       className={
@@ -321,7 +318,7 @@ function SidebarMenu() {
                       Cài đặt
                     </Button>
                   </NextLink>
-                </ListItem>
+                </ListItem> */}
               </List>
             </SubMenuWrapper>
           </List>

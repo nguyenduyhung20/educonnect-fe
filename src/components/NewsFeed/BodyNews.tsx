@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Button,
   Card,
   CardActions,
   CardContent,
@@ -16,18 +17,13 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 import Link from '../Link';
 import { useAuth } from '@/hooks/use-auth';
-import { Post } from '@/types/post';
+import { Post, TypePost } from '@/types/post';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useRouter } from 'next/router';
 import { usePostsContext } from '@/contexts/posts/posts-context';
+import NextLink from 'next/link';
 
-export const BodyNews = ({
-  post,
-  type
-}: {
-  post: Post;
-  type: 'hotpost' | 'newsfeed';
-}) => {
+export const BodyNews = ({ post, type }: { post: Post; type: TypePost }) => {
   const { isAuthenticated, user } = useAuth();
   const [isLiked, setIsLiked] = useState(post.userInteract ? true : false);
   const router = useRouter();
@@ -66,12 +62,25 @@ export const BodyNews = ({
         }
       />
       <CardMedia>
-        {post.fileContent.map((item, index) => {
-          return <img src={item} key={index} style={{ maxWidth: '100%' }} />;
-        })}
+        <NextLink
+          href={!isAuthenticated ? `/login` : `/communities/home/${post.id}`}
+        >
+          <Button
+            sx={{
+              '&:hover': {
+                backgroundColor: 'transparent' // Change the background color to whatever suits your design
+              }
+            }}
+          >
+            {post.fileContent.map((item, index) => {
+              return (
+                <img src={item} key={index} style={{ maxWidth: '100%' }} />
+              );
+            })}
+          </Button>
+        </NextLink>
       </CardMedia>
 
-      <CardMedia component={'img'} image={post.fileContent[0]}></CardMedia>
       <CardContent>
         <Typography variant="h6">{post.content}</Typography>
       </CardContent>

@@ -3,7 +3,7 @@ import { Badge, Box, useTheme } from '@mui/material';
 import logo from 'public/static/images/logo/engemon.svg';
 import { LogoSignWrapper, LogoWrapper } from '@/components/LogoSign';
 
-export const SplashScreen: FC = () => {
+const SplashScreen: FC = () => {
   const theme = useTheme();
 
   return (
@@ -52,3 +52,5 @@ export const SplashScreen: FC = () => {
     </Box>
   );
 };
+
+export default SplashScreen;

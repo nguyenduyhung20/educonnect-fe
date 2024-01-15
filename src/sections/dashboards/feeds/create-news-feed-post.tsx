@@ -7,14 +7,11 @@ import {
   Stack,
   TextField,
   Typography,
-  styled
 } from '@mui/material';
 import { FormikProps } from 'formik';
 import React, { useCallback, useState } from 'react';
 
-const Input = styled('input')({
-  display: 'none'
-});
+
 import { useDropzone } from 'react-dropzone';
 
 export const CreateNewsFeedPost = ({

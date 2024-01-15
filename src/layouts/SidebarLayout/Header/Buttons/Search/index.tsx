@@ -88,7 +88,6 @@ function HeaderSearch() {
   }, [searchUserApi.data]);
 
   useEffect(() => {
-    console.log(debouncedSearchValue ?? 'empty');
 
     const searchUser = async () => {
       if (debouncedSearchValue && debouncedSearchValue !== '') {
@@ -152,9 +151,9 @@ function HeaderSearch() {
                 </InputAdornment>
               )
             }}
-            placeholder="Search terms here..."
+            placeholder="Tìm kiếm bạn bè, nhóm..."
             fullWidth
-            label="Search"
+            label="Tìm kiếm"
           />
         </DialogTitleWrapper>
         <Divider />

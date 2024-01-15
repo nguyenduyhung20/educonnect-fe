@@ -1,7 +1,6 @@
 import { SearchBar } from '@/components/dashboards/search-bar';
 import { Box, Paper, Stack } from '@mui/material';
 import React from 'react';
-import { NewsFeed } from '../feeds/news-feed';
 
 export const ExploreSpecificTrending = () => {
   return (

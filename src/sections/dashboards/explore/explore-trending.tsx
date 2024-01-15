@@ -20,7 +20,7 @@ export const ExploreTrending = () => {
   const ExpandMore = styled((props: ExpandMoreProps) => {
     const { expand, ...other } = props;
     return <IconButton {...other} />;
-  })(({ theme, expand }) => ({
+  })(({ theme }) => ({
     transition: theme.transitions.create('transform', {
       duration: theme.transitions.duration.shortest
     })

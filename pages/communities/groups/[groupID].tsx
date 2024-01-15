@@ -1,5 +1,5 @@
 import SidebarLayout from '@/layouts/SidebarLayout';
-import { Container, Grid, Stack } from '@mui/material';
+import { Button, Container, Grid, Stack } from '@mui/material';
 import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
 import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
 import React, { useEffect, useMemo } from 'react';
@@ -9,6 +9,7 @@ import GroupsProvider, {
   useGroupsContext
 } from '@/contexts/groups/groups-context';
 import { useAuth } from '@/hooks/use-auth';
+import PostsProvider from '@/contexts/posts/posts-context';
 
 const CommunitiesGroups = () => {
   const router = useRouter();
@@ -20,6 +21,10 @@ const CommunitiesGroups = () => {
 
   const { getPostByGroupId } = useGroupsContext();
 
+  const groupID = useMemo(() => {
+    return Number(router.query.groupID);
+  }, [router.query.groupID]);
+
   const listNewsFeeds = useMemo(() => {
     return getPostByGroupId.data?.data || [];
   }, [getPostByGroupId]);
@@ -30,12 +35,12 @@ const CommunitiesGroups = () => {
     if (!isAuthenticated) {
       router.push('/login');
     } else {
-      if (router.query.groupID) {
-        getGroupsApiById.call({ id: Number(router.query.groupID) });
-        getPostByGroupId.call({ id: Number(router.query.groupID) });
+      if (groupID) {
+        getGroupsApiById.call({ id: groupID });
+        getPostByGroupId.call({ id: groupID });
       }
     }
-  }, [router.query.groupID]);
+  }, [groupID]);
   return (
     <>
       <Container sx={{ mt: 3 }} maxWidth="lg">
@@ -50,7 +55,11 @@ const CommunitiesGroups = () => {
             {group && <GroupCover group={group} />}
           </Grid>
           <Grid item xs={12} md={7}>
-            <NewsFeed listNewsFeeds={listNewsFeeds} detail={true} />
+            <NewsFeed
+              listNewsFeeds={listNewsFeeds}
+              detail={false}
+              type={'group'}
+            />
           </Grid>
           <Grid item xs={12} md={5}>
             {/* <PopularTags /> */}
@@ -67,7 +76,9 @@ const CommunitiesGroups = () => {
 
 CommunitiesGroups.getLayout = (page) => (
   <SidebarLayout>
-    <GroupsProvider>{page}</GroupsProvider>
+    <GroupsProvider>
+      <PostsProvider>{page}</PostsProvider>
+    </GroupsProvider>
   </SidebarLayout>
 );
 

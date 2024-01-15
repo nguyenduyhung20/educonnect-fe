@@ -12,19 +12,17 @@ export class PostsApi {
     return response;
   }
 
-  static async getNewsFeed(request: { id: number }): Promise<{ data: Post[] }> {
+  static async getNewsFeed(): Promise<{ data: Post[] }> {
     const response = await apiGet(`/user/newsfeed`);
     return response;
   }
 
-  static async getHotPosts(request: FormData): Promise<{ data: Post[] }> {
+  static async getHotPosts(): Promise<{ data: Post[] }> {
     const response = await apiGet(`/public/hot-post`);
     return response;
   }
 
-  static async getHotPostsByUserID(
-    request: FormData
-  ): Promise<{ data: Post[] }> {
+  static async getHotPostsByUserID(): Promise<{ data: Post[] }> {
     const response = await apiGet(`/user/hot-post`);
     return response;
   }

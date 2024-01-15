@@ -10,7 +10,7 @@ import { CreateNewsFeed } from '@/sections/dashboards/feeds/create-news-feed';
 import PostsProvider, { usePostsContext } from '@/contexts/posts/posts-context';
 import { useAuth } from '@/hooks/use-auth';
 import PageHeader from '@/sections/dashboards/feeds/page-header-feed';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
 
 function CommunitiesHome() {

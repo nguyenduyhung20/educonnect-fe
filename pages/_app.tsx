@@ -1,4 +1,4 @@
-import { useEffect, type ReactElement, type ReactNode } from 'react';
+import { type ReactElement, type ReactNode } from 'react';
 
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
@@ -14,10 +14,10 @@ import { SidebarProvider } from 'src/contexts/SidebarContext';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { AuthConsumer, AuthProvider } from '@/contexts/auth/jwt-context';
-import { SplashScreen } from './components/splash-screen';
 import { MaterialDesignContent, SnackbarProvider } from 'notistack';
 import styled from '@emotion/styled';
 import NotificationsProvider from '@/contexts/notification/noti-context';
+import SplashScreen from './components/splash-screen';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -31,11 +31,8 @@ interface EduConnectAppProps extends AppProps {
 }
 
 const StyledMaterialDesignContent = styled(MaterialDesignContent)(() => ({
-  '&.notistack-MuiContent-success': {
+  '&.notistack-MuiContent-default': {
     backgroundColor: '#f5f1f0'
-  },
-  '&.notistack-MuiContent-error': {
-    backgroundColor: '#970C0C'
   }
 }));
 
@@ -57,8 +54,7 @@ function EduConnectApp(props: EduConnectAppProps) {
       </Head>
       <SnackbarProvider
         Components={{
-          success: StyledMaterialDesignContent,
-          error: StyledMaterialDesignContent
+          default: StyledMaterialDesignContent
         }}
         hideIconVariant
       >

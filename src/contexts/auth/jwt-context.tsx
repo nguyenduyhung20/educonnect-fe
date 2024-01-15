@@ -222,17 +222,17 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
 
   const signUp = useCallback(
     async (
-      email: string,
-      name: string,
-      phone: string,
-      password: string
+      // email: string,
+      // name: string,
+      // phone: string,
+      // password: string
     ): Promise<void> => {
-      const { accessToken } = await UsersApi.signUp({
-        email,
-        name,
-        password,
-        phone
-      });
+      // const { accessToken } = await UsersApi.signUp({
+      //   email,
+      //   name,
+      //   password,
+      //   phone
+      // });
       // const user = await UsersApi.me({ accessToken });
 
       // sessionStorage.setItem(STORAGE_KEY, accessToken);

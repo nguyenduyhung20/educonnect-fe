@@ -1,15 +1,12 @@
 import {
   Avatar,
   Box,
-  Button,
   Card,
   CardActions,
   CardContent,
   CardHeader,
   CardMedia,
-  Paper,
   Stack,
-  TextField,
   Typography
 } from '@mui/material';
 import React, { useState } from 'react';
@@ -18,13 +15,19 @@ import IconButton from '@mui/material/IconButton';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 import Link from '../Link';
-import { PostDetail } from '@/types/post';
+import { PostDetail, TypePost } from '@/types/post';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { CommentsList } from '@/sections/dashboards/feeds/comments-list';
 import { usePostsContext } from '@/contexts/posts/posts-context';
 import { useAuth } from '@/hooks/use-auth';
 
-export const BodyNewDetail = ({ post }: { post: PostDetail }) => {
+export const BodyNewDetail = ({
+  post,
+  type
+}: {
+  post: PostDetail;
+  type: TypePost;
+}) => {
   const [isLiked, setIsLiked] = useState(post.userInteract ? true : false);
 
   const { reactPost } = usePostsContext();
@@ -63,12 +66,11 @@ export const BodyNewDetail = ({ post }: { post: PostDetail }) => {
           </IconButton>
         }
       />
-      <CardMedia
-        component={'img'}
-        image={
-          '/static/images/feeds/392825007_691969853024257_4320526996950590956_n.jpg'
-        }
-      />
+      <CardMedia>
+        {post.fileContent.map((item, index) => {
+          return <img src={item} key={index} style={{ maxWidth: '100%' }} />;
+        })}
+      </CardMedia>
       <CardContent>
         <Typography variant="h6">{post.content}</Typography>
       </CardContent>
@@ -88,7 +90,7 @@ export const BodyNewDetail = ({ post }: { post: PostDetail }) => {
                   await reactPost(
                     { id: post.id, type: 'like' },
                     isLiked ? 'dislike' : 'like',
-                    'detail',
+                    type,
                     {
                       senderName: user.name,
                       senderAvatar: user.avatar,

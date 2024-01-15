@@ -1,4 +1,4 @@
-import type { User } from 'src/types/user';
+import type { User, UserProfile } from 'src/types/user';
 import { apiGet, apiPatch, apiPost } from 'src/utils/api-request';
 
 type SignInRequest = {
@@ -34,13 +34,6 @@ interface UserFollowers {
   count: number;
 }
 
-interface User {
-  id: number;
-  uuid: string;
-  name: string;
-  avatar?: string;
-}
-
 export class UsersApi {
   static async postUser(request: Omit<User, 'id'>): Promise<{ id: string }> {
     return await apiPost('/users', request);
@@ -71,7 +64,7 @@ export class UsersApi {
     return await apiPost('/users/password', payload);
   }
 
-  static async getUserProfile(id: number) {
+  static async getUserProfile(id: number): Promise<{ data: UserProfile }> {
     return await apiGet(`/user/${id}`);
   }
 

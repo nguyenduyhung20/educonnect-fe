@@ -36,7 +36,11 @@ function CommunitiesHomeFollowing() {
         >
           <Grid item xs={12} md={7}>
             <CreateNewsFeed />
-            <NewsFeed listNewsFeeds={listNewsFeeds} detail={false} type={'newsfeed'}/>
+            <NewsFeed
+              listNewsFeeds={listNewsFeeds}
+              detail={false}
+              type={'newsfeed'}
+            />
           </Grid>
           <Grid item xs={12} md={4}>
             <TrendingNews />

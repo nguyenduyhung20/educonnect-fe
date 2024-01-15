@@ -10,7 +10,7 @@ interface GuestGuardProps {
 
 export const GuestGuard: FC<GuestGuardProps> = (props) => {
   const { children } = props;
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated } = useAuth();
   const router = useRouter();
   const [checked, setChecked] = useState<boolean>(false);
 

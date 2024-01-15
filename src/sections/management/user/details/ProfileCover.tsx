@@ -12,9 +12,7 @@ import {
 import { styled } from '@mui/material/styles';
 
 import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
-import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
 import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
-import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
 import { UserDetail } from '@/types/user';
 import { useRouter } from 'next/router';
 import { Check } from '@mui/icons-material';

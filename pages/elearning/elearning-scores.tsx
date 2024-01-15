@@ -9,9 +9,7 @@ import {
   TableRow,
   Typography
 } from '@mui/material';
-import Footer from '@/components/Footer';
 import ElearningLayout from '@/layouts/elearning';
-import NotificationsProvider from '@/contexts/notification/noti-context';
 
 function EleaningScoresPage() {
   return (

@@ -19,12 +19,14 @@ import { SearchApi } from '@/api/search';
 import { Search } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import { useGroupsContext } from '@/contexts/groups/groups-context';
+import { TypeItemGroup } from '@/types/groups';
+import { useAuth } from '@/hooks/use-auth';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
 
-export const DiscoverGroups = () => {
+export const DiscoverGroups = ({ type }: { type: TypeItemGroup }) => {
   const theme = useTheme();
 
   const ExpandMore = styled((props: ExpandMoreProps) => {
@@ -73,45 +75,52 @@ export const DiscoverGroups = () => {
   };
 
   // list hot group
-  const { getHotGroups } = useGroupsContext();
+  const { getHotGroups, getGroupsApi } = useGroupsContext();
+
+  const { isAuthenticated } = useAuth();
 
   const listGroups = useMemo(() => {
+    if (isAuthenticated) {
+      return getGroupsApi.data?.data || [];
+    }
     return getHotGroups.data?.data || [];
-  }, [getHotGroups]);
-
-  useEffect(() => {
-    getHotGroups.call(new FormData());
-  }, []);
+  }, [getHotGroups, getGroupsApi]);
 
   return (
     <Box>
       <Paper elevation={5} sx={{ p: 2 }}>
         <Stack direction={'column'} spacing={2}>
-          <TextField
-            placeholder="Search"
-            sx={{ width: 1 }}
-            value={searchValue}
-            onChange={handleSearchChange}
-            InputProps={{
-              startAdornment: (
-                <Stack
-                  sx={{ mr: 1 }}
-                  justifyContent={'center'}
-                  alignItems={'center'}
-                >
-                  <Search />
-                </Stack>
-              )
-            }}
-          />
+          {type == 'hot' && (
+            <TextField
+              placeholder="Search"
+              sx={{ width: 1 }}
+              value={searchValue}
+              onChange={handleSearchChange}
+              InputProps={{
+                startAdornment: (
+                  <Stack
+                    sx={{ mr: 1 }}
+                    justifyContent={'center'}
+                    alignItems={'center'}
+                  >
+                    <Search />
+                  </Stack>
+                )
+              }}
+            />
+          )}
           <Typography
-            variant="h3"
+            variant="h5"
             sx={{
               fontWeight: 700,
-              fontSize: 23
+              fontSize: type == 'hot' ? 23 : 18
             }}
           >
-            Groups
+            {type == 'hot'
+              ? 'Nhóm'
+              : type == 'host'
+              ? 'Nhóm của bạn'
+              : 'Nhóm đã tham gia'}
           </Typography>
 
           <div>
@@ -132,7 +141,6 @@ export const DiscoverGroups = () => {
                   justifyContent={'space-between'}
                   width={1}
                   sx={{
-                    p: 1,
                     '&:hover': {
                       background: `${theme.colors.primary.lighter}`,
                       borderRadius: 1
@@ -189,11 +197,11 @@ export const DiscoverGroups = () => {
               >
                 {!expanded ? (
                   <Typography variant="h4" color={'primary'}>
-                    Show more
+                    Hiển thị thêm
                   </Typography>
                 ) : (
                   <Typography variant="h4" color={'primary'}>
-                    Hide
+                    Ẩn
                   </Typography>
                 )}
               </ExpandMore>

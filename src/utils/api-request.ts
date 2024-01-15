@@ -15,10 +15,7 @@ export const getFormData = (data: { [name: string]: any }): FormData => {
   return formData;
 };
 
-const getRequestHeaders = async (
-  method: string,
-  isFormData?: boolean
-): Promise<any> => {
+const getRequestHeaders = async (isFormData?: boolean): Promise<any> => {
   const token = CookieHelper.getItem('token');
 
   const headers = new Headers();
@@ -55,7 +52,7 @@ const apiFetch = async (
 
 export const apiPost = async (query: string, body: any) => {
   const isFormData = body instanceof FormData;
-  const headers = await getRequestHeaders('POST', isFormData);
+  const headers = await getRequestHeaders(isFormData);
   return await apiFetch(getRequestUrl(query), {
     method: 'POST',
     headers,
@@ -65,7 +62,7 @@ export const apiPost = async (query: string, body: any) => {
 
 export const apiDelete = async (query: string, body: any) => {
   const isFormData = body instanceof FormData;
-  const headers = await getRequestHeaders('DELETE', isFormData);
+  const headers = await getRequestHeaders(isFormData);
   return await apiFetch(getRequestUrl(query, body), {
     method: 'DELETE',
     headers,
@@ -75,7 +72,7 @@ export const apiDelete = async (query: string, body: any) => {
 
 export const apiPut = async (query: string, body: any) => {
   const isFormData = body instanceof FormData;
-  const headers = await getRequestHeaders('PUT', isFormData);
+  const headers = await getRequestHeaders(isFormData);
   return await apiFetch(getRequestUrl(query), {
     method: 'PUT',
     headers,
@@ -85,7 +82,7 @@ export const apiPut = async (query: string, body: any) => {
 
 export const apiPatch = async (query: string, body: any) => {
   const isFormData = body instanceof FormData;
-  const headers = await getRequestHeaders('PATCH', isFormData);
+  const headers = await getRequestHeaders(isFormData);
   return await apiFetch(getRequestUrl(query), {
     method: 'PATCH',
     headers,
@@ -94,7 +91,7 @@ export const apiPatch = async (query: string, body: any) => {
 };
 
 export const apiGet = async (query: string, body?: any) => {
-  const headers = await getRequestHeaders('GET');
+  const headers = await getRequestHeaders();
   return await apiFetch(getRequestUrl(query, body), {
     method: 'GET',
     headers

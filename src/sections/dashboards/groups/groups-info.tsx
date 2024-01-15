@@ -1,7 +1,6 @@
 import { Avatar, Stack, Typography, useTheme } from '@mui/material';
 import React from 'react';
 import GroupAvatarsMembers from './groups-avatar-members';
-import { useAuth } from '@/hooks/use-auth';
 import { Group } from '@/types/groups';
 
 export const GroupsInfo = ({ group }: { group: Group }) => {

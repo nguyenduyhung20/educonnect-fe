@@ -2,13 +2,9 @@ import {
     Box,
     Card,
     CardContent,
-    CardHeader,
     CardMedia,
-    Container,
     Grid,
     Stack,
-    Tab,
-    Tabs,
     Typography
   } from '@mui/material';
 import React from 'react';

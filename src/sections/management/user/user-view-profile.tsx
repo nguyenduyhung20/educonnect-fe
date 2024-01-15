@@ -25,14 +25,14 @@ export const UserViewProfile = ({ userData }: { userData: UserProfile }) => {
           <NewsFeed
             listNewsFeeds={userData.newsfeed}
             detail={false}
-            type={'newsfeed'}
+            type={'profile'}
           />
         </Grid>
         <Grid item xs={12} md={5}>
           <Stack spacing={3}>
             <TrendingNews />
             {user.id == userData.user.id && (
-              <RecentActivity user={userData.user} />
+              <RecentActivity />
             )}
           </Stack>
         </Grid>

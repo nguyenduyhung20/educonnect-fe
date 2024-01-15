@@ -1,11 +1,12 @@
 import Head from 'next/head';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import { Container, Grid } from '@mui/material';
-import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
+import { Button, Container, Grid, Stack } from '@mui/material';
 import { DiscoverGroups } from '@/sections/dashboards/groups/groups-discover';
 import GroupsProvider from '@/contexts/groups/groups-context';
+import { useAuth } from '@/hooks/use-auth';
 
 function CommunitiesGroups() {
+  const { isAuthenticated } = useAuth();
   return (
     <>
       <Head>
@@ -22,10 +23,18 @@ function CommunitiesGroups() {
           mt={2}
         >
           <Grid item xs={12} md={7}>
-            <DiscoverGroups />
+            <DiscoverGroups type="hot" />
           </Grid>
           <Grid item xs={12} md={4}>
-            <TrendingNews />
+            <Stack spacing={2}>
+              {isAuthenticated && (
+                <Button variant="contained" fullWidth>
+                  Tạo nhóm của bạn
+                </Button>
+              )}
+              {isAuthenticated && <DiscoverGroups type={'host'} />}
+              {isAuthenticated && <DiscoverGroups type={'join'} />}
+            </Stack>
           </Grid>
         </Grid>
       </Container>

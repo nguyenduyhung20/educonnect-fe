@@ -5,28 +5,34 @@ import { Container } from '@mui/material';
 
 import { UserViewProfile } from '@/sections/management/user/user-view-profile';
 import { useEffect, useMemo } from 'react';
-import useFunction from '@/hooks/use-function';
-import { UsersApi } from '@/api/users';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/hooks/use-auth';
+import UsersProvider, { useUserContext } from '@/contexts/user/user-context';
+import PostsProvider from '@/contexts/posts/posts-context';
 
 function ManagementUserProfile() {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
 
-  const getUserProfile = useFunction(UsersApi.getUserProfile);
+  const { getUsersProfile } = useUserContext();
 
   const userProfile = useMemo(() => {
-    return getUserProfile.data?.data;
-  }, [getUserProfile.data]);
+    return getUsersProfile.data?.data;
+  }, [getUsersProfile.data]);
+
+  const userID = useMemo(() => {
+    return Number(router.query.userID);
+  }, [router.query.userID]);
 
   useEffect(() => {
     if (!isAuthenticated) {
       router.push('/login');
     } else {
-      getUserProfile.call(Number(router.query.userID));
+      if (userID) {
+        getUsersProfile.call(userID);
+      }
     }
-  }, []);
+  }, [userID]);
 
   return (
     <>
@@ -41,7 +47,11 @@ function ManagementUserProfile() {
 }
 
 ManagementUserProfile.getLayout = (page) => (
-  <SidebarLayout>{page}</SidebarLayout>
+  <SidebarLayout>
+    <UsersProvider>
+      <PostsProvider>{page}</PostsProvider>
+    </UsersProvider>
+  </SidebarLayout>
 );
 
 export default ManagementUserProfile;

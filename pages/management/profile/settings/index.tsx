@@ -4,7 +4,6 @@ import SidebarLayout from '@/layouts/SidebarLayout';
 import PageHeader from '@/sections/management/user/settings/PageHeader';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import { Container, Tabs, Tab, Grid } from '@mui/material';
-import Footer from '@/components/Footer';
 import { styled } from '@mui/material/styles';
 
 import ActivityTab from '@/sections/management/user/settings/ActivityTab';

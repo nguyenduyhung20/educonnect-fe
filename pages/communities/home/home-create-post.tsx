@@ -55,7 +55,7 @@ function CreatePost() {
   const onSubmit = useCallback(
     async (values: Partial<Post> & { uploadedFiles: File[] }) => {
       try {
-        const response = await createPost(values);
+        await createPost(values);
       } catch (error) {
         throw error;
       }

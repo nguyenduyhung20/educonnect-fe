@@ -1,5 +1,5 @@
 import { NotiData } from '@/types/noti';
-import { Avatar, Box, Button, Stack, Typography, styled } from '@mui/material';
+import { Avatar, Box, Button, Stack, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useCallback, useMemo } from 'react';
 import NextLink from 'next/link';
@@ -56,7 +56,7 @@ function useAppSnackbar() {
           </NextLink>
         </>,
         {
-          variant: 'success',
+          variant: 'default',
           style: { whiteSpace: 'pre' }
         }
       );
