@@ -6,21 +6,22 @@ import {
   Paper,
   Stack,
   TextField,
-  Typography,
+  Typography
 } from '@mui/material';
 import { FormikProps } from 'formik';
-import React, { useCallback, useState } from 'react';
-
+import React, { SetStateAction, useCallback, useState } from 'react';
 
 import { useDropzone } from 'react-dropzone';
 
 export const CreateNewsFeedPost = ({
-  formik
+  formik,
+  images,
+  setImages
 }: {
   formik: FormikProps<Partial<Post>>;
+  images: string[];
+  setImages: React.Dispatch<SetStateAction<string[]>>;
 }) => {
-  const [images, setImages] = useState([]);
-
   const onDrop = useCallback(
     (acceptedFiles) => {
       const selectedFiles = acceptedFiles.map((file) =>
@@ -64,28 +65,27 @@ export const CreateNewsFeedPost = ({
           alignItems={'center'}
           direction={'row'}
           spacing={1}
+          {...getRootProps()}
         >
-          <div {...getRootProps()}>
+          {isDragActive ? (
+            <Typography color={'primary'} variant="h4" fontWeight={10}>
+              Thả ảnh vào đây
+            </Typography>
+          ) : (
+            <Typography color={'primary'} variant="h4" fontWeight={10}>
+              Kéo và thả hình ảnh hoặc
+            </Typography>
+          )}
+          <label htmlFor="upload-image">
+            <Button component="span" color="primary" variant="outlined">
+              Tải lên
+            </Button>
             <input
               id="upload-image"
               name="upload-image"
               type="file"
               {...getInputProps()}
             />
-            {isDragActive ? (
-              <Typography color={'primary'} variant="h4" fontWeight={10}>
-                Thả ảnh vào đây
-              </Typography>
-            ) : (
-              <Typography color={'primary'} variant="h4" fontWeight={10}>
-                Kéo và thả hình ảnh hoặc
-              </Typography>
-            )}
-          </div>
-          <label htmlFor="upload-image">
-            <Button component="span" color="primary" variant="outlined">
-              Tải lên
-            </Button>
           </label>
         </Stack>
         <>

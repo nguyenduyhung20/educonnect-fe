@@ -4,9 +4,13 @@ import { Button, Container, Grid, Stack } from '@mui/material';
 import { DiscoverGroups } from '@/sections/dashboards/groups/groups-discover';
 import GroupsProvider from '@/contexts/groups/groups-context';
 import { useAuth } from '@/hooks/use-auth';
+import { useDrawer } from '@/hooks/use-drawer';
+import { GroupCreateDrawer } from '@/sections/dashboards/groups/group-create-drawer';
 
 function CommunitiesGroups() {
   const { isAuthenticated } = useAuth();
+
+  const createGroupDrawer = useDrawer();
   return (
     <>
       <Head>
@@ -28,7 +32,11 @@ function CommunitiesGroups() {
           <Grid item xs={12} md={4}>
             <Stack spacing={2}>
               {isAuthenticated && (
-                <Button variant="contained" fullWidth>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  onClick={() => createGroupDrawer.handleOpen()}
+                >
                   Tạo nhóm của bạn
                 </Button>
               )}
@@ -38,6 +46,11 @@ function CommunitiesGroups() {
           </Grid>
         </Grid>
       </Container>
+
+      <GroupCreateDrawer
+        open={createGroupDrawer.open}
+        onClose={createGroupDrawer.handleClose}
+      />
     </>
   );
 }

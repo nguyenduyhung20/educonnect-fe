@@ -48,6 +48,7 @@ function CreatePost() {
           content: '',
           uploadedFiles: null
         });
+        setImages([]);
       }
     }
   });
@@ -66,6 +67,8 @@ function CreatePost() {
   const handleSubmitHelper = useFunction(onSubmit, {
     successMessage: 'Thêm thành công!'
   });
+
+  const [images, setImages] = useState<string[]>([]);
 
   return (
     <>
@@ -124,7 +127,11 @@ function CreatePost() {
                         />
                       </Tabs>{' '}
                       {currentTab === 'Post' && (
-                        <CreateNewsFeedPost formik={formik} />
+                        <CreateNewsFeedPost
+                          formik={formik}
+                          images={images}
+                          setImages={setImages}
+                        />
                       )}
                       {currentTab === 'Link' && (
                         <CreateNewsFeedLink formik={formik} />

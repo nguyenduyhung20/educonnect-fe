@@ -22,7 +22,7 @@ interface ContextValue {
   getHotGroups: UseFunctionReturnType<FormData, { data: Group[] }>;
   getGroupsApiById: UseFunctionReturnType<{ id: number }, { data: Group }>;
   getPostByGroupId: UseFunctionReturnType<{ id: number }, { data: Post[] }>;
-  createGroup: (requests: Group) => Promise<void>;
+  createGroup: (requests: Partial<Group>) => Promise<void>;
   joinGroup: (requests: Member) => Promise<void>;
   // updateGroup: (Group: Group) => Promise<void>;
   deleteGroup: (id: string) => Promise<void>;
