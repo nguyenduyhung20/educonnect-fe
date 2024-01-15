@@ -1,5 +1,5 @@
 import SidebarLayout from '@/layouts/SidebarLayout';
-import { Button, Container, Grid, Stack } from '@mui/material';
+import {  Container, Grid, Stack } from '@mui/material';
 import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
 import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
 import React, { useEffect, useMemo } from 'react';

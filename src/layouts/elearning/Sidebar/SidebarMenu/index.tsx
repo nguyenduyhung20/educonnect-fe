@@ -18,7 +18,6 @@ import { SidebarContext } from 'src/contexts/SidebarContext';
 // import TableChartTwoToneIcon from '@mui/icons-material/TableChartTwoTone';
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import DisplaySettingsTwoToneIcon from '@mui/icons-material/DisplaySettingsTwoTone';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 // import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
