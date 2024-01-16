@@ -15,7 +15,7 @@ import {
   Typography
 } from '@mui/material';
 import Head from 'next/head';
-import React, { ChangeEvent, useCallback, useState } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import { CreateNewsFeedPost } from '@/sections/dashboards/feeds/create-news-feed-post';
 import { CreateNewsFeedLink } from '@/sections/dashboards/feeds/create-news-feed-link';
@@ -24,6 +24,8 @@ import PostsProvider, { usePostsContext } from '@/contexts/posts/posts-context';
 import { Post } from '@/types/post';
 import useFunction from '@/hooks/use-function';
 import { RuleCommunities } from '@/sections/dashboards/feeds/rule-communities';
+import { useAuth } from '@/hooks/use-auth';
+import { useRouter } from 'next/router';
 
 function CreatePost() {
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
@@ -69,6 +71,16 @@ function CreatePost() {
   });
 
   const [images, setImages] = useState<string[]>([]);
+
+  const { isAuthenticated } = useAuth();
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push('/login');
+    }
+  }, []);
 
   return (
     <>
