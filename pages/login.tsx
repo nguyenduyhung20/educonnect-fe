@@ -1,13 +1,11 @@
 import { Box, Card, Container, styled } from '@mui/material';
 import { useEffect, type ReactElement } from 'react';
 import BaseLayout from 'src/layouts/BaseLayout';
-
 import Head from 'next/head';
-
 import Logo from 'src/components/LogoSign';
-import Hero from '@/sections/overview/hero';
 import { useAuth } from '@/hooks/use-auth';
 import { useRouter } from 'next/router';
+import Hero from '@/sections/Overview/Hero';
 
 const HeaderWrapper = styled(Card)(
   ({ theme }) => `

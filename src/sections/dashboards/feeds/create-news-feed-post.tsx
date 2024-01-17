@@ -9,7 +9,7 @@ import {
   Typography
 } from '@mui/material';
 import { FormikProps } from 'formik';
-import React, { SetStateAction, useCallback, useState } from 'react';
+import React, { SetStateAction, useCallback } from 'react';
 
 import { useDropzone } from 'react-dropzone';
 
@@ -33,7 +33,10 @@ export const CreateNewsFeedPost = ({
     [formik]
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, useFsAccessApi: false });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    useFsAccessApi: false
+  });
 
   return (
     <Stack spacing={1}>
@@ -76,16 +79,21 @@ export const CreateNewsFeedPost = ({
               Kéo và thả hình ảnh hoặc
             </Typography>
           )}
-          <label htmlFor="upload-image">
+          <label
+            htmlFor="upload-image"
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
             <Button component="span" color="primary" variant="outlined">
               Tải lên
             </Button>
-            {/* <input
+            <input
+              {...getInputProps()}
               id="upload-image"
               name="upload-image"
               type="file"
-              {...getInputProps()}
-            /> */}
+            />
           </label>
         </Stack>
         <>
