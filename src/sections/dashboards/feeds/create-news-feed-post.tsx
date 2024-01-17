@@ -33,7 +33,7 @@ export const CreateNewsFeedPost = ({
     [formik]
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, useFsAccessApi: false });
 
   return (
     <Stack spacing={1}>
@@ -59,13 +59,13 @@ export const CreateNewsFeedPost = ({
           border: 1,
           borderColor: 'divider'
         }}
+        {...getRootProps()}
       >
         <Stack
           justifyContent={'center'}
           alignItems={'center'}
           direction={'row'}
           spacing={1}
-          {...getRootProps()}
         >
           {isDragActive ? (
             <Typography color={'primary'} variant="h4" fontWeight={10}>
@@ -80,12 +80,12 @@ export const CreateNewsFeedPost = ({
             <Button component="span" color="primary" variant="outlined">
               Tải lên
             </Button>
-            <input
+            {/* <input
               id="upload-image"
               name="upload-image"
               type="file"
               {...getInputProps()}
-            />
+            /> */}
           </label>
         </Stack>
         <>

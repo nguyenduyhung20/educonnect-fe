@@ -82,7 +82,7 @@ export const BodyNews = ({ post, type }: { post: Post; type: TypePost }) => {
       </CardMedia>
 
       <CardContent>
-        <Typography variant="h6">{post.content}</Typography>
+        <Typography variant="h6" style={{whiteSpace: "pre-line"}}>{post.content}</Typography>
       </CardContent>
       <CardActions>
         <Box
