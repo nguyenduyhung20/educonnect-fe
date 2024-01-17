@@ -1,9 +1,4 @@
-import {
-  Box,
-  Paper,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Paper, Stack, Typography } from '@mui/material';
 import React from 'react';
 
 import { TrendingNewsItem } from '@/components/dashboards/trending-news-item';
@@ -24,13 +19,10 @@ export const TrendingNews = () => {
           </Typography>
 
           <Stack direction={'column'} spacing={1}>
-            <TrendingNewsItem />
-
-            <TrendingNewsItem />
-
-            <TrendingNewsItem />
-
-            <TrendingNewsItem />
+            <TrendingNewsItem content="Bất đẳng thức Cauchy" />
+            <TrendingNewsItem content="HSG Quốc gia" />
+            <TrendingNewsItem content="Giao thoa sóng" />
+            <TrendingNewsItem content="Sinh học 10" />
           </Stack>
         </Stack>
       </Paper>

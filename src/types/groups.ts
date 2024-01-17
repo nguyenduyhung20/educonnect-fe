@@ -6,8 +6,9 @@ export interface Group {
   title: string;
   meta_title: string;
   memberCount: number;
-  avatar: string;
+  avatar: string | null;
   members: User[];
+  background: string | null;
 }
 
 export type MemberRole = 'admin' | 'user';

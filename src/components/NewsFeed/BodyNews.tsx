@@ -72,17 +72,21 @@ export const BodyNews = ({ post, type }: { post: Post; type: TypePost }) => {
               }
             }}
           >
-            {post.fileContent.map((item, index) => {
-              return (
-                <img src={item} key={index} style={{ maxWidth: '100%' }} />
-              );
-            })}
+            <Box className="flex flex-col gap-4">
+              {post.fileContent.map((item, index) => {
+                return (
+                  <img src={item} key={index} style={{ maxWidth: '100%' }} />
+                );
+              })}
+            </Box>
           </Button>
         </NextLink>
       </CardMedia>
 
       <CardContent>
-        <Typography variant="h6" style={{whiteSpace: "pre-line"}}>{post.content}</Typography>
+        <Typography variant="h6" style={{ whiteSpace: 'pre-line' }}>
+          {post.content}
+        </Typography>
       </CardContent>
       <CardActions>
         <Box

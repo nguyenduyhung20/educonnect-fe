@@ -67,12 +67,16 @@ export const BodyNewDetail = ({
         }
       />
       <CardMedia>
-        {post.fileContent.map((item, index) => {
-          return <img src={item} key={index} style={{ maxWidth: '100%' }} />;
-        })}
+        <Stack>
+          {post.fileContent.map((item, index) => {
+            return <img src={item} key={index} style={{ maxWidth: '100%' }} />;
+          })}
+        </Stack>
       </CardMedia>
       <CardContent>
-        <Typography variant="h6" style={{whiteSpace: "pre-line"}}>{post.content}</Typography>
+        <Typography variant="h6" style={{ whiteSpace: 'pre-line' }}>
+          {post.content}
+        </Typography>
       </CardContent>
 
       <CardActions>

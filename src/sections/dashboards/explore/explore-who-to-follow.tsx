@@ -4,7 +4,7 @@ import {
   IconButton,
   Paper,
   Stack,
-  Typography,
+  Typography
 } from '@mui/material';
 import React from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -24,7 +24,7 @@ export const ExploreWhoToFollow = () => {
               fontSize: 23
             }}
           >
-            Who to follow
+            Người nổi tiếng
           </Typography>
 
           <Stack direction={'column'} spacing={2}>
@@ -47,8 +47,8 @@ export const ExploreWhoToFollow = () => {
               <Stack direction={'row'} spacing={1}>
                 <Avatar variant="rounded" alt={user?.name} src={user?.avatar} />
                 <Stack>
-                  <Typography variant="h5">Võ Quốc Bá Cẩn</Typography>
-                  <Typography variant="subtitle1">124k follower</Typography>
+                  <Typography variant="h5">Trần Nam Dũng</Typography>
+                  <Typography variant="subtitle1">20k follower</Typography>
                 </Stack>
               </Stack>
               <Box>
@@ -62,8 +62,8 @@ export const ExploreWhoToFollow = () => {
               <Stack direction={'row'} spacing={1}>
                 <Avatar variant="rounded" alt={user?.name} src={user?.avatar} />
                 <Stack>
-                  <Typography variant="h5">Võ Quốc Bá Cẩn</Typography>
-                  <Typography variant="subtitle1">124k follower</Typography>
+                  <Typography variant="h5">Phan Tấn Trung</Typography>
+                  <Typography variant="subtitle1">1m follower</Typography>
                 </Stack>
               </Stack>
               <Box>
@@ -77,8 +77,8 @@ export const ExploreWhoToFollow = () => {
               <Stack direction={'row'} spacing={1}>
                 <Avatar variant="rounded" alt={user?.name} src={user?.avatar} />
                 <Stack>
-                  <Typography variant="h5">Võ Quốc Bá Cẩn</Typography>
-                  <Typography variant="subtitle1">124k follower</Typography>
+                  <Typography variant="h5">Phan Huy Khải</Typography>
+                  <Typography variant="subtitle1">1k follower</Typography>
                 </Stack>
               </Stack>
               <Box>

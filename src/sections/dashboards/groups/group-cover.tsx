@@ -147,11 +147,7 @@ const GroupCover = ({ group }: { group: Group }) => {
         </Tooltip>
       </Box>
       <CardCover>
-        <CardMedia
-          image={
-            'https://yt3.googleusercontent.com/m3aEIKqYP-rYVvKgjqJObR6-UDgEcBj52re__8VZn38DfiFSu4U1-XyB9F3Lcj_FcT5xZYnaMA=s900-c-k-c0x00ffffff-no-rj'
-          }
-        />
+        <CardMedia image={group?.background} />
         <CardCoverAction>
           <Input accept="image/*" id="change-cover" multiple type="file" />
           <label htmlFor="change-cover">
@@ -173,13 +169,7 @@ const GroupCover = ({ group }: { group: Group }) => {
         }}
       >
         <AvatarWrapper>
-          <Avatar
-            variant="rounded"
-            alt={group?.title}
-            src={
-              'https://yt3.googleusercontent.com/m3aEIKqYP-rYVvKgjqJObR6-UDgEcBj52re__8VZn38DfiFSu4U1-XyB9F3Lcj_FcT5xZYnaMA=s900-c-k-c0x00ffffff-no-rj'
-            }
-          />
+          <Avatar variant="rounded" alt={group?.title} src={group?.avatar} />
           <ButtonUploadWrapper>
             <Input
               accept="image/*"

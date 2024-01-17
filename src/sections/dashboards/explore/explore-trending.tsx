@@ -49,15 +49,15 @@ export const ExploreTrending = () => {
           </Typography>
 
           <Stack direction={'column'} spacing={1}>
-            <TrendingNewsItem />
-            <TrendingNewsItem />
-            <TrendingNewsItem />
-            <TrendingNewsItem />
+            <TrendingNewsItem content="Bất đẳng thức Cauchy" />
+            <TrendingNewsItem content="HSG Quốc gia" />
+            <TrendingNewsItem content="Giao thoa sóng" />
+            <TrendingNewsItem content="Sinh học 10" />
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <Stack direction={'column'} spacing={1}>
-                <TrendingNewsItem />
-                <TrendingNewsItem />
-                <TrendingNewsItem />
+                <TrendingNewsItem content="Toán 12" />
+                <TrendingNewsItem content="Đề thi GDCD" />
+                <TrendingNewsItem content="Pascal khó" />
               </Stack>
             </Collapse>
             <Stack justifyContent={'center'} direction={'row'}>
@@ -69,11 +69,11 @@ export const ExploreTrending = () => {
               >
                 {!expanded ? (
                   <Typography variant="h4" color={'primary'}>
-                    Show more
+                    Xem thêm
                   </Typography>
                 ) : (
                   <Typography variant="h4" color={'primary'}>
-                    Hide
+                    Ẩn
                   </Typography>
                 )}
               </ExpandMore>
