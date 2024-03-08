@@ -88,7 +88,6 @@ const CardCoverAction = styled(Box)(
 const ProfileCover = ({ user: user }: { user: UserDetail }) => {
   const [isFollowed, setIsFollowed] = useState<boolean | null>(false);
 
-  const router = useRouter();
   const followUserApi = useFunction(UsersApi.followUser);
   const followListApi = useFunction(UsersApi.followList);
   const { user: currentUser } = useAuth();
@@ -100,34 +99,25 @@ const ProfileCover = ({ user: user }: { user: UserDetail }) => {
     }
   };
 
+  const getFollowList = async () => {
+    const followList = await followListApi.call(null);
+    if (
+      followList.data.userFolloweds.user.some(
+        (followed) => followed.id === user.id
+      )
+    ) {
+      setIsFollowed(true);
+    }
+  };
+
   useEffect(() => {
-    const getFollowList = async () => {
-      const followList = await followListApi.call(null);
-      if (
-        followList.data.userFolloweds.user.some(
-          (followed) => followed.id === user.id
-        )
-      ) {
-        setIsFollowed(true);
-      }
-    };
-    getFollowList();
+    if (currentUser.id !== user.id) {
+      getFollowList();
+    }
   }, []);
 
   return (
     <>
-      <Box display="flex" mb={3}>
-        <Tooltip arrow placement="top" title="Go back">
-          <IconButton
-            color="primary"
-            onClick={() => {
-              router.back();
-            }}
-          >
-            <ArrowBackTwoToneIcon />
-          </IconButton>
-        </Tooltip>
-      </Box>
       <CardCover>
         <CardMedia image={user?.avatar} />
         <CardCoverAction>
@@ -182,7 +172,6 @@ const ProfileCover = ({ user: user }: { user: UserDetail }) => {
         justifyContent={'space-between'}
         py={2}
         pl={2}
-        mb={3}
       >
         <Typography gutterBottom variant="h4">
           {user?.name}

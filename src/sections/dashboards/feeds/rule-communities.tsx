@@ -8,7 +8,7 @@ export const RuleCommunities = () => {
         <Stack spacing={1}>
           <Stack direction={'row'} alignItems={'center'} spacing={2}>
             <Typography variant="h5">
-              Khi đăng bài ở nền tảng EduConnect của chúng tôi:
+              Khi đăng bài ở nền tảng EduConnect:
             </Typography>
           </Stack>
           <Divider />
@@ -26,10 +26,6 @@ export const RuleCommunities = () => {
           <Divider />
           <Typography variant="h6">
             4. Hãy tìm kiếm những bài đăng trùng lặp nếu có.
-          </Typography>
-          <Divider />
-          <Typography variant="h6">
-            5. Hãy đọc quy tắc và tiêu chuẩn cộng đồng của chúng tôi.
           </Typography>
         </Stack>
       </Paper>
