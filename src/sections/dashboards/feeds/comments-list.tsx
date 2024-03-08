@@ -1,6 +1,14 @@
 import { useAuth } from '@/hooks/use-auth';
 import { PostDetail } from '@/types/post';
-import { Avatar, Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Button,
+  Link,
+  Stack,
+  TextField,
+  Typography
+} from '@mui/material';
 import React from 'react';
 
 export const CommentsList = ({ post }: { post: PostDetail }) => {
@@ -8,24 +16,6 @@ export const CommentsList = ({ post }: { post: PostDetail }) => {
 
   return (
     <>
-      <Stack sx={{ pb: 1 }} direction={'row'} spacing={2}>
-        <Avatar
-          component={Link}
-          variant="rounded"
-          alt={user.name}
-          src={user.avatar}
-          href={'/management/profile'}
-        />
-        <Stack width={1} direction={'row'}>
-          <TextField
-            placeholder="Bạn nghĩ gì?"
-            multiline
-            sx={{ width: 7 / 8 }}
-          />
-
-          <Button>Bình luận</Button>
-        </Stack>
-      </Stack>
       <Stack direction={'column'} width={1} spacing={2}>
         {post.comment.map((item, index) => {
           return (

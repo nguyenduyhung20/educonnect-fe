@@ -1,7 +1,7 @@
 import type { FC, ReactNode } from 'react';
 import { createContext, useCallback, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
-import { UsersApi } from 'src/api/users';
+import { UsersApi } from '@/api/users';
 import type { User } from 'src/types/user';
 import { Issuer } from 'src/utils/auth';
 import CookieHelper, { CookieKeys } from 'src/utils/cookie-helper';
@@ -50,6 +50,7 @@ type SignUpAction = {
     user: User;
   };
 };
+
 
 type SignOutAction = {
   type: ActionType.SIGN_OUT;
@@ -274,3 +275,4 @@ AuthProvider.propTypes = {
 };
 
 export const AuthConsumer = AuthContext.Consumer;
+
