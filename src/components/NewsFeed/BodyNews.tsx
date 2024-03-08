@@ -61,6 +61,20 @@ export const BodyNews = ({ post, type }: { post: Post; type: TypePost }) => {
           </IconButton>
         }
       />
+      <CardContent>
+        <Stack spacing={1}>
+          <Typography variant="h4" style={{ whiteSpace: 'pre-line' }}>
+            {post.title}
+          </Typography>
+          <Link
+            href={!isAuthenticated ? `/login` : `/communities/home/${post.id}`}
+          >
+            <Typography variant="subtitle1" style={{ whiteSpace: 'pre-line' }}>
+              Chi tiết bài viết
+            </Typography>
+          </Link>
+        </Stack>
+      </CardContent>
       <CardMedia>
         <NextLink
           href={!isAuthenticated ? `/login` : `/communities/home/${post.id}`}
@@ -83,11 +97,6 @@ export const BodyNews = ({ post, type }: { post: Post; type: TypePost }) => {
         </NextLink>
       </CardMedia>
 
-      <CardContent>
-        <Typography variant="h6" style={{ whiteSpace: 'pre-line' }}>
-          {post.content}
-        </Typography>
-      </CardContent>
       <CardActions>
         <Box
           sx={{

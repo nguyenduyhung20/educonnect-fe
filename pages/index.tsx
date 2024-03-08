@@ -29,7 +29,6 @@ function CommunitiesHome() {
       <Head>
         <title>EduConnect</title>
       </Head>
-      <PageTitleWrapper>{user ? <PageHeader /> : <></>}</PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid
           container
@@ -37,6 +36,7 @@ function CommunitiesHome() {
           justifyContent="center"
           alignItems="stretch"
           spacing={3}
+          mt={2}
         >
           <Grid item xs={12} md={7}>
             <CreateNewsFeed />
