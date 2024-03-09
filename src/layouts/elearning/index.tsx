@@ -9,6 +9,7 @@ import { io } from 'socket.io-client';
 import useAppSnackbar from '@/hooks/use-app-snackbar';
 import { useNotificationContext } from '@/contexts/notification/noti-context';
 import { NotiData } from '@/types/noti';
+import router from 'next/router';
 
 interface ElearningLayoutProps {
   children?: ReactNode;
@@ -57,6 +58,9 @@ const ElearningLayout: FC<ElearningLayoutProps> = ({ children }) => {
       return () => {
         // Cleanup logic (disconnect socket) if needed
       };
+    } else {
+      console.log("layout: ", isAuthenticated);
+      router.push('/login')
     }
   }, [isAuthenticated, user]);
 
