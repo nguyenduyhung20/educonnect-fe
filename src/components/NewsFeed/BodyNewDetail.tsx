@@ -1,25 +1,29 @@
 import {
   Avatar,
   Box,
+  Button,
   Card,
   CardActions,
   CardContent,
   CardHeader,
   CardMedia,
   Stack,
+  TextField,
   Typography
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import ClearIcon from '@mui/icons-material/Clear';
 import IconButton from '@mui/material/IconButton';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 import Link from '../Link';
-import { PostDetail, TypePost } from '@/types/post';
+import { Post, PostDetail, TypePost } from '@/types/post';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { CommentsList } from '@/sections/dashboards/feeds/comments-list';
 import { usePostsContext } from '@/contexts/posts/posts-context';
 import { useAuth } from '@/hooks/use-auth';
+import useFunction from '@/hooks/use-function';
+import { useFormik } from 'formik';
 
 export const BodyNewDetail = ({
   post,
@@ -33,6 +37,39 @@ export const BodyNewDetail = ({
   const { reactPost } = usePostsContext();
 
   const { user } = useAuth();
+
+  const formik = useFormik<Partial<Post> & { uploadedFiles: File[] }>({
+    initialValues: {
+      title: '',
+      content: '',
+      uploadedFiles: null
+    },
+    onSubmit: async (values) => {
+      const { error } = await handleSubmitHelper.call(values);
+      if (!error) {
+        formik.setValues({
+          title: '',
+          content: '',
+          uploadedFiles: null
+        });
+      }
+    }
+  });
+
+  const onSubmit = useCallback(
+    async (values: Partial<Post> & { uploadedFiles: File[] }) => {
+      try {
+        // await createPost(values);
+      } catch (error) {
+        throw error;
+      }
+    },
+    []
+  );
+
+  const handleSubmitHelper = useFunction(onSubmit, {
+    successMessage: 'Thêm thành công!'
+  });
 
   return (
     <Card>
@@ -127,6 +164,25 @@ export const BodyNewDetail = ({
                 </Stack>
               </IconButton>
             </Box>
+          </Stack>
+
+          <Stack sx={{ pb: 1 }} direction={'row'} spacing={2}>
+            <Avatar
+              component={Link}
+              variant="rounded"
+              alt={user.name}
+              src={user.avatar}
+              href={'/management/profile'}
+            />
+            <Stack width={1} direction={'row'}>
+              <TextField
+                placeholder="Bạn nghĩ gì?"
+                multiline
+                sx={{ width: 7 / 8 }}
+              />
+
+              <Button>Bình luận</Button>
+            </Stack>
           </Stack>
 
           <CommentsList post={post} />

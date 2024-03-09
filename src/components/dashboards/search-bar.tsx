@@ -6,7 +6,7 @@ export const SearchBar = () => {
   return (
     <>
       <TextField
-        placeholder="Search"
+        placeholder="Tìm kiếm"
         sx={{ width: 1 }}
         InputProps={{
           startAdornment: (
