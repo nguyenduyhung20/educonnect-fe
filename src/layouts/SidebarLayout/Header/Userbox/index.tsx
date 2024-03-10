@@ -92,7 +92,7 @@ function HeaderUserbox() {
         <Avatar variant="rounded" alt={user?.name} src={user?.avatar} />
         <Hidden mdDown>
           <UserBoxText>
-            <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{user?.name}</UserBoxLabel>
             <UserBoxDescription variant="body2">{role}</UserBoxDescription>
           </UserBoxText>
         </Hidden>
@@ -122,7 +122,7 @@ function HeaderUserbox() {
         </MenuUserBox>
         <Divider sx={{ mb: 0 }} />
         <List sx={{ p: 1 }} component="nav">
-          <NextLink href={`/management/profile/${user.id}`} passHref>
+          <NextLink href={`/management/profile/${user?.id}`} passHref>
             <ListItem button>
               <AccountBoxTwoToneIcon fontSize="small" />
               <ListItemText primary="Trang cá nhân" />

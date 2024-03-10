@@ -105,7 +105,7 @@ function Logo() {
     <LogoWrapper href="/">
       <LogoSignWrapper>
         <LogoSign>
-          <LogoSignInner />
+          {/* <LogoSignInner /> */}
         </LogoSign>
       </LogoSignWrapper>
       <Box

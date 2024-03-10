@@ -9,6 +9,7 @@ import { io } from 'socket.io-client';
 import useAppSnackbar from '@/hooks/use-app-snackbar';
 import { useNotificationContext } from '@/contexts/notification/noti-context';
 import { NotiData } from '@/types/noti';
+import router from 'next/router';
 
 interface ElearningLayoutProps {
   children?: ReactNode;
@@ -45,18 +46,21 @@ const ElearningLayout: FC<ElearningLayoutProps> = ({ children }) => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      const socket = io(process.env.NEXT_PUBLIC_API_NOTIFICATION);
-      socket.emit('newUser', `${user.id}`);
-      socket.on('getNotification', (data: NotiData) => {
-        handleNotifyFunction.current?.(data);
-      });
-      socket.on('disconnect', () => {
-        // undefined
-      });
+      // const socket = io(process.env.NEXT_PUBLIC_API_NOTIFICATION);
+      // socket.emit('newUser', `${user.id}`);
+      // socket.on('getNotification', (data: NotiData) => {
+      //   handleNotifyFunction.current?.(data);
+      // });
+      // socket.on('disconnect', () => {
+      //   // undefined
+      // });
 
       return () => {
         // Cleanup logic (disconnect socket) if needed
       };
+    } else {
+      console.log("layout: ", isAuthenticated);
+      router.push('/login')
     }
   }, [isAuthenticated, user]);
 
@@ -93,8 +97,8 @@ const ElearningLayout: FC<ElearningLayoutProps> = ({ children }) => {
         <Sidebar />
         <Box
           sx={{
-            position: 'relative',
-            zIndex: 5,
+            position: 'static',
+            zIndex: 10,
             display: 'block',
             flex: 1,
             pt: `${theme.header.height}`,
