@@ -20,7 +20,7 @@ import { theme } from './theme';
 import type { ExternalEventTypes, Options } from '@toast-ui/calendar';
 import Calendar from '@toast-ui/react-calendar';
 import useFunction from '@/hooks/use-function';
-import { CalendarApi } from '@/api/calendar';
+import { CalendarApi } from '@/api/elearning/calendar';
 type ViewType = 'month' | 'week' | 'day';
 
 // Lần đầu load sẽ chưa load được ngày, hàm này để hiện thị tạm tuần hiện tại :v
