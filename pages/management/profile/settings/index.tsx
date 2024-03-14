@@ -1,8 +1,6 @@
 import { useState, ChangeEvent } from 'react';
 import Head from 'next/head';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import PageHeader from '@/sections/management/user/settings/PageHeader';
-import PageTitleWrapper from '@/components/PageTitleWrapper';
 import { Container, Tabs, Tab, Grid } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -38,9 +36,6 @@ function ManagementUserSettings() {
       <Head>
         <title>User Settings - Applications</title>
       </Head>
-      <PageTitleWrapper>
-        <PageHeader />
-      </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid
           container
@@ -48,6 +43,7 @@ function ManagementUserSettings() {
           justifyContent="center"
           alignItems="stretch"
           spacing={3}
+          mt={2}
         >
           <Grid item xs={12}>
             <TabsWrapper

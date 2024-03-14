@@ -205,7 +205,7 @@ function CalendarComponent() {
       // @ts-ignore
       start: changes.start?.toDate(),
       // @ts-ignore
-      end: changes.end?.toDate(),
+      end: changes.end?.toDate()
     };
 
     try {

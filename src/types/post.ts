@@ -13,7 +13,7 @@ export interface Post {
   fileContent: string[];
 }
 
-export type TypePost = 'hotpost' | 'newsfeed' | 'group' | 'profile' | 'detail';
+export type TypePost = 'newsfeed' | 'group' | 'profile' | 'detail';
 
 export interface PostDetail extends Post {
   comment: Post[];

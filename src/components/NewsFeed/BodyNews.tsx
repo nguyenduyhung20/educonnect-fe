@@ -10,7 +10,7 @@ import {
   Stack,
   Typography
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ClearIcon from '@mui/icons-material/Clear';
 import IconButton from '@mui/material/IconButton';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -23,21 +23,46 @@ import { useRouter } from 'next/router';
 import { usePostsContext } from '@/contexts/posts/posts-context';
 import NextLink from 'next/link';
 
-export const BodyNews = ({ post, type }: { post: Post; type: TypePost }) => {
+export const BodyNews = ({
+  post,
+  type,
+  isLast,
+  newLimit
+}: {
+  post: Post;
+  type: TypePost;
+  isLast: boolean;
+  newLimit: () => void;
+}) => {
   const { isAuthenticated, user } = useAuth();
-  const [isLiked, setIsLiked] = useState(post.userInteract ? true : false);
+  const [isLiked, setIsLiked] = useState(post?.userInteract ? true : false);
   const router = useRouter();
   const { reactPost } = usePostsContext();
 
+  const newsFeedRef = useRef();
+
+  useEffect(() => {
+    if (!newsFeedRef?.current) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (isLast && entry.isIntersecting) {
+        newLimit();
+        observer.unobserve(entry.target);
+      }
+    });
+
+    observer.observe(newsFeedRef.current);
+  }, [isLast]);
+
   return (
-    <Card>
+    <Card ref={newsFeedRef}>
       <CardHeader
         avatar={
           <Avatar
             component={Link}
             variant="rounded"
-            alt={post.user.name}
-            src={post.user.avatar}
+            alt={post?.user.name}
+            src={post?.user.avatar}
             href={'/management/profile'}
           />
         }
@@ -45,13 +70,13 @@ export const BodyNews = ({ post, type }: { post: Post; type: TypePost }) => {
           <Typography
             variant="h4"
             component={Link}
-            href={`/management/profile/${post.user.id}`}
+            href={`/management/profile/${post?.user.id}`}
             sx={{
               color: 'black',
               '&:hover': { textDecoration: 'underline' }
             }}
           >
-            {post.user.name}
+            {post?.user.name}
           </Typography>
         }
         subheader="17 phút"
@@ -64,10 +89,10 @@ export const BodyNews = ({ post, type }: { post: Post; type: TypePost }) => {
       <CardContent>
         <Stack spacing={1}>
           <Typography variant="h4" style={{ whiteSpace: 'pre-line' }}>
-            {post.title}
+            {post?.title}
           </Typography>
           <Link
-            href={!isAuthenticated ? `/login` : `/communities/home/${post.id}`}
+            href={!isAuthenticated ? `/login` : `/communities/home/${post?.id}`}
           >
             <Typography variant="subtitle1" style={{ whiteSpace: 'pre-line' }}>
               Chi tiết bài viết
