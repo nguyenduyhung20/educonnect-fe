@@ -26,6 +26,7 @@ const CommunitiesGroups = () => {
   }, [router.query.groupID]);
 
   const listNewsFeeds = useMemo(() => {
+    
     return getPostByGroupId.data?.data || [];
   }, [getPostByGroupId]);
 

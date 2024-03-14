@@ -17,13 +17,8 @@ export class PostsApi {
     return response;
   }
 
-  static async getHotPosts(): Promise<{ data: Post[] }> {
+  static async getPublicPosts(): Promise<{ data: Post[] }> {
     const response = await apiGet(`/public/hot-post`);
-    return response;
-  }
-
-  static async getHotPostsByUserID(): Promise<{ data: Post[] }> {
-    const response = await apiGet(`/user/hot-post`);
     return response;
   }
 

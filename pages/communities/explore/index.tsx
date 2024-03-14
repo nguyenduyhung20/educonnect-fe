@@ -2,8 +2,6 @@ import Head from 'next/head';
 
 import SidebarLayout from '@/layouts/SidebarLayout';
 
-// import PageHeader from '@/sections/Dashboards/Crypto/PageHeader';
-// import PageTitleWrapper from '@/components/PageTitleWrapper';
 import {  Container, Grid } from '@mui/material';
 
 import { ExploreTrending } from '@/sections/dashboards/explore/explore-trending';

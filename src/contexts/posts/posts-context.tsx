@@ -3,7 +3,10 @@ import {
   ReactNode,
   useCallback,
   useEffect,
-  useContext
+  useContext,
+  useRef,
+  MutableRefObject,
+  useMemo
 } from 'react';
 
 import useFunction, {
@@ -17,13 +20,17 @@ import { useAuth } from '@/hooks/use-auth';
 import { getFormData } from '@/utils/api-request';
 import { useGroupsContext } from '../groups/groups-context';
 import { useUserContext } from '../user/user-context';
+import { filterSameElement } from '@/utils/filter-same-element';
 
 interface ContextValue {
   getPostsApi: UseFunctionReturnType<FormData, { data: Post[] }>;
   getNewsFeedApi: UseFunctionReturnType<{ id: number }, { data: Post[] }>;
-  getHotPostsApi: UseFunctionReturnType<FormData, { data: Post[] }>;
+  getPublicPostsApi: UseFunctionReturnType<FormData, { data: Post[] }>;
   getDetailPostApi: UseFunctionReturnType<{ id: number }, { data: PostDetail }>;
-  getHotPostsApiByUserID: UseFunctionReturnType<FormData, { data: Post[] }>;
+
+  newsfeedCurrent: TypePost;
+
+  currentNewsFeedPosts: MutableRefObject<Post[]>;
 
   reactPost: (
     request: { id: number; type: string },
@@ -47,9 +54,12 @@ interface ContextValue {
 export const PostsContext = createContext<ContextValue>({
   getPostsApi: DEFAULT_FUNCTION_RETURN,
   getNewsFeedApi: DEFAULT_FUNCTION_RETURN,
-  getHotPostsApi: DEFAULT_FUNCTION_RETURN,
+  getPublicPostsApi: DEFAULT_FUNCTION_RETURN,
   getDetailPostApi: DEFAULT_FUNCTION_RETURN,
-  getHotPostsApiByUserID: DEFAULT_FUNCTION_RETURN,
+
+  newsfeedCurrent: 'newsfeed',
+
+  currentNewsFeedPosts: { current: [] },
 
   reactPost: async () => {},
   createPost: async () => {},
@@ -64,14 +74,16 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
 
   const getNewsFeedApi = useFunction(PostsApi.getNewsFeed);
 
-  const getHotPostsApi = useFunction(PostsApi.getHotPosts);
-
-  const getHotPostsApiByUserID = useFunction(PostsApi.getHotPostsByUserID);
+  const getPublicPostsApi = useFunction(PostsApi.getPublicPosts);
 
   const getDetailPostApi = useFunction(PostsApi.getPostsByID);
 
   const { getPostByGroupId } = useGroupsContext();
   const { getUsersProfile } = useUserContext();
+
+  let newsfeedCurrent: TypePost = 'newsfeed';
+
+  const currentNewsFeedPosts = useRef<Post[]>([]);
 
   const createPost = useCallback(
     async (request: Partial<Post> & { uploadedFiles: File[] }) => {
@@ -79,7 +91,6 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
         const response = await PostsApi.postPost(getFormData(request));
         if (response) {
           getNewsFeedApi.call({ id: user?.id || 0 });
-          getHotPostsApiByUserID.call(new FormData());
         }
       } catch (error) {
         throw error;
@@ -131,22 +142,6 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
             getNewsFeedApi.setData({
               data: [...newData]
             });
-          } else if (type == 'hotpost') {
-            const newData = getHotPostsApiByUserID.data.data.map((item) => {
-              if (item.id == request.id) {
-                return {
-                  ...item,
-                  interactCount:
-                    action == 'like'
-                      ? item.interactCount + 1
-                      : item.interactCount - 1
-                };
-              }
-              return item;
-            });
-            getHotPostsApiByUserID.setData({
-              data: [...newData]
-            });
           } else if (type == 'group') {
             // If user doesn't pass value, we don't process.
             const newData = getPostByGroupId.data.data.map((item) => {
@@ -165,7 +160,6 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
               data: [...newData]
             });
           } else if (type == 'profile') {
-            console.log(getUsersProfile.data);
             const newData = getUsersProfile.data?.data.newsfeed.map((item) => {
               if (item.id == request.id) {
                 return {
@@ -190,13 +184,7 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
         throw error;
       }
     },
-    [
-      getDetailPostApi,
-      getHotPostsApiByUserID,
-      getNewsFeedApi,
-      getPostByGroupId,
-      getUsersProfile
-    ]
+    [getDetailPostApi, getNewsFeedApi, getPostByGroupId, getUsersProfile]
   );
 
   const updatePost = useCallback(
@@ -226,22 +214,38 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (isAuthenticated) {
       getNewsFeedApi.call({ id: user?.id || 0 });
-      getHotPostsApiByUserID.call(new FormData());
     } else {
-      getHotPostsApi.call(getFormData({}));
+      getPublicPostsApi.call(getFormData({}));
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useMemo(() => {
+    const currentPosts = currentNewsFeedPosts.current;
+    if (isAuthenticated) {
+      const newPosts = filterSameElement(
+        getNewsFeedApi.data?.data || [],
+        currentPosts
+      );
+      currentNewsFeedPosts.current = [...currentPosts, ...(newPosts || [])];
+    } else {
+      const newPosts = filterSameElement(
+        getPublicPostsApi.data?.data || [],
+        currentPosts
+      );
+      currentNewsFeedPosts.current = [...currentPosts, ...(newPosts || [])];
+    }
+  }, [getNewsFeedApi, getPublicPostsApi]);
 
   return (
     <PostsContext.Provider
       value={{
         getPostsApi,
         getNewsFeedApi,
-        getHotPostsApi,
+        getPublicPostsApi,
         getDetailPostApi,
-        getHotPostsApiByUserID,
+        newsfeedCurrent,
+        currentNewsFeedPosts,
 
         reactPost,
         createPost,
