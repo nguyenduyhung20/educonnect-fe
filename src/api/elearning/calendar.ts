@@ -3,18 +3,18 @@ import { apiGet, apiPost, apiDelete, apiPatch } from 'src/utils/api-request';
 
 export class CalendarApi {
   static async postCalendar(request: Partial<EventObject>): Promise<Partial<EventObject>> {
-    return await apiPost('/calendar', request);
+    return await apiPost('/elearning/calendar', request);
   }
 
   static async getCalendars(): Promise<Partial<EventObject>> {
-    return await apiGet(`/calendar`);
+    return await apiGet(`/elearning/calendar`);
   }
 
   static async updateCalendar(request) {
-    return await apiPatch(`/calendar/${request.id}`, request);
+    return await apiPatch(`/elearning/calendar/${request.id}`, request);
   }
 
   static async deleteCalendar(id: number) {
-    return await apiDelete(`/calendar/${id}`, {});
+    return await apiDelete(`/elearning/calendar/${id}`, {});
   }
 }
