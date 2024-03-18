@@ -1,4 +1,3 @@
-import { BodyNewDetail } from '@/components/NewsFeed/BodyNewDetail';
 import { BodyNews } from '@/components/NewsFeed/BodyNews';
 import { usePostsContext } from '@/contexts/posts/posts-context';
 import { useAuth } from '@/hooks/use-auth';
@@ -6,6 +5,7 @@ import { Post, PostDetail, TypePost } from '@/types/post';
 import { getFormData } from '@/utils/api-request';
 import { Stack } from '@mui/material';
 import React from 'react';
+import { BodyNewsDetail } from '@/components/NewsFeed/BodyNewsDetail';
 
 export const NewsFeed = ({
   listNewsFeeds,
@@ -22,7 +22,7 @@ export const NewsFeed = ({
     <Stack direction={'column'} spacing={2}>
       {listNewsFeeds.map((newsfeed, index) => {
         return detail ? (
-          newsfeed && <BodyNewDetail post={newsfeed} key={index} type={type} />
+          newsfeed && <BodyNewsDetail post={newsfeed} key={index} type={type} />
         ) : (
           <BodyNews
             post={newsfeed}

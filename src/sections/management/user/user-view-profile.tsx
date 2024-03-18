@@ -1,11 +1,11 @@
 import ProfileCover from '@/sections/management/user/details/ProfileCover';
 import RecentActivity from '@/sections/management/user/details/RecentActivity';
-import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
 import { Grid, Stack } from '@mui/material';
 import React from 'react';
 import { UserProfile } from '@/types/user';
 import { useAuth } from '@/hooks/use-auth';
 import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
+import { ExploreTrendingSection } from '@/sections/dashboards/explore/explore-trending-section';
 
 export const UserViewProfile = ({ userData }: { userData: UserProfile }) => {
   const { user } = useAuth();
@@ -30,10 +30,8 @@ export const UserViewProfile = ({ userData }: { userData: UserProfile }) => {
         </Grid>
         <Grid item xs={12} md={5}>
           <Stack spacing={3}>
-            <TrendingNews />
-            {user.id == userData.user.id && (
-              <RecentActivity />
-            )}
+            <ExploreTrendingSection />
+            {user.id == userData.user.id && <RecentActivity />}
           </Stack>
         </Grid>
       </Grid>

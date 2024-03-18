@@ -25,7 +25,7 @@ import { useAuth } from '@/hooks/use-auth';
 import useFunction from '@/hooks/use-function';
 import { useFormik } from 'formik';
 
-export const BodyNewDetail = ({
+export const BodyNewsDetail = ({
   post,
   type
 }: {
