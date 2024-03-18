@@ -4,10 +4,11 @@ import SidebarLayout from '@/layouts/SidebarLayout';
 
 import { Container, Grid } from '@mui/material';
 
-import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
 import { CreateNewsFeed } from '@/sections/dashboards/feeds/create-news-feed';
 import PostsProvider, { usePostsContext } from '@/contexts/posts/posts-context';
 import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
+import { ExploreTrendingSection } from '@/sections/dashboards/explore/explore-trending-section';
+import ExplorePostsProvider from '@/contexts/explore/explore-context';
 
 function CommunitiesHome() {
   const { currentNewsFeedPosts } = usePostsContext();
@@ -35,7 +36,7 @@ function CommunitiesHome() {
             />
           </Grid>
           <Grid item xs={12} md={4}>
-            <TrendingNews />
+            <ExploreTrendingSection />
           </Grid>
         </Grid>
       </Container>
@@ -45,7 +46,9 @@ function CommunitiesHome() {
 
 CommunitiesHome.getLayout = (page) => (
   <SidebarLayout>
-    <PostsProvider>{page}</PostsProvider>
+    <ExplorePostsProvider>
+      <PostsProvider>{page} </PostsProvider>
+    </ExplorePostsProvider>
   </SidebarLayout>
 );
 

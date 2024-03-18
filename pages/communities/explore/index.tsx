@@ -2,10 +2,12 @@ import Head from 'next/head';
 
 import SidebarLayout from '@/layouts/SidebarLayout';
 
-import {  Container, Grid } from '@mui/material';
+import { Container, Grid } from '@mui/material';
 
-import { ExploreTrending } from '@/sections/dashboards/explore/explore-trending';
 import { ExploreWhoToFollow } from '@/sections/dashboards/explore/explore-who-to-follow';
+import ExplorePostsProvider from '@/contexts/explore/explore-context';
+import { ExploreTrending } from '@/sections/dashboards/explore/explore-trending';
+import PostsProvider from '@/contexts/posts/posts-context';
 
 function CommunitiesExplore() {
   return (
@@ -13,7 +15,7 @@ function CommunitiesExplore() {
       <Head>
         <title>EduConnect</title>
       </Head>
-      
+
       <Container maxWidth="lg">
         <Grid
           container
@@ -35,6 +37,10 @@ function CommunitiesExplore() {
   );
 }
 
-CommunitiesExplore.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
+CommunitiesExplore.getLayout = (page) => (
+  <SidebarLayout>
+    <ExplorePostsProvider>{page}</ExplorePostsProvider>
+  </SidebarLayout>
+);
 
 export default CommunitiesExplore;
