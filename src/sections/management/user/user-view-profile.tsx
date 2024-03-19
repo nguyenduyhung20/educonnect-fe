@@ -30,8 +30,8 @@ export const UserViewProfile = ({ userData }: { userData: UserProfile }) => {
         </Grid>
         <Grid item xs={12} md={5}>
           <Stack spacing={3}>
-            <ExploreTrendingSection />
             {user.id == userData.user.id && <RecentActivity />}
+            <ExploreTrendingSection />
           </Stack>
         </Grid>
       </Grid>
