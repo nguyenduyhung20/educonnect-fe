@@ -4,7 +4,17 @@ import { Group, Member } from '@/types/groups';
 import { Post } from '@/types/post';
 
 export class GroupsApi {
-  static async postGroup(request: Omit<Group, 'id'>): Promise<string> {
+  static async getGroupsUserJoin(id: number): Promise<{ data: Group[] }> {
+    const response = await apiGet(`/user/${id}/join-group`, {});
+    return response;
+  }
+
+  static async getGroupsUserHost(id: number): Promise<{ data: Group[] }> {
+    const response = await apiGet(`/user/${id}/host-group`, {});
+    return response;
+  }
+
+  static async postGroup(request: FormData): Promise<string> {
     return await apiPost('/group', request);
   }
 
@@ -18,12 +28,16 @@ export class GroupsApi {
     return response;
   }
 
-  static async getGroupsByID(request: { id: number }): Promise<{ data: Group }> {
+  static async getGroupsByID(request: {
+    id: number;
+  }): Promise<{ data: Group }> {
     const response = await apiGet(`/group/${request.id}`);
     return response;
   }
 
-  static async getPostByGroupId(request: { id: number }): Promise<{ data: Post[] }> {
+  static async getPostByGroupId(request: {
+    id: number;
+  }): Promise<{ data: Post[] }> {
     const response = await apiGet(`/group/${request.id}/posts`);
     return response;
   }
@@ -47,7 +61,9 @@ export class GroupsApi {
     return await apiPatch(`/group/${request.groupId}/members`, request);
   }
 
-  static async checkJoinGroup(request: Member): Promise<{ data: Member}> {
-    return await apiGet(`/group/${request.groupId}/members/${request.memberId}`)
+  static async checkJoinGroup(request: Member): Promise<{ data: Member }> {
+    return await apiGet(
+      `/group/${request.groupId}/members/${request.memberId}`
+    );
   }
 }

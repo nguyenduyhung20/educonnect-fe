@@ -1,6 +1,5 @@
 import SidebarLayout from '@/layouts/SidebarLayout';
-import {  Container, Grid, Stack } from '@mui/material';
-import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
+import { Container, Grid, Stack } from '@mui/material';
 import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
 import React, { useEffect, useMemo } from 'react';
 import GroupCover from '@/sections/dashboards/groups/group-cover';
@@ -10,6 +9,8 @@ import GroupsProvider, {
 } from '@/contexts/groups/groups-context';
 import { useAuth } from '@/hooks/use-auth';
 import PostsProvider from '@/contexts/posts/posts-context';
+import { ExploreTrendingSection } from '@/sections/dashboards/explore/explore-trending-section';
+import ExplorePostsProvider from '@/contexts/explore/explore-context';
 
 const CommunitiesGroups = () => {
   const router = useRouter();
@@ -26,7 +27,6 @@ const CommunitiesGroups = () => {
   }, [router.query.groupID]);
 
   const listNewsFeeds = useMemo(() => {
-    
     return getPostByGroupId.data?.data || [];
   }, [getPostByGroupId]);
 
@@ -65,7 +65,7 @@ const CommunitiesGroups = () => {
           <Grid item xs={12} md={5}>
             {/* <PopularTags /> */}
             <Stack spacing={3}>
-              <TrendingNews />
+              <ExploreTrendingSection />
               {/* <RecentActivity /> */}
             </Stack>
           </Grid>
@@ -77,9 +77,11 @@ const CommunitiesGroups = () => {
 
 CommunitiesGroups.getLayout = (page) => (
   <SidebarLayout>
-    <GroupsProvider>
-      <PostsProvider>{page}</PostsProvider>
-    </GroupsProvider>
+    <ExplorePostsProvider>
+      <GroupsProvider>
+        <PostsProvider>{page}</PostsProvider>
+      </GroupsProvider>
+    </ExplorePostsProvider>
   </SidebarLayout>
 );
 

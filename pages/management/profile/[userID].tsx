@@ -8,6 +8,8 @@ import { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/hooks/use-auth';
 import UsersProvider, { useUserContext } from '@/contexts/user/user-context';
+import { Explicit } from '@mui/icons-material';
+import ExplorePostsProvider from '@/contexts/explore/explore-context';
 
 function ManagementUserProfile() {
   const { isAuthenticated } = useAuth();
@@ -47,7 +49,9 @@ function ManagementUserProfile() {
 
 ManagementUserProfile.getLayout = (page) => (
   <SidebarLayout>
-    <UsersProvider>{page}</UsersProvider>
+    <ExplorePostsProvider>
+      <UsersProvider>{page}</UsersProvider>
+    </ExplorePostsProvider>
   </SidebarLayout>
 );
 

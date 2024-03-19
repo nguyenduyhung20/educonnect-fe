@@ -18,25 +18,28 @@ import useFunction from '@/hooks/use-function';
 import { SearchApi } from '@/api/search';
 import { Search } from '@mui/icons-material';
 import { useRouter } from 'next/router';
-import { useGroupsContext } from '@/contexts/groups/groups-context';
-import { TypeItemGroup } from '@/types/groups';
-import { useAuth } from '@/hooks/use-auth';
+import { Group, TypeItemGroup } from '@/types/groups';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
+const ExpandMore = styled((props: ExpandMoreProps) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme }) => ({
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest
+  })
+}));
 
-export const DiscoverGroups = ({ type }: { type: TypeItemGroup }) => {
+export const DiscoverGroups = ({
+  type,
+  listGroups
+}: {
+  type: TypeItemGroup;
+  listGroups: Group[];
+}) => {
   const theme = useTheme();
-
-  const ExpandMore = styled((props: ExpandMoreProps) => {
-    const { expand, ...other } = props;
-    return <IconButton {...other} />;
-  })(({ theme }) => ({
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest
-    })
-  }));
 
   const [expanded, setExpanded] = useState(false);
   const router = useRouter();
@@ -73,18 +76,6 @@ export const DiscoverGroups = ({ type }: { type: TypeItemGroup }) => {
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setSearchValue(event.target.value);
   };
-
-  // list hot group
-  const { getHotGroups, getGroupsApi } = useGroupsContext();
-
-  const { isAuthenticated } = useAuth();
-
-  const listGroups = useMemo(() => {
-    if (isAuthenticated) {
-      return getGroupsApi.data?.data || [];
-    }
-    return getHotGroups.data?.data || [];
-  }, [getHotGroups, getGroupsApi]);
 
   return (
     <Box>
@@ -159,7 +150,7 @@ export const DiscoverGroups = ({ type }: { type: TypeItemGroup }) => {
 
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <Stack direction={'column'} spacing={3}>
-                {listGroups.slice(3, -1).map((group, index) => {
+                {listGroups.slice(4).map((group, index) => {
                   return (
                     <Stack
                       onClick={() => {

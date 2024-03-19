@@ -16,13 +16,21 @@ import { Group, Member } from '@/types/groups';
 import { GroupsApi } from '@/api/groups';
 import { Post } from '@/types/post';
 import { useAuth } from '@/hooks/use-auth';
+import { getFormData } from '@/utils/api-request';
+import { useRouter } from 'next/router';
 
 interface ContextValue {
   getGroupsApi: UseFunctionReturnType<FormData, { data: Group[] }>;
   getHotGroups: UseFunctionReturnType<FormData, { data: Group[] }>;
   getGroupsApiById: UseFunctionReturnType<{ id: number }, { data: Group }>;
   getPostByGroupId: UseFunctionReturnType<{ id: number }, { data: Post[] }>;
-  createGroup: (requests: Partial<Group>) => Promise<void>;
+  getGroupsUserHostApi: UseFunctionReturnType<number, { data: Group[] }>;
+  getGroupsUserJoinApi: UseFunctionReturnType<number, { data: Group[] }>;
+  createGroup: (
+    requests: Partial<Group> & {
+      uploadedFiles: File[];
+    }
+  ) => Promise<void>;
   joinGroup: (requests: Member) => Promise<void>;
   // updateGroup: (Group: Group) => Promise<void>;
   deleteGroup: (id: string) => Promise<void>;
@@ -33,6 +41,8 @@ export const GroupsContext = createContext<ContextValue>({
   getHotGroups: DEFAULT_FUNCTION_RETURN,
   getGroupsApiById: DEFAULT_FUNCTION_RETURN,
   getPostByGroupId: DEFAULT_FUNCTION_RETURN,
+  getGroupsUserHostApi: DEFAULT_FUNCTION_RETURN,
+  getGroupsUserJoinApi: DEFAULT_FUNCTION_RETURN,
   createGroup: async () => {},
   joinGroup: async () => {},
   // updateGroup: async () => {},
@@ -40,7 +50,9 @@ export const GroupsContext = createContext<ContextValue>({
 });
 
 const GroupsProvider = ({ children }: { children: ReactNode }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
+  const router = useRouter();
+
   const getGroupsApi = useFunction(GroupsApi.getGroups);
 
   const getHotGroups = useFunction(GroupsApi.getHotGroups);
@@ -49,17 +61,27 @@ const GroupsProvider = ({ children }: { children: ReactNode }) => {
 
   const getPostByGroupId = useFunction(GroupsApi.getPostByGroupId);
 
+  const getGroupsUserHostApi = useFunction(GroupsApi.getGroupsUserHost);
+
+  const getGroupsUserJoinApi = useFunction(GroupsApi.getGroupsUserJoin);
+
   const createGroup = useCallback(
-    async (request: Group) => {
+    async (
+      request: Group & {
+        uploadedFiles: File[];
+      }
+    ) => {
       try {
-        const response = await GroupsApi.postGroup(request);
+        const response = await GroupsApi.postGroup(getFormData(request));
+
         if (response) {
+          getGroupsUserHostApi.call(user.id);
         }
       } catch (error) {
         throw error;
       }
     },
-    [getGroupsApi]
+    [getGroupsApi, getGroupsUserHostApi, user]
   );
 
   const joinGroup = useCallback(
@@ -104,7 +126,11 @@ const GroupsProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      getGroupsApi.call(new FormData());
+      if (router.asPath == '/communities/groups') {
+        getGroupsApi.call(new FormData());
+        getGroupsUserHostApi.call(user.id);
+        getGroupsUserJoinApi.call(user.id);
+      }
     } else {
       getHotGroups.call(new FormData());
     }
@@ -118,6 +144,8 @@ const GroupsProvider = ({ children }: { children: ReactNode }) => {
         getHotGroups,
         getGroupsApiById,
         getPostByGroupId,
+        getGroupsUserHostApi,
+        getGroupsUserJoinApi,
         createGroup,
         joinGroup,
         //   updateGroup,

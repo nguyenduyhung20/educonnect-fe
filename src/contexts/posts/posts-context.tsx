@@ -21,6 +21,7 @@ import { getFormData } from '@/utils/api-request';
 import { useGroupsContext } from '../groups/groups-context';
 import { useUserContext } from '../user/user-context';
 import { filterSameElement } from '@/utils/filter-same-element';
+import { useRouter } from 'next/router';
 
 interface ContextValue {
   getPostsApi: UseFunctionReturnType<FormData, { data: Post[] }>;
@@ -198,6 +199,8 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
     [getPostsApi]
   );
 
+  const router = useRouter();
+
   const deletePost = useCallback(
     async (id: string) => {
       try {
@@ -213,7 +216,9 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      getNewsFeedApi.call({ id: user?.id || 0 });
+      if (router.asPath == '/') {
+        getNewsFeedApi.call({ id: user?.id || 0 });
+      }
     } else {
       getPublicPostsApi.call(getFormData({}));
     }
