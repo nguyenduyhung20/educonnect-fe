@@ -7,7 +7,8 @@ import {
   Avatar,
   CardMedia,
   Button,
-  IconButton
+  IconButton,
+  Stack
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -27,6 +28,9 @@ import { useDialog } from '@/hooks/use-dialog';
 
 import CheckIcon from '@mui/icons-material/Check';
 import { GroupOutDialog } from './group-out-dialog';
+import { useDrawer } from '@/hooks/use-drawer';
+import { ApproveMemberDrawer } from './group-approve-member-drawer';
+import { useGroupsContext } from '@/contexts/groups/groups-context';
 
 const Input = styled('input')({
   display: 'none'
@@ -95,10 +99,12 @@ const GroupCover = ({ group }: { group: Group }) => {
   const joinGroupApi = useFunction(GroupsApi.joinGroup);
   const leaveGroupApi = useFunction(GroupsApi.leaveGroup);
   const checkJoinGroupApi = useFunction(GroupsApi.checkJoinGroup);
+  const approveMemberDrawer = useDrawer();
+  const { getListUserApplyGroup, groupID } = useGroupsContext();
 
   const { user, isAuthenticated } = useAuth();
   const requestData: Member = {
-    memberId: user.id,
+    memberId: user?.id,
     groupId: group.id,
     role: 'user',
     status: 'pending'
@@ -129,6 +135,12 @@ const GroupCover = ({ group }: { group: Group }) => {
       }
     }
   }, [user]);
+
+  useEffect(() => {
+    if (member?.role == 'admin' && user) {
+      getListUserApplyGroup.call({ userId: user?.id, groupId: groupID });
+    }
+  }, [member, groupID, user]);
 
   const outGroupDialog = useDialog();
 
@@ -187,7 +199,7 @@ const GroupCover = ({ group }: { group: Group }) => {
 
         <Box py={2} px={2} sx={{ mt: { xs: 0, sm: 1 } }}>
           {member?.status ? (
-            <Box>
+            <Stack spacing={1}>
               <Button
                 startIcon={
                   member.status === 'active' ? (
@@ -202,7 +214,18 @@ const GroupCover = ({ group }: { group: Group }) => {
               >
                 {ViMemberStatus[member.status]}
               </Button>
-            </Box>
+              {member.role == 'admin' ? (
+                <Button
+                  sx={{ width: '100%' }}
+                  onClick={() => approveMemberDrawer.handleOpen(group)}
+                  variant="outlined"
+                >
+                  {'Phê duyệt thành viên'}
+                </Button>
+              ) : (
+                <></>
+              )}
+            </Stack>
           ) : (
             <Button
               onClick={joinGroup}
@@ -230,6 +253,11 @@ const GroupCover = ({ group }: { group: Group }) => {
         onConfirm={async () => {
           joinGroup();
         }}
+      />
+
+      <ApproveMemberDrawer
+        open={approveMemberDrawer.open}
+        onClose={approveMemberDrawer.handleClose}
       />
     </>
   );

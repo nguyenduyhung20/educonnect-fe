@@ -7,7 +7,6 @@ import { Container, Grid } from '@mui/material';
 import { ExploreWhoToFollow } from '@/sections/dashboards/explore/explore-who-to-follow';
 import ExplorePostsProvider from '@/contexts/explore/explore-context';
 import { ExploreTrending } from '@/sections/dashboards/explore/explore-trending';
-import PostsProvider from '@/contexts/posts/posts-context';
 
 function CommunitiesExplore() {
   return (

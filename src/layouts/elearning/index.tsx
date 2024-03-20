@@ -47,7 +47,7 @@ const ElearningLayout: FC<ElearningLayoutProps> = ({ children }) => {
   useEffect(() => {
     if (isAuthenticated) {
       // const socket = io(process.env.NEXT_PUBLIC_API_NOTIFICATION);
-      // socket.emit('newUser', `${user.id}`);
+      // socket.emit('newUser', `${user?.id}`);
       // socket.on('getNotification', (data: NotiData) => {
       //   handleNotifyFunction.current?.(data);
       // });

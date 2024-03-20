@@ -1,14 +1,19 @@
 import { TrendingNewsItem } from '@/components/dashboards/trending-news-item';
 import { useExplorePostsContext } from '@/contexts/explore/explore-context';
+import { useAuth } from '@/hooks/use-auth';
 import { Stack, Typography } from '@mui/material';
 import React, { useMemo } from 'react';
 
 export const ExploreTrendingSection = () => {
-  const { getExplorePostsApi } = useExplorePostsContext();
+  const { getExplorePostsApi, getPublicExplorePostsApi } = useExplorePostsContext();
+  const {isAuthenticated} = useAuth()
 
   const listExplorePosts = useMemo(() => {
-    return getExplorePostsApi.data?.data || [];
-  }, [getExplorePostsApi]);
+    if (isAuthenticated) {
+    return  getExplorePostsApi.data?.data || [];
+    }
+    return getPublicExplorePostsApi.data?.data || [];
+  }, [getExplorePostsApi, getPublicExplorePostsApi]);
   return (
     <>
       <Stack spacing={2}>
