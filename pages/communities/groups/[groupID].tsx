@@ -11,26 +11,21 @@ import { useAuth } from '@/hooks/use-auth';
 import PostsProvider from '@/contexts/posts/posts-context';
 import { ExploreTrendingSection } from '@/sections/dashboards/explore/explore-trending-section';
 import ExplorePostsProvider from '@/contexts/explore/explore-context';
+import { CreateNewsFeed } from '@/sections/dashboards/feeds/create-news-feed';
 
 const CommunitiesGroups = () => {
   const router = useRouter();
-  const { getGroupsApiById } = useGroupsContext();
+  const { getGroupsApiById, getPostByGroupId, groupID } = useGroupsContext();
 
   const group = useMemo(() => {
     return getGroupsApiById.data?.data;
   }, [getGroupsApiById.data]);
 
-  const { getPostByGroupId } = useGroupsContext();
-
-  const groupID = useMemo(() => {
-    return Number(router.query.groupID);
-  }, [router.query.groupID]);
-
   const listNewsFeeds = useMemo(() => {
     return getPostByGroupId.data?.data || [];
   }, [getPostByGroupId]);
 
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -41,7 +36,7 @@ const CommunitiesGroups = () => {
         getPostByGroupId.call({ id: groupID });
       }
     }
-  }, [groupID]);
+  }, [groupID, user, isAuthenticated, router]);
   return (
     <>
       <Container sx={{ mt: 3 }} maxWidth="lg">
@@ -56,6 +51,7 @@ const CommunitiesGroups = () => {
             {group && <GroupCover group={group} />}
           </Grid>
           <Grid item xs={12} md={7}>
+            <CreateNewsFeed />
             <NewsFeed
               listNewsFeeds={listNewsFeeds}
               detail={false}

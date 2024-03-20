@@ -66,7 +66,7 @@ function EleaningScoresPage() {
 
   const getTranscript = useFunction(TranscriptApi.getTranscriptsByRole);
   useEffect(() => {
-    getTranscript.call(user.role);
+    getTranscript.call(user?.role);
   }, []);
 
   const transcripts = useMemo(() => {

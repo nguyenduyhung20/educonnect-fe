@@ -69,22 +69,22 @@ export const BodyNewsItem = ({
               <Avatar
                 component={Link}
                 variant="rounded"
-                alt={post?.user.name}
-                src={post?.user.avatar}
-                href={'/management/profile'}
+                alt={post?.user?.name}
+                src={post?.user?.avatar}
+                href={`/management/profile/${post.user?.id}`}
               />
             }
             title={
               <Typography
                 variant="h4"
                 component={Link}
-                href={`/management/profile/${post?.user.id}`}
+                href={`/management/profile/${post?.user?.id}`}
                 sx={{
                   color: 'black',
                   '&:hover': { textDecoration: 'underline' }
                 }}
               >
-                {post?.user.name}
+                {post?.user?.name}
               </Typography>
             }
             subheader="17 phút"
@@ -102,9 +102,11 @@ export const BodyNewsItem = ({
             <Typography variant="h4" style={{ whiteSpace: 'pre-line' }}>
               {post?.title}
             </Typography>
-            {!isPostType(post) && <Typography variant="h6" style={{ whiteSpace: 'pre-line' }}>
-              {post.contentSummarization}
-            </Typography> }
+            {!isPostType(post) && (
+              <Typography variant="h6" style={{ whiteSpace: 'pre-line' }}>
+                {post.contentSummarization}
+              </Typography>
+            )}
             <Link
               href={
                 !isAuthenticated ? `/login` : `/communities/home/${post?.id}`
@@ -182,9 +184,9 @@ export const BodyNewsItem = ({
                         isLiked ? 'dislike' : 'like',
                         type,
                         {
-                          senderName: user.name,
-                          senderAvatar: user.avatar,
-                          receiverID: post.user.id,
+                          senderName: user?.name,
+                          senderAvatar: user?.avatar,
+                          receiverID: post.user?.id,
                           postID: post.id,
                           itemType: 'post'
                         }

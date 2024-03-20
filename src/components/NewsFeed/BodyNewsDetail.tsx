@@ -78,22 +78,22 @@ export const BodyNewsDetail = ({
           <Avatar
             component={Link}
             variant="rounded"
-            alt={post.user.name}
-            src={post.user.avatar}
-            href={'/management/profile'}
+            alt={post.user?.name}
+            src={post.user?.avatar}
+            href={`/management/profile/${post.user?.id}`}
           />
         }
         title={
           <Typography
             variant="h4"
             component={Link}
-            href={`/management/profile/${post.user.id}`}
+            href={`/management/profile/${post.user?.id}`}
             sx={{
               color: 'black',
               '&:hover': { textDecoration: 'underline' }
             }}
           >
-            {post.user.name}
+            {post.user?.name}
           </Typography>
         }
         subheader="17 phút"
@@ -133,9 +133,9 @@ export const BodyNewsDetail = ({
                     isLiked ? 'dislike' : 'like',
                     type,
                     {
-                      senderName: user.name,
-                      senderAvatar: user.avatar,
-                      receiverID: post.user.id,
+                      senderName: user?.name,
+                      senderAvatar: user?.avatar,
+                      receiverID: post.user?.id,
                       itemType: 'post',
                       postID: post.id
                     }
@@ -170,9 +170,9 @@ export const BodyNewsDetail = ({
             <Avatar
               component={Link}
               variant="rounded"
-              alt={user.name}
-              src={user.avatar}
-              href={'/management/profile'}
+              alt={user?.name}
+              src={user?.avatar}
+              href={`/management/profile${user?.id}`}
             />
             <Stack width={1} direction={'row'}>
               <TextField

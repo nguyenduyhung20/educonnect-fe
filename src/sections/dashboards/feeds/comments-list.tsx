@@ -23,8 +23,8 @@ export const CommentsList = ({ post }: { post: PostDetail }) => {
               <Avatar
                 component={Link}
                 variant="rounded"
-                alt={item.user.name}
-                src={item.user.avatar}
+                alt={item.user?.name}
+                src={item.user?.avatar}
                 href={'/management/profile'}
               />
               <Stack sx={{ width: 1 }}>
@@ -40,7 +40,7 @@ export const CommentsList = ({ post }: { post: PostDetail }) => {
                         pl: 1
                       }}
                     >
-                      {item.user.name}
+                      {item.user?.name}
                     </Typography>
                   </Box>
 

@@ -181,7 +181,7 @@ function HeaderSearch() {
             </Box>
             <div className='flex flex-col'>
               {searchResult && searchResult.map((user) => (
-              <div key={user.id}>{user.name}</div>
+              <div key={user?.id}>{user?.name}</div>
             ))}
             </div>
             

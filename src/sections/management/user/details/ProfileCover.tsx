@@ -3,7 +3,6 @@ import {
   Box,
   Typography,
   Card,
-  Tooltip,
   Avatar,
   CardMedia,
   Button,
@@ -11,10 +10,8 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
 import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
 import { UserDetail } from '@/types/user';
-import { useRouter } from 'next/router';
 import { Check } from '@mui/icons-material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import useFunction from '@/hooks/use-function';
@@ -93,7 +90,7 @@ const ProfileCover = ({ user: user }: { user: UserDetail }) => {
   const { user: currentUser } = useAuth();
 
   const handleUserFollow = async () => {
-    const response = await followUserApi.call({ userId: user.id });
+    const response = await followUserApi.call({ userId: user?.id });
     if (response) {
       setIsFollowed(true);
     }
@@ -102,8 +99,8 @@ const ProfileCover = ({ user: user }: { user: UserDetail }) => {
   const getFollowList = async () => {
     const followList = await followListApi.call(null);
     if (
-      followList.data.userFolloweds.user.some(
-        (followed) => followed.id === user.id
+      followList.data.userFolloweds.user?.some(
+        (followed) => followed.id === user?.id
       )
     ) {
       setIsFollowed(true);
@@ -111,7 +108,7 @@ const ProfileCover = ({ user: user }: { user: UserDetail }) => {
   };
 
   useEffect(() => {
-    if (currentUser.id !== user.id) {
+    if (currentUser?.id !== user?.id) {
       getFollowList();
     }
   }, []);
@@ -152,7 +149,7 @@ const ProfileCover = ({ user: user }: { user: UserDetail }) => {
           </ButtonUploadWrapper>
         </AvatarWrapper>
 
-        {currentUser.id !== user.id && (
+        {currentUser?.id !== user?.id && (
           <Box mt={2} mx={2}>
             <LoadingButton
               onClick={!isFollowed ? handleUserFollow : undefined}

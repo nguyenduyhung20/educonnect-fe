@@ -5,24 +5,42 @@ import useFunction, {
   UseFunctionReturnType
 } from 'src/hooks/use-function';
 
-import { Post, PostExplore } from '@/types/post';
+import { PostExplore } from '@/types/post';
 import { useAuth } from '@/hooks/use-auth';
 import { getFormData } from '@/utils/api-request';
 import { ExploreApi } from '@/api/explore';
 
 interface ContextValue {
   getExplorePostsApi: UseFunctionReturnType<FormData, { data: PostExplore[] }>;
+  getPublicExplorePostsApi: UseFunctionReturnType<
+    FormData,
+    { data: PostExplore[] }
+  >;
+  getUserMostFollower: UseFunctionReturnType<
+    any,
+    {
+      data: {
+        followerCount: number;
+        id: number;
+        name: string;
+        avatar: string;
+      }[];
+    }
+  >;
 }
 
 export const ExplorePostsContext = createContext<ContextValue>({
-  getExplorePostsApi: DEFAULT_FUNCTION_RETURN
+  getExplorePostsApi: DEFAULT_FUNCTION_RETURN,
+  getPublicExplorePostsApi: DEFAULT_FUNCTION_RETURN,
+  getUserMostFollower: DEFAULT_FUNCTION_RETURN
 });
 
 const ExplorePostsProvider = ({ children }: { children: ReactNode }) => {
-  const { user, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   const getExplorePostsApi = useFunction(ExploreApi.getExplorePost);
-  const getPublicExplorePostsApi = useFunction(ExploreApi.getExplorePost);
+  const getPublicExplorePostsApi = useFunction(ExploreApi.getPublicExplorePost);
+  const getUserMostFollower = useFunction(ExploreApi.getUserMostFollower);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -30,13 +48,16 @@ const ExplorePostsProvider = ({ children }: { children: ReactNode }) => {
     } else {
       getPublicExplorePostsApi.call(getFormData({}));
     }
+    getUserMostFollower.call({});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <ExplorePostsContext.Provider
       value={{
-        getExplorePostsApi
+        getExplorePostsApi,
+        getPublicExplorePostsApi,
+        getUserMostFollower
       }}
     >
       {children}
