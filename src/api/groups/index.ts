@@ -4,6 +4,11 @@ import { Group, Member, UserApplyingGroup } from '@/types/groups';
 import { Post } from '@/types/post';
 
 export class GroupsApi {
+  static async getGroupUserJoinHost(id: number): Promise<{ data: Group[] }> {
+    const response = await apiGet(`/user/${id}/host-join-group`, {});
+    return response;
+  }
+
   static async getGroupsUserJoin(id: number): Promise<{ data: Group[] }> {
     const response = await apiGet(`/user/${id}/join-group`, {});
     return response;

@@ -46,7 +46,9 @@ interface ContextValue {
     }
   ) => Promise<void>;
   createPost: (
-    requests: Partial<Post> & { uploadedFiles: File[] }
+    requests: Partial<Post> & { uploadedFiles: File[] } & {
+      type: 'post' | 'link';
+    }
   ) => Promise<void>;
   updatePost: (post: Post) => Promise<void>;
   deletePost: (id: string) => Promise<void>;
@@ -87,7 +89,11 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
   const currentNewsFeedPosts = useRef<Post[]>([]);
 
   const createPost = useCallback(
-    async (request: Partial<Post> & { uploadedFiles: File[] }) => {
+    async (
+      request: Partial<Post> & { uploadedFiles: File[] } & {
+        type: 'post' | 'link';
+      }
+    ) => {
       try {
         const response = await PostsApi.postPost(getFormData(request));
         if (response) {
