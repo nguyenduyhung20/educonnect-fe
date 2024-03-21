@@ -3,6 +3,7 @@ import { UserPost } from './user';
 export interface Post {
   id: number;
   user: UserPost;
+  groupId?: number;
   title: string;
   content: string;
   createdAt: string;

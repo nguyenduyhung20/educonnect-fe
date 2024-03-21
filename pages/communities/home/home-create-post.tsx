@@ -6,16 +6,25 @@ import {
   Container,
   Divider,
   Grid,
+  IconButton,
   InputAdornment,
   Paper,
   Stack,
   Tab,
   Tabs,
   TextField,
-  Typography
+  Typography,
+  useTheme
 } from '@mui/material';
 import Head from 'next/head';
-import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import React, {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import { CreateNewsFeedPost } from '@/sections/dashboards/feeds/create-news-feed-post';
 import { CreateNewsFeedLink } from '@/sections/dashboards/feeds/create-news-feed-link';
@@ -26,21 +35,50 @@ import useFunction from '@/hooks/use-function';
 import { RuleCommunities } from '@/sections/dashboards/feeds/rule-communities';
 import { useAuth } from '@/hooks/use-auth';
 import { useRouter } from 'next/router';
+import { GroupsApi } from '@/api/groups';
+import { GroupsInfo } from '@/sections/dashboards/groups/groups-info';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 function CreatePost() {
-  const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
+  const handleTabsChange = (
+    _event: ChangeEvent<{}>,
+    value: 'link' | 'post'
+  ): void => {
     setCurrentTab(value);
+    formik.setFieldValue('type', value);
   };
 
-  const [currentTab, setCurrentTab] = useState<string>('Post');
+  const [currentTab, setCurrentTab] = useState<'post' | 'link'>('post');
 
   const { createPost } = usePostsContext();
 
-  const formik = useFormik<Partial<Post> & { uploadedFiles: File[] }>({
+  const [images, setImages] = useState<string[]>([]);
+
+  const { isAuthenticated } = useAuth();
+
+  const router = useRouter();
+
+  const getGroupsUserJoinApi = useFunction(GroupsApi.getGroupUserJoinHost);
+
+  const { user } = useAuth();
+
+  const [isShow, setIsShow] = useState(false);
+
+  const [searchContent, setSearchContent] = useState('');
+
+  const theme = useTheme();
+
+  const searchInputRef = useRef(null);
+
+  const formik = useFormik<
+    Partial<Post> & { uploadedFiles: File[] } & { type: 'post' | 'link' }
+  >({
     initialValues: {
       title: '',
       content: '',
-      uploadedFiles: null
+      uploadedFiles: null,
+      groupId: null,
+      type: 'post'
     },
     onSubmit: async (values) => {
       const { error } = await handleSubmitHelper.call(values);
@@ -48,15 +86,23 @@ function CreatePost() {
         formik.setValues({
           title: '',
           content: '',
-          uploadedFiles: null
+          uploadedFiles: null,
+          groupId: null,
+          type: currentTab
         });
         setImages([]);
+        setSearchContent('');
+        setIsShow(false);
       }
     }
   });
 
   const onSubmit = useCallback(
-    async (values: Partial<Post> & { uploadedFiles: File[] }) => {
+    async (
+      values: Partial<Post> & { uploadedFiles: File[] } & {
+        type: 'post' | 'link';
+      }
+    ) => {
       try {
         await createPost(values);
       } catch (error) {
@@ -70,17 +116,37 @@ function CreatePost() {
     successMessage: 'Thêm thành công!'
   });
 
-  const [images, setImages] = useState<string[]>([]);
-
-  const { isAuthenticated } = useAuth();
-
-  const router = useRouter();
-
   useEffect(() => {
     if (!isAuthenticated) {
       router.push('/login');
+    } else {
+      getGroupsUserJoinApi.call(user.id);
     }
   }, []);
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (
+        searchInputRef.current &&
+        !searchInputRef.current.contains(event.target)
+      ) {
+        setIsShow(false);
+        setSearchContent('');
+      }
+    };
+
+    document.addEventListener('mousedown', handleOutsideClick);
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, []);
+
+  const listGroupsFilter = useMemo(() => {
+    return (getGroupsUserJoinApi.data?.data || []).filter((item) =>
+      item.title.toLowerCase().includes(searchContent.toLowerCase())
+    );
+  }, [searchContent, getGroupsUserJoinApi]);
 
   return (
     <>
@@ -103,19 +169,57 @@ function CreatePost() {
                 <Typography variant="h4">Tạo một bài viết</Typography>
               </Box>
               <Divider />
-              <Stack spacing={1}>
-                <TextField
-                  id="input-with-icon-textfield"
-                  label="Chọn nhóm của bạn"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchOutlined />
-                      </InputAdornment>
-                    )
-                  }}
-                  sx={{ width: 1 / 2, background: 'white' }}
-                />
+              <Stack spacing={1} ref={searchInputRef}>
+                <Stack spacing={1}>
+                  <TextField
+                    id="input-with-icon-textfield"
+                    label="Chọn nhóm của bạn"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchOutlined />
+                        </InputAdornment>
+                      )
+                    }}
+                    onClick={() => {
+                      setIsShow(true);
+                    }}
+                    sx={{ width: 1, background: 'white' }}
+                    onChange={(item) => {
+                      setSearchContent(item.target.value);
+                    }}
+                  />
+                  <Stack spacing={1} width={'100%'}>
+                    {isShow &&
+                      listGroupsFilter.map((item, index) => (
+                        <Stack
+                          key={index}
+                          direction={'row'}
+                          justifyContent={'space-between'}
+                          width={1}
+                          sx={{
+                            '&:hover': {
+                              background: `${theme.colors.primary.lighter}`,
+                              borderRadius: 1
+                            },
+                            background: 'white'
+                          }}
+                          onClick={() => {
+                            formik.setFieldValue('groupId', item.id);
+                            setSearchContent(item.title);
+                          }}
+                        >
+                          <GroupsInfo group={item} />
+                          <Box>
+                            <IconButton aria-label="settings">
+                              <MoreVertIcon />
+                            </IconButton>
+                          </Box>
+                        </Stack>
+                      ))}
+                  </Stack>
+                </Stack>
+
                 <form onSubmit={formik.handleSubmit}>
                   <Paper elevation={5} sx={{ p: 2 }}>
                     <Stack display={'flex'} spacing={2}>
@@ -126,26 +230,26 @@ function CreatePost() {
                       >
                         <Tab
                           label={'Bài viết'}
-                          value={'Post'}
+                          value={'post'}
                           icon={<PostAddIcon />}
                           iconPosition="start"
                         />
 
                         <Tab
                           label={'Link'}
-                          value={'Link'}
+                          value={'link'}
                           icon={<PostAddIcon />}
                           iconPosition="start"
                         />
                       </Tabs>{' '}
-                      {currentTab === 'Post' && (
+                      {currentTab === 'post' && (
                         <CreateNewsFeedPost
                           formik={formik}
                           images={images}
                           setImages={setImages}
                         />
                       )}
-                      {currentTab === 'Link' && (
+                      {currentTab === 'link' && (
                         <CreateNewsFeedLink formik={formik} />
                       )}
                       <Stack alignItems={'flex-end'}>
