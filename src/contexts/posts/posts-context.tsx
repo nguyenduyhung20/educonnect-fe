@@ -95,10 +95,15 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
       }
     ) => {
       try {
-        const response = await PostsApi.postPost(getFormData(request));
-        if (response) {
-          getNewsFeedApi.call({ id: user?.id || 0 });
-        }
+        const response = await PostsApi.postPost(
+          getFormData({
+            title: request.title,
+            content: request.content,
+            uploadedFiles: request.uploadedFiles ?? null,
+            groupId: request.group?.id ?? null,
+            type: request.type
+          })
+        );
       } catch (error) {
         throw error;
       }

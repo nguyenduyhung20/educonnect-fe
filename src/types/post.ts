@@ -1,9 +1,10 @@
+import { Group } from './groups';
 import { UserPost } from './user';
 
 export interface Post {
   id: number;
   user: UserPost;
-  groupId?: number;
+  group?: Pick<Group, 'id' | 'title'>;
   title: string;
   content: string;
   createdAt: string;

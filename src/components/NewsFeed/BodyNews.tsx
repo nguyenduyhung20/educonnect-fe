@@ -16,7 +16,6 @@ export const BodyNews = ({
   isLast: boolean;
   newLimit: () => void;
 }) => {
-  
   const { isAuthenticated, user } = useAuth();
   const [isLiked, setIsLiked] = useState(post?.userInteract ? true : false);
   const router = useRouter();
@@ -48,6 +47,7 @@ export const BodyNews = ({
         router={router}
         type={type}
         reactPost={reactPost}
+        newsFeedRef={newsFeedRef}
       />
     </>
   );

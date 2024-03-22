@@ -10,7 +10,7 @@ export const ExploreTrendingSection = () => {
 
   const listExplorePosts = useMemo(() => {
     if (isAuthenticated) {
-    return  getExplorePostsApi.data?.data || [];
+      return  getExplorePostsApi.data?.data || [];
     }
     return getPublicExplorePostsApi.data?.data || [];
   }, [getExplorePostsApi, getPublicExplorePostsApi]);

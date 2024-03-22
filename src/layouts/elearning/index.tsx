@@ -59,7 +59,6 @@ const ElearningLayout: FC<ElearningLayoutProps> = ({ children }) => {
         // Cleanup logic (disconnect socket) if needed
       };
     } else {
-      console.log("layout: ", isAuthenticated);
       router.push('/login')
     }
   }, [isAuthenticated, user]);

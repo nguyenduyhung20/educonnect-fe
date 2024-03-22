@@ -77,7 +77,7 @@ function CreatePost() {
       title: '',
       content: '',
       uploadedFiles: null,
-      groupId: null,
+      group: null,
       type: 'post'
     },
     onSubmit: async (values) => {
@@ -87,7 +87,7 @@ function CreatePost() {
           title: '',
           content: '',
           uploadedFiles: null,
-          groupId: null,
+          group: null,
           type: currentTab
         });
         setImages([]);
@@ -205,7 +205,10 @@ function CreatePost() {
                             background: 'white'
                           }}
                           onClick={() => {
-                            formik.setFieldValue('groupId', item.id);
+                            formik.setFieldValue('group', {
+                              id: item.id,
+                              title: item.title
+                            });
                             setSearchContent(item.title);
                           }}
                         >

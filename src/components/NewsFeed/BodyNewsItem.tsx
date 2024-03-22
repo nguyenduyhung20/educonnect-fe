@@ -84,7 +84,8 @@ export const BodyNewsItem = ({
                   '&:hover': { textDecoration: 'underline' }
                 }}
               >
-                {post?.user?.name}
+                {post?.user?.name +
+                  (post?.group ? ' -> ' + post?.group?.title : '')}
               </Typography>
             }
             subheader="17 phút"
