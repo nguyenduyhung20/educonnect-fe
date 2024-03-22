@@ -73,7 +73,6 @@ function Hero() {
           router.push('/');
         }
       } catch (error) {
-        console.log(error);
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: error.message });
         helpers.setSubmitting(false);

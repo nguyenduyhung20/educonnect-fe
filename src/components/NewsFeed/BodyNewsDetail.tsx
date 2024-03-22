@@ -24,6 +24,7 @@ import { usePostsContext } from '@/contexts/posts/posts-context';
 import { useAuth } from '@/hooks/use-auth';
 import useFunction from '@/hooks/use-function';
 import { useFormik } from 'formik';
+import SendIcon from '@mui/icons-material/Send';
 
 export const BodyNewsDetail = ({
   post,
@@ -93,7 +94,7 @@ export const BodyNewsDetail = ({
               '&:hover': { textDecoration: 'underline' }
             }}
           >
-            {post.user?.name}
+            {post.user?.name + (post?.group ? ` -> ${post.group.title}` : '')}
           </Typography>
         }
         subheader="17 phút"
@@ -174,14 +175,16 @@ export const BodyNewsDetail = ({
               src={user?.avatar}
               href={`/management/profile${user?.id}`}
             />
-            <Stack width={1} direction={'row'}>
+            <Stack width={1} direction={'row'} spacing={2}>
               <TextField
                 placeholder="Bạn nghĩ gì?"
                 multiline
                 sx={{ width: 7 / 8 }}
               />
 
-              <Button>Bình luận</Button>
+              <IconButton>
+                <SendIcon />
+              </IconButton>
             </Stack>
           </Stack>
 

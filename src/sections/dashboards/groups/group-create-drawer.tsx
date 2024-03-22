@@ -50,7 +50,6 @@ export const GroupCreateDrawer = ({
     async (values: Partial<Group> & { uploadedFiles: File[] }) => {
       try {
         await createGroup(values);
-        console.log(values);
         onClose();
       } catch (error) {
         throw error;
