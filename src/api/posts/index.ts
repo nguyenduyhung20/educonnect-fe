@@ -57,4 +57,15 @@ export class PostsApi {
       info: info
     });
   }
+
+  static async sendViewEvent({ postId }: { postId: number }) {
+    const payload = {
+      postId: postId.toString(),
+      interactionType: 'view',
+      timestamp: new Date().toISOString()
+    };
+    console.log(payload);
+
+    return await apiPost(`/event`, payload);
+  }
 }

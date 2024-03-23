@@ -4,6 +4,7 @@ import { Post, TypePost } from '@/types/post';
 import { useRouter } from 'next/router';
 import { usePostsContext } from '@/contexts/posts/posts-context';
 import { BodyNewsItem } from './BodyNewsItem';
+import { useViewEventTimer } from '@/hooks/useViewEventTimer';
 
 export const BodyNews = ({
   post,
@@ -16,17 +17,21 @@ export const BodyNews = ({
   isLast: boolean;
   newLimit: () => void;
 }) => {
-  const { isAuthenticated, user } = useAuth();
+  const newsFeedRef = useRef();
+
   const [isLiked, setIsLiked] = useState(post?.userInteract ? true : false);
-  const router = useRouter();
+
   const { reactPost } = usePostsContext();
 
-  const newsFeedRef = useRef();
+  const { isAuthenticated, user } = useAuth();
+  const router = useRouter();
+  useViewEventTimer({ post, ref: newsFeedRef });
 
   useEffect(() => {
     if (!newsFeedRef?.current) return;
 
     const observer = new IntersectionObserver(([entry]) => {
+      // Infinite scroll logic
       if (isLast && entry.isIntersecting) {
         newLimit();
         observer.unobserve(entry.target);
@@ -34,6 +39,13 @@ export const BodyNews = ({
     });
 
     observer.observe(newsFeedRef.current);
+
+    // Clean-up observer
+    return () => {
+      if (newsFeedRef.current) {
+        observer.unobserve(newsFeedRef.current);
+      }
+    };
   }, [isLast]);
 
   return (
