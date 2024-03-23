@@ -16,9 +16,13 @@ import { Check } from '@mui/icons-material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import useFunction from '@/hooks/use-function';
 import { UsersApi } from '@/api/users';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { LoadingButton } from '@mui/lab';
 import { useAuth } from '@/hooks/use-auth';
+import { useDropzone } from 'react-dropzone';
+import { useUserContext } from '@/contexts/user/user-context';
+import { BackGroundCover } from './BackGroundCover';
+import { AvatarCover } from './AvatarCover';
 
 const Input = styled('input')({
   display: 'none'
@@ -115,39 +119,10 @@ const ProfileCover = ({ user: user }: { user: UserDetail }) => {
 
   return (
     <>
-      <CardCover>
-        <CardMedia image={user?.avatar} />
-        <CardCoverAction>
-          <Input accept="image/*" id="change-cover" multiple type="file" />
-          <label htmlFor="change-cover">
-            <Button
-              startIcon={<UploadTwoToneIcon />}
-              variant="contained"
-              component="span"
-            >
-              Thay đổi ảnh bìa
-            </Button>
-          </label>
-        </CardCoverAction>
-      </CardCover>
+      <BackGroundCover user={user}/>
 
       <Box display={'flex'} justifyContent={'space-between'}>
-        <AvatarWrapper>
-          <Avatar variant="rounded" alt={user?.name} src={user?.avatar} />
-          <ButtonUploadWrapper>
-            <Input
-              accept="image/*"
-              id="icon-button-file"
-              name="icon-button-file"
-              type="file"
-            />
-            <label htmlFor="icon-button-file">
-              <IconButton component="span" color="primary">
-                <UploadTwoToneIcon />
-              </IconButton>
-            </label>
-          </ButtonUploadWrapper>
-        </AvatarWrapper>
+        <AvatarCover user={user}/>
 
         {currentUser?.id !== user?.id && (
           <Box mt={2} mx={2}>
@@ -164,12 +139,7 @@ const ProfileCover = ({ user: user }: { user: UserDetail }) => {
         )}
       </Box>
 
-      <Box
-        display={'flex'}
-        justifyContent={'space-between'}
-        py={2}
-        pl={2}
-      >
+      <Box display={'flex'} justifyContent={'space-between'} py={2} pl={2}>
         <Typography gutterBottom variant="h4">
           {user?.name}
         </Typography>

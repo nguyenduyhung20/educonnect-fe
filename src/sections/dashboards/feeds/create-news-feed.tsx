@@ -21,7 +21,7 @@ export const CreateNewsFeed = () => {
             height: theme.spacing(6)
           }}
           component={Link}
-          href={'/management/profile'}
+          href={`/management/profile/${user?.id}`}
         />
         <Link
           href={'/communities/home/home-create-post'}

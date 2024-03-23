@@ -1,5 +1,5 @@
 import type { User, UserProfile } from 'src/types/user';
-import { apiGet, apiPatch, apiPost } from 'src/utils/api-request';
+import { apiGet, apiPatch, apiPost, getFormData } from 'src/utils/api-request';
 
 type SignInRequest = {
   username: string;
@@ -76,5 +76,27 @@ export class UsersApi {
   static async followList() {
     const response: FollowListResponse = await apiGet(`/user/follow`, {});
     return response.data;
+  }
+
+  static async changeAvatar(request: {
+    userId: number;
+    uploadedFiles: File[];
+  }) {
+    const response = await apiPost(
+      `/user/avatar/${request.userId}`,
+      getFormData(request)
+    );
+    return response;
+  }
+
+  static async changeBackGround(request: {
+    userId: number;
+    uploadedFiles: File[];
+  }) {
+    const response = await apiPost(
+      `/user/background/${request.userId}`,
+      getFormData(request)
+    );
+    return response;
   }
 }
