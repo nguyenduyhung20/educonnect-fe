@@ -34,7 +34,7 @@ export const CommentsList = ({ post }: { post: PostDetail }) => {
                 variant="rounded"
                 alt={item.user?.name}
                 src={item.user?.avatar}
-                href={'/management/profile'}
+                href={`/management/profile/${item.user.id}`}
               />
               <Stack sx={{ width: 1 }}>
                 <Stack>
@@ -42,7 +42,7 @@ export const CommentsList = ({ post }: { post: PostDetail }) => {
                     <Typography
                       variant="h4"
                       component={Link}
-                      href={'/management/profile'}
+                      href={`/management/profile/${item.user.id}`}
                       sx={{
                         color: 'black',
                         '&:hover': { textDecoration: 'underline' },
