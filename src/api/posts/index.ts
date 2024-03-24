@@ -64,8 +64,6 @@ export class PostsApi {
       interactionType: 'view',
       timestamp: new Date().toISOString()
     };
-    console.log(payload);
-
     return await apiPost(`/event`, payload);
   }
 }
