@@ -39,7 +39,7 @@ interface ChartData {
 function EleaningScoresPage() {
   const { user } = useAuth();
   const [valueTab, setValueTab] = useState('1');
-  const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
+  const handleChangeTab = (_: React.SyntheticEvent, newValue: string) => {
     setValueTab(newValue);
   };
   const option = {
@@ -93,10 +93,6 @@ function EleaningScoresPage() {
 
   return (
     <>
-      <Head>
-        <title>EduConnect</title>
-      </Head>
-
       <Container maxWidth="lg">
         <Box sx={{ width: 1, mt: 2 }}>
           <TabContext value={valueTab}>
