@@ -52,6 +52,7 @@ interface ContextValue {
   ) => Promise<void>;
   updatePost: (post: Post) => Promise<void>;
   deletePost: (id: string) => Promise<void>;
+  sendViewEvent: (postId: number) => Promise<void>;
 }
 
 export const PostsContext = createContext<ContextValue>({
@@ -67,7 +68,8 @@ export const PostsContext = createContext<ContextValue>({
   reactPost: async () => {},
   createPost: async () => {},
   updatePost: async () => {},
-  deletePost: async () => {}
+  deletePost: async () => {},
+  sendViewEvent: async () => {}
 });
 
 const PostsProvider = ({ children }: { children: ReactNode }) => {
@@ -225,6 +227,14 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
     [getPostsApi]
   );
 
+  const sendViewEvent = useCallback(async (postId: number) => {
+    try {
+      PostsApi.sendViewEvent({ postId });
+    } catch (error) {
+      throw error;
+    }
+  }, []);
+
   useEffect(() => {
     if (isAuthenticated) {
       if (router.asPath == '/') {
@@ -266,7 +276,8 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
         reactPost,
         createPost,
         updatePost,
-        deletePost
+        deletePost,
+        sendViewEvent
       }}
     >
       {children}
