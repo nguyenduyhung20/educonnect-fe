@@ -284,7 +284,7 @@ function SidebarMenu() {
             <SubMenuWrapper>
               <List component="div">
                 <ListItem component="div">
-                  <NextLink href={`/management/profile/${user.id}`} passHref>
+                  <NextLink href={`/management/profile/${user?.id}`} passHref>
                     <Button
                       className={
                         currentRoute === `/management/profile/[userID]`

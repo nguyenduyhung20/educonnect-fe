@@ -3,7 +3,10 @@ import {
   ReactNode,
   useCallback,
   useEffect,
-  useContext
+  useContext,
+  useRef,
+  MutableRefObject,
+  useMemo
 } from 'react';
 
 import useFunction, {
@@ -17,13 +20,18 @@ import { useAuth } from '@/hooks/use-auth';
 import { getFormData } from '@/utils/api-request';
 import { useGroupsContext } from '../groups/groups-context';
 import { useUserContext } from '../user/user-context';
+import { filterSameElement } from '@/utils/filter-same-element';
+import { useRouter } from 'next/router';
 
 interface ContextValue {
   getPostsApi: UseFunctionReturnType<FormData, { data: Post[] }>;
   getNewsFeedApi: UseFunctionReturnType<{ id: number }, { data: Post[] }>;
-  getHotPostsApi: UseFunctionReturnType<FormData, { data: Post[] }>;
+  getPublicPostsApi: UseFunctionReturnType<FormData, { data: Post[] }>;
   getDetailPostApi: UseFunctionReturnType<{ id: number }, { data: PostDetail }>;
-  getHotPostsApiByUserID: UseFunctionReturnType<FormData, { data: Post[] }>;
+
+  newsfeedCurrent: TypePost;
+
+  currentNewsFeedPosts: MutableRefObject<Post[]>;
 
   reactPost: (
     request: { id: number; type: string },
@@ -37,24 +45,51 @@ interface ContextValue {
       postID: number;
     }
   ) => Promise<void>;
+
+  reactComment: (
+    request: { id: number; type: string },
+    action: 'like' | 'dislike',
+    type: TypePost,
+    info: {
+      senderName: string;
+      senderAvatar: string;
+      receiverID: number;
+      itemType: 'post' | 'comment';
+      postID: number;
+    },
+    index: number
+  ) => Promise<void>;
+
   createPost: (
-    requests: Partial<Post> & { uploadedFiles: File[] }
+    requests: Partial<Post> & { uploadedFiles: File[] } & {
+      type: 'post' | 'link';
+    }
   ) => Promise<void>;
   updatePost: (post: Post) => Promise<void>;
   deletePost: (id: string) => Promise<void>;
+  sendViewEvent: (postId: number) => Promise<void>;
+  createComment: (request: { id: number; content: string }) => Promise<void>;
 }
 
 export const PostsContext = createContext<ContextValue>({
   getPostsApi: DEFAULT_FUNCTION_RETURN,
   getNewsFeedApi: DEFAULT_FUNCTION_RETURN,
-  getHotPostsApi: DEFAULT_FUNCTION_RETURN,
+  getPublicPostsApi: DEFAULT_FUNCTION_RETURN,
   getDetailPostApi: DEFAULT_FUNCTION_RETURN,
-  getHotPostsApiByUserID: DEFAULT_FUNCTION_RETURN,
+
+  newsfeedCurrent: 'newsfeed',
+
+  currentNewsFeedPosts: { current: [] },
 
   reactPost: async () => {},
+  reactComment: async () => {},
+
   createPost: async () => {},
   updatePost: async () => {},
-  deletePost: async () => {}
+  deletePost: async () => {},
+  sendViewEvent: async () => {},
+
+  createComment: async () => {}
 });
 
 const PostsProvider = ({ children }: { children: ReactNode }) => {
@@ -64,22 +99,47 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
 
   const getNewsFeedApi = useFunction(PostsApi.getNewsFeed);
 
-  const getHotPostsApi = useFunction(PostsApi.getHotPosts);
-
-  const getHotPostsApiByUserID = useFunction(PostsApi.getHotPostsByUserID);
+  const getPublicPostsApi = useFunction(PostsApi.getPublicPosts);
 
   const getDetailPostApi = useFunction(PostsApi.getPostsByID);
 
   const { getPostByGroupId } = useGroupsContext();
   const { getUsersProfile } = useUserContext();
 
-  const createPost = useCallback(
-    async (request: Partial<Post> & { uploadedFiles: File[] }) => {
+  let newsfeedCurrent: TypePost = 'newsfeed';
+
+  const currentNewsFeedPosts = useRef<Post[]>([]);
+
+  const createComment = useCallback(
+    async (request: { id: number; content: string }) => {
       try {
-        const response = await PostsApi.postPost(getFormData(request));
+        const response = await PostsApi.postComment(request);
         if (response) {
-          getNewsFeedApi.call({ id: user?.id || 0 });
-          getHotPostsApiByUserID.call(new FormData());
+        }
+      } catch (error) {
+        throw error;
+      }
+    },
+    [getPostsApi]
+  );
+
+  const createPost = useCallback(
+    async (
+      request: Partial<Post> & { uploadedFiles: File[] } & {
+        type: 'post' | 'link';
+      }
+    ) => {
+      try {
+        const response = await PostsApi.postPost(
+          getFormData({
+            title: request.title,
+            content: request.content,
+            uploadedFiles: request.uploadedFiles ?? null,
+            groupId: request.group?.id ?? null,
+            type: request.type
+          })
+        );
+        if (response) {
         }
       } catch (error) {
         throw error;
@@ -131,22 +191,6 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
             getNewsFeedApi.setData({
               data: [...newData]
             });
-          } else if (type == 'hotpost') {
-            const newData = getHotPostsApiByUserID.data.data.map((item) => {
-              if (item.id == request.id) {
-                return {
-                  ...item,
-                  interactCount:
-                    action == 'like'
-                      ? item.interactCount + 1
-                      : item.interactCount - 1
-                };
-              }
-              return item;
-            });
-            getHotPostsApiByUserID.setData({
-              data: [...newData]
-            });
           } else if (type == 'group') {
             // If user doesn't pass value, we don't process.
             const newData = getPostByGroupId.data.data.map((item) => {
@@ -165,7 +209,6 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
               data: [...newData]
             });
           } else if (type == 'profile') {
-            console.log(getUsersProfile.data);
             const newData = getUsersProfile.data?.data.newsfeed.map((item) => {
               if (item.id == request.id) {
                 return {
@@ -190,13 +233,101 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
         throw error;
       }
     },
-    [
-      getDetailPostApi,
-      getHotPostsApiByUserID,
-      getNewsFeedApi,
-      getPostByGroupId,
-      getUsersProfile
-    ]
+    [getDetailPostApi, getNewsFeedApi, getPostByGroupId, getUsersProfile]
+  );
+
+  const reactComment = useCallback(
+    async (
+      request: { id: number; type: string },
+      action: 'like' | 'dislike',
+      type: TypePost,
+      info: {
+        senderName: string;
+        senderAvatar: string;
+        receiverID: number;
+        itemType: 'post' | 'comment';
+        postID: number;
+      },
+      index: number
+    ) => {
+      try {
+        const response = await PostsApi.reactComment(request, action, info);
+        if (response) {
+          if (type == 'detail') {
+            const postDetail = getDetailPostApi.data.data;
+            getDetailPostApi.setData({
+              data: {
+                ...postDetail,
+                comment: postDetail.comment.map((item, subIndex) => {
+                  if (subIndex == index) {
+                    item.interactCount =
+                      action == 'like'
+                        ? item.interactCount + 1
+                        : item.interactCount - 1;
+                  }
+                  return item;
+                })
+              }
+            });
+          } else if (type == 'newsfeed') {
+            const newData = getNewsFeedApi.data.data.map((item) => {
+              if (item.id == request.id) {
+                return {
+                  ...item,
+                  interactCount:
+                    action == 'like'
+                      ? item.interactCount + 1
+                      : item.interactCount - 1
+                };
+              }
+              return item;
+            });
+            getNewsFeedApi.setData({
+              data: [...newData]
+            });
+          } else if (type == 'group') {
+            // If user doesn't pass value, we don't process.
+            const newData = getPostByGroupId.data.data.map((item) => {
+              if (item.id == request.id) {
+                return {
+                  ...item,
+                  interactCount:
+                    action == 'like'
+                      ? item.interactCount + 1
+                      : item.interactCount - 1
+                };
+              }
+              return item;
+            });
+            getPostByGroupId.setData({
+              data: [...newData]
+            });
+          } else if (type == 'profile') {
+            const newData = getUsersProfile.data?.data.newsfeed.map((item) => {
+              if (item.id == request.id) {
+                return {
+                  ...item,
+                  interactCount:
+                    action == 'like'
+                      ? item.interactCount + 1
+                      : item.interactCount - 1
+                };
+              }
+              return item;
+            });
+            getUsersProfile.setData({
+              data: {
+                user: getUsersProfile.data?.data.user,
+                newsfeed: [...(newData || [])]
+              }
+            });
+          }
+        }
+      } catch (error) {
+        throw error;
+      }
+    },
+    [getDetailPostApi, getNewsFeedApi, getPostByGroupId, getUsersProfile]
   );
 
   const updatePost = useCallback(
@@ -209,6 +340,8 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
     },
     [getPostsApi]
   );
+
+  const router = useRouter();
 
   const deletePost = useCallback(
     async (id: string) => {
@@ -223,30 +356,58 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
     [getPostsApi]
   );
 
+  const sendViewEvent = useCallback(async (postId: number) => {
+    try {
+      PostsApi.sendViewEvent({ postId });
+    } catch (error) {
+      throw error;
+    }
+  }, []);
+
   useEffect(() => {
     if (isAuthenticated) {
-      getNewsFeedApi.call({ id: user?.id || 0 });
-      getHotPostsApiByUserID.call(new FormData());
+      if (router.asPath == '/') {
+        getNewsFeedApi.call({ id: user?.id || 0 });
+      }
     } else {
-      getHotPostsApi.call(getFormData({}));
+      getPublicPostsApi.call(getFormData({}));
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useMemo(() => {
+    const currentPosts = currentNewsFeedPosts.current;
+    if (isAuthenticated) {
+      const newPosts = filterSameElement(
+        getNewsFeedApi.data?.data || [],
+        currentPosts
+      );
+      currentNewsFeedPosts.current = [...currentPosts, ...(newPosts || [])];
+    } else {
+      const newPosts = filterSameElement(
+        getPublicPostsApi.data?.data || [],
+        currentPosts
+      );
+      currentNewsFeedPosts.current = [...currentPosts, ...(newPosts || [])];
+    }
+  }, [getNewsFeedApi, getPublicPostsApi]);
 
   return (
     <PostsContext.Provider
       value={{
         getPostsApi,
         getNewsFeedApi,
-        getHotPostsApi,
+        getPublicPostsApi,
         getDetailPostApi,
-        getHotPostsApiByUserID,
-
+        newsfeedCurrent,
+        currentNewsFeedPosts,
+        reactComment,
+        createComment,
         reactPost,
         createPost,
         updatePost,
-        deletePost
+        deletePost,
+        sendViewEvent
       }}
     >
       {children}

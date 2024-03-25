@@ -1,6 +1,5 @@
 import SidebarLayout from '@/layouts/SidebarLayout';
-import {  Container, Grid, Stack } from '@mui/material';
-import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
+import { Container, Grid, Stack } from '@mui/material';
 import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
 import React, { useEffect, useMemo } from 'react';
 import GroupCover from '@/sections/dashboards/groups/group-cover';
@@ -10,26 +9,23 @@ import GroupsProvider, {
 } from '@/contexts/groups/groups-context';
 import { useAuth } from '@/hooks/use-auth';
 import PostsProvider from '@/contexts/posts/posts-context';
+import { ExploreTrendingSection } from '@/sections/dashboards/explore/explore-trending-section';
+import ExplorePostsProvider from '@/contexts/explore/explore-context';
+import { CreateNewsFeed } from '@/sections/dashboards/feeds/create-news-feed';
 
 const CommunitiesGroups = () => {
   const router = useRouter();
-  const { getGroupsApiById } = useGroupsContext();
+  const { getGroupsApiById, getPostByGroupId, groupID } = useGroupsContext();
 
   const group = useMemo(() => {
     return getGroupsApiById.data?.data;
   }, [getGroupsApiById.data]);
 
-  const { getPostByGroupId } = useGroupsContext();
-
-  const groupID = useMemo(() => {
-    return Number(router.query.groupID);
-  }, [router.query.groupID]);
-
   const listNewsFeeds = useMemo(() => {
     return getPostByGroupId.data?.data || [];
   }, [getPostByGroupId]);
 
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -40,7 +36,7 @@ const CommunitiesGroups = () => {
         getPostByGroupId.call({ id: groupID });
       }
     }
-  }, [groupID]);
+  }, [groupID, user, isAuthenticated, router]);
   return (
     <>
       <Container sx={{ mt: 3 }} maxWidth="lg">
@@ -55,6 +51,7 @@ const CommunitiesGroups = () => {
             {group && <GroupCover group={group} />}
           </Grid>
           <Grid item xs={12} md={7}>
+            <CreateNewsFeed />
             <NewsFeed
               listNewsFeeds={listNewsFeeds}
               detail={false}
@@ -64,7 +61,7 @@ const CommunitiesGroups = () => {
           <Grid item xs={12} md={5}>
             {/* <PopularTags /> */}
             <Stack spacing={3}>
-              <TrendingNews />
+              <ExploreTrendingSection />
               {/* <RecentActivity /> */}
             </Stack>
           </Grid>
@@ -76,9 +73,11 @@ const CommunitiesGroups = () => {
 
 CommunitiesGroups.getLayout = (page) => (
   <SidebarLayout>
-    <GroupsProvider>
-      <PostsProvider>{page}</PostsProvider>
-    </GroupsProvider>
+    <ExplorePostsProvider>
+      <GroupsProvider>
+        <PostsProvider>{page}</PostsProvider>
+      </GroupsProvider>
+    </ExplorePostsProvider>
   </SidebarLayout>
 );
 

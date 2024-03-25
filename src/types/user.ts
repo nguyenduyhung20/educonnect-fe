@@ -5,6 +5,7 @@ export interface User {
   role: 'admin' | 'user' | 'student' | 'teacher' | 'parent';
   avatar: string;
   name: string;
+  background: string;
 }
 
 export interface UserDetail extends User {
@@ -26,7 +27,6 @@ export type UserProfile = {
   user: UserDetail;
   newsfeed: Post[];
 };
-
 
 export type UserSearch = {
   id: number;

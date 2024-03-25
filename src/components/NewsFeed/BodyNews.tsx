@@ -1,168 +1,66 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  CardMedia,
-  Stack,
-  Typography
-} from '@mui/material';
-import React, { useState } from 'react';
-import ClearIcon from '@mui/icons-material/Clear';
-import IconButton from '@mui/material/IconButton';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
-import Link from '../Link';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAuth } from '@/hooks/use-auth';
 import { Post, TypePost } from '@/types/post';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useRouter } from 'next/router';
 import { usePostsContext } from '@/contexts/posts/posts-context';
-import NextLink from 'next/link';
+import { BodyNewsItem } from './BodyNewsItem';
+import { useViewEventTimer } from '@/hooks/useViewEventTimer';
 
-export const BodyNews = ({ post, type }: { post: Post; type: TypePost }) => {
-  const { isAuthenticated, user } = useAuth();
-  const [isLiked, setIsLiked] = useState(post.userInteract ? true : false);
-  const router = useRouter();
+export const BodyNews = ({
+  post,
+  type,
+  isLast,
+  newLimit
+}: {
+  post: Post;
+  type: TypePost;
+  isLast: boolean;
+  newLimit: () => void;
+}) => {
+  const newsFeedRef = useRef();
+
+  const [isLiked, setIsLiked] = useState(post?.userInteract ? true : false);
+
   const { reactPost } = usePostsContext();
 
-  return (
-    <Card>
-      <CardHeader
-        avatar={
-          <Avatar
-            component={Link}
-            variant="rounded"
-            alt={post.user.name}
-            src={post.user.avatar}
-            href={'/management/profile'}
-          />
-        }
-        title={
-          <Typography
-            variant="h4"
-            component={Link}
-            href={`/management/profile/${post.user.id}`}
-            sx={{
-              color: 'black',
-              '&:hover': { textDecoration: 'underline' }
-            }}
-          >
-            {post.user.name}
-          </Typography>
-        }
-        subheader="17 phút"
-        action={
-          <IconButton aria-label="delete">
-            <ClearIcon />
-          </IconButton>
-        }
-      />
-      <CardContent>
-        <Stack spacing={1}>
-          <Typography variant="h4" style={{ whiteSpace: 'pre-line' }}>
-            {post.title}
-          </Typography>
-          <Link
-            href={!isAuthenticated ? `/login` : `/communities/home/${post.id}`}
-          >
-            <Typography variant="subtitle1" style={{ whiteSpace: 'pre-line' }}>
-              Chi tiết bài viết
-            </Typography>
-          </Link>
-        </Stack>
-      </CardContent>
-      <CardMedia>
-        <NextLink
-          href={!isAuthenticated ? `/login` : `/communities/home/${post.id}`}
-        >
-          <Button
-            sx={{
-              '&:hover': {
-                backgroundColor: 'transparent' // Change the background color to whatever suits your design
-              }
-            }}
-          >
-            <Box className="flex flex-col gap-4">
-              {post.fileContent.map((item, index) => {
-                return (
-                  <img src={item} key={index} style={{ maxWidth: '100%' }} />
-                );
-              })}
-            </Box>
-          </Button>
-        </NextLink>
-      </CardMedia>
+  const { isAuthenticated, user } = useAuth();
+  const router = useRouter();
+  useViewEventTimer({ post, ref: newsFeedRef });
 
-      <CardActions>
-        <Box
-          sx={{
-            display: 'flex',
-            width: 1
-          }}
-        >
-          <Box
-            sx={{
-              width: 1,
-              display: 'flex',
-              justifyContent: 'center'
-            }}
-          >
-            <IconButton
-              onClick={async () => {
-                if (!isAuthenticated) {
-                  router.push('/login');
-                } else {
-                  await reactPost(
-                    { id: post.id, type: 'like' },
-                    isLiked ? 'dislike' : 'like',
-                    type,
-                    {
-                      senderName: user.name,
-                      senderAvatar: user.avatar,
-                      receiverID: post.user.id,
-                      postID: post.id,
-                      itemType: 'post'
-                    }
-                  );
-                  setIsLiked(!isLiked);
-                }
-              }}
-            >
-              <Stack direction={'row'} alignItems={'center'} spacing={0.5}>
-                {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-                <Typography>{post.interactCount}</Typography>
-              </Stack>
-            </IconButton>
-          </Box>
-          <Box
-            sx={{
-              width: 1,
-              display: 'flex',
-              justifyContent: 'center'
-            }}
-          >
-            <IconButton
-              aria-label="delete"
-              onClick={() => {
-                if (!isAuthenticated) {
-                  router.push('/login');
-                } else {
-                  router.push(`/communities/home/${post.id}`);
-                }
-              }}
-            >
-              <Stack direction={'row'} alignItems={'center'} spacing={0.5}>
-                <ForumOutlinedIcon />
-                <Typography>{post.commentCount}</Typography>
-              </Stack>
-            </IconButton>
-          </Box>
-        </Box>
-      </CardActions>
-    </Card>
+  useEffect(() => {
+    if (!newsFeedRef?.current) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      // Infinite scroll logic
+      if (isLast && entry.isIntersecting) {
+        newLimit();
+        observer.unobserve(entry.target);
+      }
+    });
+
+    observer.observe(newsFeedRef.current);
+
+    // Clean-up observer
+    return () => {
+      if (newsFeedRef.current) {
+        observer.unobserve(newsFeedRef.current);
+      }
+    };
+  }, [isLast]);
+
+  return (
+    <>
+      <BodyNewsItem
+        post={post}
+        isAuthenticated={isAuthenticated}
+        user={user}
+        isLiked={isLiked}
+        setIsLiked={setIsLiked}
+        router={router}
+        type={type}
+        reactPost={reactPost}
+        newsFeedRef={newsFeedRef}
+      />
+    </>
   );
 };

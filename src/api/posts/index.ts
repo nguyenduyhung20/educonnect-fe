@@ -17,13 +17,8 @@ export class PostsApi {
     return response;
   }
 
-  static async getHotPosts(): Promise<{ data: Post[] }> {
+  static async getPublicPosts(): Promise<{ data: Post[] }> {
     const response = await apiGet(`/public/hot-post`);
-    return response;
-  }
-
-  static async getHotPostsByUserID(): Promise<{ data: Post[] }> {
-    const response = await apiGet(`/user/hot-post`);
     return response;
   }
 
@@ -61,5 +56,48 @@ export class PostsApi {
       action: action,
       info: info
     });
+  }
+
+  static async reactComment(
+    request: {
+      id: number;
+      type: string;
+    },
+    action: string,
+    info: {
+      senderName: string;
+      senderAvatar: string;
+      receiverID: number;
+      itemType: 'post' | 'comment';
+      postID: number;
+    }
+  ) {
+    return await apiPost(`/post/${request.id}/interact-comment`, {
+      type: request.type,
+      action: action,
+      info: info
+    });
+  }
+
+  static async getComment(id: number): Promise<{ data: PostDetail }> {
+    return await apiGet(`/post/comment/${id}`, {});
+  }
+
+  static async postComment(request: {
+    id: number;
+    content: string;
+  }): Promise<string> {
+    return await apiPost(`/post/${request.id}/comment`, {
+      content: request.content
+    });
+  }
+
+  static async sendViewEvent({ postId }: { postId: number }) {
+    const payload = {
+      postId: postId.toString(),
+      interactionType: 'view',
+      timestamp: new Date().toISOString()
+    };
+    return await apiPost(`/event`, payload);
   }
 }

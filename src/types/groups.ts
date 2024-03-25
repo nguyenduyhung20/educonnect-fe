@@ -1,5 +1,5 @@
 import { Post } from './post';
-import { User } from './user';
+import { User, UserPost } from './user';
 
 export interface Group {
   id: number;
@@ -49,3 +49,10 @@ interface GroupSearchUser {
 }
 
 export type TypeItemGroup = 'hot' | 'join' | 'host';
+
+export interface UserApplyingGroup {
+  role: MemberRole;
+  status: MemberStatus;
+  create_at: string;
+  user: UserPost;
+}

@@ -46,20 +46,19 @@ const ElearningLayout: FC<ElearningLayoutProps> = ({ children }) => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      // const socket = io(process.env.NEXT_PUBLIC_API_NOTIFICATION);
-      // socket.emit('newUser', `${user.id}`);
-      // socket.on('getNotification', (data: NotiData) => {
-      //   handleNotifyFunction.current?.(data);
-      // });
-      // socket.on('disconnect', () => {
-      //   // undefined
-      // });
+      const socket = io(process.env.NEXT_PUBLIC_API_NOTIFICATION);
+      socket.emit('newUser', `${user?.id}`);
+      socket.on('getNotification', (data: NotiData) => {
+        handleNotifyFunction.current?.(data);
+      });
+      socket.on('disconnect', () => {
+        // undefined
+      });
 
       return () => {
         // Cleanup logic (disconnect socket) if needed
       };
     } else {
-      console.log("layout: ", isAuthenticated);
       router.push('/login')
     }
   }, [isAuthenticated, user]);

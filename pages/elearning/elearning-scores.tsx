@@ -41,6 +41,7 @@ function EleaningScoresPage() {
   const [valueTab, setValueTab] = useState('1');
   const handleChangeTab = (_: React.SyntheticEvent, newValue: string) => {
     setValueTab(newValue);
+    console.log(event);
   };
   const option = {
     chart: {
@@ -66,7 +67,7 @@ function EleaningScoresPage() {
 
   const getTranscript = useFunction(TranscriptApi.getTranscriptsByRole);
   useEffect(() => {
-    getTranscript.call(user.role);
+    getTranscript.call(user?.role);
   }, []);
 
   const transcripts = useMemo(() => {

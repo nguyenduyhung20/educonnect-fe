@@ -49,8 +49,8 @@ export const GroupCreateDrawer = ({
   const onSubmit = useCallback(
     async (values: Partial<Group> & { uploadedFiles: File[] }) => {
       try {
-        // await createGroup(values);
-        console.log(values);
+        await createGroup(values);
+        onClose();
       } catch (error) {
         throw error;
       }
