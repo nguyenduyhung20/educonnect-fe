@@ -91,4 +91,13 @@ export class PostsApi {
       content: request.content
     });
   }
+
+  static async sendViewEvent({ postId }: { postId: number }) {
+    const payload = {
+      postId: postId.toString(),
+      interactionType: 'view',
+      timestamp: new Date().toISOString()
+    };
+    return await apiPost(`/event`, payload);
+  }
 }
