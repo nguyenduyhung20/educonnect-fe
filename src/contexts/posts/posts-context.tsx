@@ -45,6 +45,21 @@ interface ContextValue {
       postID: number;
     }
   ) => Promise<void>;
+
+  reactComment: (
+    request: { id: number; type: string },
+    action: 'like' | 'dislike',
+    type: TypePost,
+    info: {
+      senderName: string;
+      senderAvatar: string;
+      receiverID: number;
+      itemType: 'post' | 'comment';
+      postID: number;
+    },
+    index: number
+  ) => Promise<void>;
+
   createPost: (
     requests: Partial<Post> & { uploadedFiles: File[] } & {
       type: 'post' | 'link';
@@ -53,6 +68,7 @@ interface ContextValue {
   updatePost: (post: Post) => Promise<void>;
   deletePost: (id: string) => Promise<void>;
   sendViewEvent: (postId: number) => Promise<void>;
+  createComment: (request: { id: number; content: string }) => Promise<void>;
 }
 
 export const PostsContext = createContext<ContextValue>({
@@ -66,10 +82,15 @@ export const PostsContext = createContext<ContextValue>({
   currentNewsFeedPosts: { current: [] },
 
   reactPost: async () => {},
+  reactComment: async () => {},
+
   createPost: async () => {},
   updatePost: async () => {},
   deletePost: async () => {},
   sendViewEvent: async () => {}
+  deletePost: async () => {},
+
+  createComment: async () => {}
 });
 
 const PostsProvider = ({ children }: { children: ReactNode }) => {
@@ -90,6 +111,19 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
 
   const currentNewsFeedPosts = useRef<Post[]>([]);
 
+  const createComment = useCallback(
+    async (request: { id: number; content: string }) => {
+      try {
+        const response = await PostsApi.postComment(request);
+        if (response) {
+        }
+      } catch (error) {
+        throw error;
+      }
+    },
+    [getPostsApi]
+  );
+
   const createPost = useCallback(
     async (
       request: Partial<Post> & { uploadedFiles: File[] } & {
@@ -106,6 +140,8 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
             type: request.type
           })
         );
+        if (response) {
+        }
       } catch (error) {
         throw error;
       }
@@ -138,6 +174,100 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
                   action == 'like'
                     ? postDetail.interactCount + 1
                     : postDetail.interactCount - 1
+              }
+            });
+          } else if (type == 'newsfeed') {
+            const newData = getNewsFeedApi.data.data.map((item) => {
+              if (item.id == request.id) {
+                return {
+                  ...item,
+                  interactCount:
+                    action == 'like'
+                      ? item.interactCount + 1
+                      : item.interactCount - 1
+                };
+              }
+              return item;
+            });
+            getNewsFeedApi.setData({
+              data: [...newData]
+            });
+          } else if (type == 'group') {
+            // If user doesn't pass value, we don't process.
+            const newData = getPostByGroupId.data.data.map((item) => {
+              if (item.id == request.id) {
+                return {
+                  ...item,
+                  interactCount:
+                    action == 'like'
+                      ? item.interactCount + 1
+                      : item.interactCount - 1
+                };
+              }
+              return item;
+            });
+            getPostByGroupId.setData({
+              data: [...newData]
+            });
+          } else if (type == 'profile') {
+            const newData = getUsersProfile.data?.data.newsfeed.map((item) => {
+              if (item.id == request.id) {
+                return {
+                  ...item,
+                  interactCount:
+                    action == 'like'
+                      ? item.interactCount + 1
+                      : item.interactCount - 1
+                };
+              }
+              return item;
+            });
+            getUsersProfile.setData({
+              data: {
+                user: getUsersProfile.data?.data.user,
+                newsfeed: [...(newData || [])]
+              }
+            });
+          }
+        }
+      } catch (error) {
+        throw error;
+      }
+    },
+    [getDetailPostApi, getNewsFeedApi, getPostByGroupId, getUsersProfile]
+  );
+
+  const reactComment = useCallback(
+    async (
+      request: { id: number; type: string },
+      action: 'like' | 'dislike',
+      type: TypePost,
+      info: {
+        senderName: string;
+        senderAvatar: string;
+        receiverID: number;
+        itemType: 'post' | 'comment';
+        postID: number;
+      },
+      index: number
+    ) => {
+      try {
+        const response = await PostsApi.reactComment(request, action, info);
+        if (response) {
+          if (type == 'detail') {
+            const postDetail = getDetailPostApi.data.data;
+            getDetailPostApi.setData({
+              data: {
+                ...postDetail,
+                comment: postDetail.comment.map((item, subIndex) => {
+                  if (subIndex == index) {
+                    item.interactCount =
+                      action == 'like'
+                        ? item.interactCount + 1
+                        : item.interactCount - 1;
+                  }
+                  return item;
+                })
               }
             });
           } else if (type == 'newsfeed') {
@@ -272,6 +402,7 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
         getDetailPostApi,
         newsfeedCurrent,
         currentNewsFeedPosts,
+        reactComment,
 
         reactPost,
         createPost,
