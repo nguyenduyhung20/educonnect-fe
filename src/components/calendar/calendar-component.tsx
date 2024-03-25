@@ -146,9 +146,9 @@ function CalendarComponent() {
     updateRenderRangeText();
   }, [selectedView, selectedDateRangeText, updateRenderRangeText]);
 
-  const onAfterRenderEvent: ExternalEventTypes['afterRenderEvent'] = (
-    res
-  ) => {};
+  const onAfterRenderEvent: ExternalEventTypes['afterRenderEvent'] = (res) => {
+    console.log(res);
+  };
 
   const onBeforeDeleteEvent: ExternalEventTypes['beforeDeleteEvent'] = async (
     res
@@ -168,7 +168,9 @@ function CalendarComponent() {
     setSelectedView(ev.target.value as ViewType);
   };
 
-  const onClickDayName: ExternalEventTypes['clickDayName'] = (res) => {};
+  const onClickDayName: ExternalEventTypes['clickDayName'] = (res) => {
+    console.log(res);
+  };
 
   const onClickNavi = (e) => {
     let actionName = 'today';
@@ -178,7 +180,9 @@ function CalendarComponent() {
     updateRenderRangeText();
   };
 
-  const onClickEvent: ExternalEventTypes['clickEvent'] = (res) => {};
+  const onClickEvent: ExternalEventTypes['clickEvent'] = (res) => {
+    console.log(res);
+  };
 
   const onClickTimezonesCollapseBtn: ExternalEventTypes['clickTimezonesCollapseBtn'] =
     (timezoneCollapsed) => {
@@ -186,7 +190,7 @@ function CalendarComponent() {
         'week.daygridLeft.width': '100px',
         'week.timegridLeft.width': '100px'
       };
-
+      console.log(timezoneCollapsed);
       getCalInstance().setTheme(newTheme);
     };
 
