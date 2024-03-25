@@ -3,7 +3,6 @@ import React, { useCallback, useState } from 'react';
 import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
 import { useUserContext } from '@/contexts/user/user-context';
 import { useDropzone } from 'react-dropzone';
-import { useAuth } from '@/hooks/use-auth';
 import { User } from '@/types/user';
 
 const AvatarWrapper = styled(Card)(
