@@ -41,6 +41,7 @@ function EleaningScoresPage() {
   const [valueTab, setValueTab] = useState('1');
   const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
     setValueTab(newValue);
+    console.log(event);
   };
   const option = {
     chart: {

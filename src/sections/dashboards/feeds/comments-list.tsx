@@ -11,12 +11,13 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import SendIcon from '@mui/icons-material/Send';
 import { usePostsContext } from '@/contexts/posts/posts-context';
 import { PostsApi } from '@/api/posts';
+import { useRouter } from 'next/router';
 
 export const CommentsList = ({
   post,
@@ -36,7 +37,7 @@ export const CommentsList = ({
     })
   );
   const [isShow, setIsShow] = useState<boolean[]>(
-    post.comment.map((item) => {
+    post.comment.map(() => {
       return false;
     })
   );
@@ -51,8 +52,13 @@ export const CommentsList = ({
 
   const getCommentApi = PostsApi.getComment;
 
-  const { reactPost, createComment, getDetailPostApi, reactComment } =
-    usePostsContext();
+  const { createComment, getDetailPostApi, reactComment } = usePostsContext();
+
+  const router = useRouter();
+
+  const postID = useMemo(() => {
+    return Number(router.query.postID);
+  }, [router.query.postID]);
 
   return (
     <>
@@ -111,6 +117,9 @@ export const CommentsList = ({
                             },
                             index
                           );
+                          if (degree == 1) {
+                            await getDetailPostApi.call({ id: postID });
+                          }
                           setIsLiked(
                             isLiked.map((item, subIndex) => {
                               if (subIndex == index) {

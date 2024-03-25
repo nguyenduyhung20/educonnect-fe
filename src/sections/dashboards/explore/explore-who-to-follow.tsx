@@ -8,12 +8,10 @@ import {
 } from '@mui/material';
 import React, { useMemo } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useAuth } from '@/hooks/use-auth';
 import { useExplorePostsContext } from '@/contexts/explore/explore-context';
 import Link from '@/components/Link';
 
 export const ExploreWhoToFollow = () => {
-  const { user } = useAuth();
   const { getUserMostFollower } = useExplorePostsContext();
   const listUsers = useMemo(() => {
     return getUserMostFollower.data?.data || [];

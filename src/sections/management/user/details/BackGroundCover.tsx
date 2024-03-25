@@ -2,9 +2,9 @@ import { styled } from '@mui/material/styles';
 import { Box, Button, Card, CardMedia } from '@mui/material';
 import React, { useCallback, useState } from 'react';
 import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
-import { useAuth } from '@/hooks/use-auth';
 import { useUserContext } from '@/contexts/user/user-context';
 import { useDropzone } from 'react-dropzone';
+import { User } from '@/types/user';
 
 const CardCover = styled(Card)(
   ({ theme }) => `

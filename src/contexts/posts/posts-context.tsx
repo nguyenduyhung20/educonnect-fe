@@ -402,7 +402,7 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
         newsfeedCurrent,
         currentNewsFeedPosts,
         reactComment,
-
+        createComment,
         reactPost,
         createPost,
         updatePost,
