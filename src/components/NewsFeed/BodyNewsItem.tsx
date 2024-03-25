@@ -8,6 +8,7 @@ import {
   CardContent,
   CardHeader,
   CardMedia,
+  Divider,
   IconButton,
   Stack,
   Typography
@@ -155,6 +156,7 @@ export const BodyNewsItem = ({
                 </Box>
               </Button>
             </NextLink>
+            <Divider />
           </CardMedia>
         ) : (
           <></>

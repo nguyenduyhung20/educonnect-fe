@@ -57,4 +57,38 @@ export class PostsApi {
       info: info
     });
   }
+
+  static async reactComment(
+    request: {
+      id: number;
+      type: string;
+    },
+    action: string,
+    info: {
+      senderName: string;
+      senderAvatar: string;
+      receiverID: number;
+      itemType: 'post' | 'comment';
+      postID: number;
+    }
+  ) {
+    return await apiPost(`/post/${request.id}/interact-comment`, {
+      type: request.type,
+      action: action,
+      info: info
+    });
+  }
+
+  static async getComment(id: number): Promise<{ data: PostDetail }> {
+    return await apiGet(`/post/comment/${id}`, {});
+  }
+
+  static async postComment(request: {
+    id: number;
+    content: string;
+  }): Promise<string> {
+    return await apiPost(`/post/${request.id}/comment`, {
+      content: request.content
+    });
+  }
 }
