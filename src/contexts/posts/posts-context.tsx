@@ -87,8 +87,7 @@ export const PostsContext = createContext<ContextValue>({
   createPost: async () => {},
   updatePost: async () => {},
   deletePost: async () => {},
-  sendViewEvent: async () => {}
-  deletePost: async () => {},
+  sendViewEvent: async () => {},
 
   createComment: async () => {}
 });
