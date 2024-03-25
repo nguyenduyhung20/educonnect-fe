@@ -15,7 +15,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { Box, Container } from '@mui/material';
+import { Box, Card, Container, Typography } from '@mui/material';
 import { theme } from './theme';
 import type { ExternalEventTypes, Options } from '@toast-ui/calendar';
 import Calendar from '@toast-ui/react-calendar';
@@ -256,7 +256,8 @@ function CalendarComponent() {
     try {
       const response = await CalendarApi.postCalendar(requestData);
       if (response) {
-        event.id = response?.id;
+        event.id = response?.data?.id;
+        console.log(response.data.id);
         getCalInstance().createEvents([event]);
       }
     } catch (error) {
@@ -286,12 +287,12 @@ function CalendarComponent() {
               <MenuItem value={'month'}>Month</MenuItem>
             </Select>
           </FormControl>
-          <Box className="render-range">
+          <Typography variant="h5">
             {getCalInstance()?.getDate() &&
             selectedDateRangeText !== 'undefined-NaN-undefined'
               ? selectedDateRangeText
               : getCurrentWeek()}
-          </Box>
+          </Typography>
           <ButtonGroup variant="contained" aria-label="Basic button group">
             <Button data-action="move-prev" onClick={() => onClickNavi(-1)}>
               {' '}
@@ -307,47 +308,49 @@ function CalendarComponent() {
           </ButtonGroup>
         </Box>
 
-        <CalendarWithForwardedRef
-          height={'740px'}
-          template={{
-            milestone(event) {
-              return `<span style="color: #fff; background-color: ${event.backgroundColor};">${event.title}</span>`;
-            },
-            allday(event) {
-              return `[All day] ${event.title}`;
-            }
-          }}
-          theme={theme}
-          timezone={{
-            zones: [
-              {
-                timezoneName: 'Asia/Ho_Chi_Minh',
-                displayLabel: 'Vietnam',
-                tooltip: 'UTC+07:00'
+        <Card>
+          <CalendarWithForwardedRef
+            height={'740px'}
+            template={{
+              milestone(event) {
+                return `<span style="color: #fff; background-color: ${event.backgroundColor};">${event.title}</span>`;
+              },
+              allday(event) {
+                return `[All day] ${event.title}`;
               }
-            ]
-          }}
-          view={selectedView}
-          week={{
-            showTimezoneCollapseButton: true,
-            timezonesCollapsed: false,
-            eventView: true,
-            taskView: true
-          }}
-          useDetailPopup={true}
-          useFormPopup={true}
-          // @ts-ignore
-          ref={calendarRef}
-          calendars={initialCalendars}
-          events={initialEvents}
-          onClickDayname={onClickDayName}
-          onClickEvent={onClickEvent}
-          onAfterRenderEvent={onAfterRenderEvent}
-          onBeforeCreateEvent={onBeforeCreateEvent}
-          onBeforeDeleteEvent={onBeforeDeleteEvent}
-          onBeforeUpdateEvent={onBeforeUpdateEvent}
-          onClickTimezonesCollapseBtn={onClickTimezonesCollapseBtn}
-        />
+            }}
+            theme={theme}
+            timezone={{
+              zones: [
+                {
+                  timezoneName: 'Asia/Ho_Chi_Minh',
+                  displayLabel: 'Vietnam',
+                  tooltip: 'UTC+07:00'
+                }
+              ]
+            }}
+            view={selectedView}
+            week={{
+              showTimezoneCollapseButton: true,
+              timezonesCollapsed: false,
+              eventView: true,
+              taskView: true
+            }}
+            useDetailPopup={true}
+            useFormPopup={true}
+            // @ts-ignore
+            ref={calendarRef}
+            calendars={initialCalendars}
+            events={initialEvents}
+            onClickDayname={onClickDayName}
+            onClickEvent={onClickEvent}
+            onAfterRenderEvent={onAfterRenderEvent}
+            onBeforeCreateEvent={onBeforeCreateEvent}
+            onBeforeDeleteEvent={onBeforeDeleteEvent}
+            onBeforeUpdateEvent={onBeforeUpdateEvent}
+            onClickTimezonesCollapseBtn={onClickTimezonesCollapseBtn}
+          />
+        </Card>
       </Box>
     </Container>
   );

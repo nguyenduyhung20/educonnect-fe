@@ -1,3 +1,4 @@
+import { useAuth } from '@/hooks/use-auth';
 import {
   Box,
   List,
@@ -60,7 +61,7 @@ const ListWrapper = styled(Box)(
 );
 
 function HeaderMenu() {
-
+  const { user } = useAuth();
   return (
     <>
       <ListWrapper
@@ -80,21 +81,21 @@ function HeaderMenu() {
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
-              primary="Môn học của bạn"
+              primary="Lịch của bạn"
             />
           </ListItem>
-          <ListItem
+          {(user?.role === 'admin' || user?.role === 'student' || user?.role === 'teacher') && <ListItem
             classes={{ root: 'MuiListItem-indicators' }}
             button
             component={Link}
-            href="/elearning/calendar"
+            href="/elearning/school"
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
-              primary="Lịch học của bạn"
+              primary="Trường học của bạn"
             />
-          </ListItem>
-          <ListItem
+          </ListItem>}
+          {(user?.role === 'parent' || user?.role === 'student')&& <ListItem
             classes={{ root: 'MuiListItem-indicators' }}
             button
             component={Link}
@@ -102,9 +103,27 @@ function HeaderMenu() {
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
-              primary="Điểm số của bạn"
+              primary={user?.role === 'parent' ? "Điểm số của con bạn" : "Điểm số của bạn"}
             />
-          </ListItem>
+          </ListItem>}
+          {/* <ListItem
+            classes={{ root: 'MuiListItem-indicators' }}
+            button
+            ref={ref}
+            onClick={handleOpen}
+          >
+            <ListItemText
+              primaryTypographyProps={{ noWrap: true }}
+              primary={
+                <Box display="flex" alignItems="center">
+                  Others
+                  <Box display="flex" alignItems="center" pl={0.3}>
+                    <ExpandMoreTwoToneIcon fontSize="small" />
+                  </Box>
+                </Box>
+              }
+            />
+          </ListItem> */}
         </List>
       </ListWrapper>
     </>
