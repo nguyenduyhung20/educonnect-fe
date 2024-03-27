@@ -5,7 +5,7 @@ import Head from 'next/head';
 import Logo from 'src/components/LogoSign';
 import { useAuth } from '@/hooks/use-auth';
 import { useRouter } from 'next/router';
-import Hero from '@/sections/overview/hero';
+import Hero from '@/sections/Overview/Hero-comp';
 
 const HeaderWrapper = styled(Card)(
   ({ theme }) => `
