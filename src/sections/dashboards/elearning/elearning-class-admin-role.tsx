@@ -2,9 +2,6 @@ import {
   Box,
   Button,
   Card,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
   Grid,
   Stack,
   CardContent,
@@ -17,17 +14,14 @@ import {
   CardActions,
   TextField
 } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import AddIcon from '@mui/icons-material/Add';
-import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import useFunction from '@/hooks/use-function';
 import { ClassApi } from '@/api/elearning/class';
-import { useAuth } from '@/hooks/use-auth';
 import { EleaningClassInfo } from './elearning-class-info';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import UserTable from './user-table';
@@ -143,7 +137,7 @@ export const ElearningClassAdminRole = () => {
                   <Typography fontSize={18} variant="h4">
                     Danh sách lớp học
                   </Typography>
-                  <Button  onClick={() => classCreateDrawer.handleOpen()}>
+                  <Button onClick={() => classCreateDrawer.handleOpen()}>
                     <AddIcon />
                     <Typography>Thêm lớp học</Typography>
                   </Button>

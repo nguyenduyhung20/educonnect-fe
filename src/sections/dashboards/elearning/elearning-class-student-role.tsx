@@ -4,12 +4,11 @@ import {
   Box,
   Card,
   CardContent,
-  CardMedia,
   Grid,
   Stack,
   Typography
 } from '@mui/material';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 export const ElearningClassStudentRole = ({ classId, setInSubject, setSubjectName }) => {
   const getSubject = useFunction(ClassApi.getSubjectOfClass);

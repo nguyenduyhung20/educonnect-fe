@@ -1,4 +1,4 @@
-import { Box, Card, Container } from '@mui/material';
+import { Box, Card } from '@mui/material';
 
 export const EmptyComponent = () => {
   return (
