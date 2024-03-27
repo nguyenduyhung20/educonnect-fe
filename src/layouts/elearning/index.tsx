@@ -47,7 +47,9 @@ const ElearningLayout: FC<ElearningLayoutProps> = ({ children }) => {
   useEffect(() => {
     if (isAuthenticated) {
       const socket = io(process.env.NEXT_PUBLIC_API_NOTIFICATION);
-      socket.emit('newUser', `${user?.id}`);
+      socket.on('connect', () => {
+        socket.emit('newUser', { userId: user?.id });
+      });
       socket.on('getNotification', (data: NotiData) => {
         handleNotifyFunction.current?.(data);
       });
@@ -59,7 +61,7 @@ const ElearningLayout: FC<ElearningLayoutProps> = ({ children }) => {
         // Cleanup logic (disconnect socket) if needed
       };
     } else {
-      router.push('/login')
+      router.push('/login');
     }
   }, [isAuthenticated, user]);
 

@@ -43,7 +43,9 @@ const SidebarLayout: FC<SidebarLayoutProps> = ({ children }) => {
   useEffect(() => {
     if (isAuthenticated) {
       const socket = io(process.env.NEXT_PUBLIC_API_NOTIFICATION);
-      socket.emit('newUser', `${user?.id}`);
+      socket.on('connect', () => {
+        socket.emit('newUser', { userId: user?.id });
+      });
       socket.on('getNotification', (data: NotiData) => {
         handleNotifyFunction.current?.(data);
       });
