@@ -13,13 +13,13 @@ export const CreateNewsFeedLink = ({
       <TextField
         placeholder="Nhập tiêu đề"
         multiline
-        name="title"
+        name="titleLink"
         onChange={formik.handleChange}
       ></TextField>
       <TextField
         placeholder="Nhập url"
         multiline
-        name="content"
+        name="contentLink"
         onChange={formik.handleChange}
       ></TextField>
     </Stack>

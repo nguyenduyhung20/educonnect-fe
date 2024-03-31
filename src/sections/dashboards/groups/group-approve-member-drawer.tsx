@@ -20,6 +20,8 @@ import { useDialog } from '@/hooks/use-dialog';
 import { ConfirmApproveDialog } from './group-confirm-approve-dialog';
 import { Member } from '@/types/groups';
 import { useAuth } from '@/hooks/use-auth';
+import { viFormatDistance } from '@/utils/vi-formatDistance';
+import { formatDistance } from 'date-fns';
 
 export const ApproveMemberDrawer = ({
   open,
@@ -118,7 +120,9 @@ export const ApproveMemberDrawer = ({
                       {item?.user?.name}
                     </Typography>
                   }
-                  subheader="17 phút"
+                  subheader={viFormatDistance(
+                    formatDistance(new Date(item.create_at), new Date())
+                  )}
                   action={
                     <>
                       <Stack direction={'row'} spacing={1}>

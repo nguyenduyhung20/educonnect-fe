@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Box, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 
 import { UserDetail } from '@/types/user';
 import { Check } from '@mui/icons-material';
@@ -11,6 +11,7 @@ import { LoadingButton } from '@mui/lab';
 import { useAuth } from '@/hooks/use-auth';
 import { BackGroundCover } from './BackGroundCover';
 import { AvatarCover } from './AvatarCover';
+import VerifiedIcon from '@mui/icons-material/Verified';
 
 const ProfileCover = ({ user: user }: { user: UserDetail }) => {
   const [isFollowed, setIsFollowed] = useState<boolean | null>(false);
@@ -65,11 +66,18 @@ const ProfileCover = ({ user: user }: { user: UserDetail }) => {
         )}
       </Box>
 
-      <Box display={'flex'} justifyContent={'space-between'} py={2} pl={2}>
+      <Stack
+        justifyContent={'flex-start'}
+        py={2}
+        pl={2}
+        direction={'row'}
+        spacing={1}
+      >
         <Typography gutterBottom variant="h4">
           {user?.name}
         </Typography>
-      </Box>
+        <VerifiedIcon color="primary" />
+      </Stack>
     </>
   );
 };

@@ -92,9 +92,14 @@ export const BodyNewsDetail = ({
         </Stack>
       </CardMedia>
       <CardContent>
-        <Typography variant="h6" style={{ whiteSpace: 'pre-line' }}>
-          {post.content}
-        </Typography>
+        <Stack spacing={1}>
+          <Typography variant="h4" style={{ whiteSpace: 'pre-line' }}>
+            {post?.title}
+          </Typography>
+          <Typography variant="h6" style={{ whiteSpace: 'pre-line' }}>
+            {post.content}
+          </Typography>
+        </Stack>
       </CardContent>
 
       <CardActions>
