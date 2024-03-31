@@ -120,7 +120,14 @@ export const GroupCreateDrawer = ({
               <Button color="inherit" variant="contained" onClick={onClose}>
                 Hủy bỏ
               </Button>
-              <Button variant="contained" color="primary" type="submit">
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                disabled={
+                  formik.values.title == '' || formik.values.meta_title == ''
+                }
+              >
                 Tạo nhóm
               </Button>
             </Box>

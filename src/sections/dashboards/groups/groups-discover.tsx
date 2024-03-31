@@ -120,84 +120,92 @@ export const DiscoverGroups = ({
                 return <div key={group.title + index}>{group.title}</div>;
               })}
           </div>
-          <Stack direction={'column'} spacing={3}>
-            {listGroups.slice(0, 4).map((group, index) => {
-              return (
-                <Stack
-                  onClick={() => {
-                    router.push(`/communities/groups/${group.id}`);
-                  }}
-                  key={index}
-                  direction={'row'}
-                  justifyContent={'space-between'}
-                  width={1}
-                  sx={{
-                    '&:hover': {
-                      background: `${theme.colors.primary.lighter}`,
-                      borderRadius: 1
-                    }
-                  }}
-                >
-                  <GroupsInfo group={group} />
-                  <Box>
-                    <IconButton aria-label="settings">
-                      <MoreVertIcon />
-                    </IconButton>
-                  </Box>
-                </Stack>
-              );
-            })}
+          {listGroups.length == 0 ? (
+            type == 'host' ? (
+              <>Bạn chưa tạo nhóm</>
+            ) : (
+              <>Bạn chưa tham gia nhóm</>
+            )
+          ) : (
+            <Stack direction={'column'} spacing={3}>
+              {listGroups.slice(0, 4).map((group, index) => {
+                return (
+                  <Stack
+                    onClick={() => {
+                      router.push(`/communities/groups/${group.id}`);
+                    }}
+                    key={index}
+                    direction={'row'}
+                    justifyContent={'space-between'}
+                    width={1}
+                    sx={{
+                      '&:hover': {
+                        background: `${theme.colors.primary.lighter}`,
+                        borderRadius: 1
+                      }
+                    }}
+                  >
+                    <GroupsInfo group={group} />
+                    <Box>
+                      <IconButton aria-label="settings">
+                        <MoreVertIcon />
+                      </IconButton>
+                    </Box>
+                  </Stack>
+                );
+              })}
 
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-              <Stack direction={'column'} spacing={3}>
-                {listGroups.slice(4).map((group, index) => {
-                  return (
-                    <Stack
-                      onClick={() => {
-                        router.push(`/communities/groups/${group.id}`);
-                      }}
-                      key={index}
-                      direction={'row'}
-                      justifyContent={'space-between'}
-                      width={1}
-                      sx={{
-                        p: 1,
-                        '&:hover': {
-                          background: `${theme.colors.primary.lighter}`,
-                          borderRadius: 1
-                        }
-                      }}
-                    >
-                      <GroupsInfo group={group} />
-                      <Box>
-                        <IconButton aria-label="settings">
-                          <MoreVertIcon />
-                        </IconButton>
-                      </Box>
-                    </Stack>
-                  );
-                })}
+              <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <Stack direction={'column'} spacing={3}>
+                  {listGroups.slice(4).map((group, index) => {
+                    return (
+                      <Stack
+                        onClick={() => {
+                          router.push(`/communities/groups/${group.id}`);
+                        }}
+                        key={index}
+                        direction={'row'}
+                        justifyContent={'space-between'}
+                        width={1}
+                        sx={{
+                          p: 1,
+                          '&:hover': {
+                            background: `${theme.colors.primary.lighter}`,
+                            borderRadius: 1
+                          }
+                        }}
+                      >
+                        <GroupsInfo group={group} />
+                        <Box>
+                          <IconButton aria-label="settings">
+                            <MoreVertIcon />
+                          </IconButton>
+                        </Box>
+                      </Stack>
+                    );
+                  })}
+                </Stack>
+              </Collapse>
+              <Stack justifyContent={'center'} direction={'row'}>
+                <ExpandMore
+                  expand={expanded}
+                  onClick={handleExpandClick}
+                  aria-expanded={expanded}
+                  aria-label="show more"
+                >
+                  {!expanded ? (
+                    <Typography variant="h4" color={'primary'}>
+                      Hiển thị thêm
+                    </Typography>
+                  ) : (
+                    <Typography variant="h4" color={'primary'}>
+                      Ẩn
+                    </Typography>
+                  )}
+                </ExpandMore>
               </Stack>
-            </Collapse>
-            <Stack justifyContent={'center'} direction={'row'}>
-              <ExpandMore
-                expand={expanded}
-                onClick={handleExpandClick}
-                aria-expanded={expanded}
-                aria-label="show more"
-              >
-                {!expanded ? (
-                  <Typography variant="h4" color={'primary'}>
-                    Hiển thị thêm
-                  </Typography>
-                ) : (
-                  <Typography variant="h4" color={'primary'}>
-                    Ẩn
-                  </Typography>
-                )}
-              </ExpandMore>
             </Stack>
-          </Stack>
+          )}
         </Stack>
       </Paper>
     </Box>

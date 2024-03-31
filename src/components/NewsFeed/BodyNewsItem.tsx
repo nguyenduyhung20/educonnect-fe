@@ -22,6 +22,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { User } from '@/types/user';
 import { NextRouter } from 'next/router';
+import { formatDistance } from 'date-fns';
+import { viFormatDistance } from '@/utils/vi-formatDistance';
 
 export const BodyNewsItem = ({
   post,
@@ -61,6 +63,7 @@ export const BodyNewsItem = ({
   const isPostType = (post: Post | PostExplore): post is Post => {
     return (post as Post).fileContent !== undefined;
   };
+
   return (
     <>
       <Card ref={newsFeedRef}>
@@ -89,7 +92,9 @@ export const BodyNewsItem = ({
                   (post?.group ? ' -> ' + post?.group?.title : '')}
               </Typography>
             }
-            subheader="17 phút"
+            subheader={viFormatDistance(
+              formatDistance(new Date(post.createdAt), new Date())
+            )}
             action={
               <IconButton aria-label="delete">
                 <ClearIcon />
@@ -104,6 +109,11 @@ export const BodyNewsItem = ({
             <Typography variant="h4" style={{ whiteSpace: 'pre-line' }}>
               {post?.title}
             </Typography>
+            {isPostType(post) && (
+              <Typography variant="h6" style={{ whiteSpace: 'pre-line' }}>
+                {post.content.split(/\s+/).slice(0, 100).join(' ') + '... '}
+              </Typography>
+            )}
             {!isPostType(post) && (
               <Typography variant="h6" style={{ whiteSpace: 'pre-line' }}>
                 {post.contentSummarization}

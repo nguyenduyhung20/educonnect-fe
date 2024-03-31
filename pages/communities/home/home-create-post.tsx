@@ -5,10 +5,15 @@ import {
   Button,
   Container,
   Divider,
+  FormControl,
   Grid,
   IconButton,
   InputAdornment,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
+  SelectChangeEvent,
   Stack,
   Tab,
   Tabs,
@@ -71,14 +76,19 @@ function CreatePost() {
   const searchInputRef = useRef(null);
 
   const formik = useFormik<
-    Partial<Post> & { uploadedFiles: File[] } & { type: 'post' | 'link' }
+    Partial<Post> & { uploadedFiles: File[] } & { type: 'post' | 'link' } & {
+      contentLink: string;
+    } & { titleLink: string } & { topicPost: string }
   >({
     initialValues: {
       title: '',
       content: '',
       uploadedFiles: null,
       group: null,
-      type: 'post'
+      type: 'post',
+      contentLink: '',
+      titleLink: '',
+      topicPost: ''
     },
     onSubmit: async (values) => {
       const { error } = await handleSubmitHelper.call(values);
@@ -88,7 +98,10 @@ function CreatePost() {
           content: '',
           uploadedFiles: null,
           group: null,
-          type: currentTab
+          type: currentTab,
+          contentLink: '',
+          titleLink: '',
+          topicPost: ''
         });
         setImages([]);
         setSearchContent('');
@@ -101,6 +114,8 @@ function CreatePost() {
     async (
       values: Partial<Post> & { uploadedFiles: File[] } & {
         type: 'post' | 'link';
+      } & { contentLink: string } & { titleLink: string } & {
+        topicPost: string;
       }
     ) => {
       try {
@@ -147,6 +162,7 @@ function CreatePost() {
       item.title.toLowerCase().includes(searchContent.toLowerCase())
     );
   }, [searchContent, getGroupsUserJoinApi]);
+
 
   return (
     <>
@@ -244,7 +260,45 @@ function CreatePost() {
                           icon={<PostAddIcon />}
                           iconPosition="start"
                         />
-                      </Tabs>{' '}
+                      </Tabs>
+                      {
+                        <FormControl fullWidth>
+                          <InputLabel id="demo-simple-select-label">
+                            Chủ đề
+                          </InputLabel>
+                          <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={formik.values.topicPost}
+                            label="Chủ đề"
+                            onChange={formik.handleChange}
+                            name="topicPost"
+                          >
+                            <MenuItem value={'Toán học'}>Toán học</MenuItem>
+                            <MenuItem value={'Vật Lý'}>Vật Lý</MenuItem>
+                            <MenuItem value={'Hoá học'}>Hoá học</MenuItem>
+                            <MenuItem value={'Sinh học'}>Sinh học</MenuItem>
+                            <MenuItem value={'Văn học'}>Văn học</MenuItem>
+                            <MenuItem value={'Lịch sử'}>Lịch sử</MenuItem>
+                            <MenuItem value={'Địa lý'}>Địa lý</MenuItem>
+                            <MenuItem value={'Giáo dục công dân'}>
+                              Giáo dục công dân
+                            </MenuItem>
+                            <MenuItem value={'Ngoại ngữ'}>Ngoại ngữ</MenuItem>
+                            <MenuItem value={'Tin học'}>Tin học</MenuItem>
+                            <MenuItem value={'Giáo giục quốc phòng và an ninh'}>
+                              Giáo giục quốc phòng và an ninh
+                            </MenuItem>
+                            <MenuItem value={'Thể thao và giáo dục thể chất'}>
+                              Thể thao và giáo dục thể chất
+                            </MenuItem>
+                            <MenuItem value={'Hiểu biết chung'}>
+                              Hiểu biết chung
+                            </MenuItem>
+                            <MenuItem value={'Tin tức'}>Tin tức</MenuItem>
+                          </Select>
+                        </FormControl>
+                      }
                       {currentTab === 'post' && (
                         <CreateNewsFeedPost
                           formik={formik}
@@ -257,7 +311,23 @@ function CreatePost() {
                       )}
                       <Stack alignItems={'flex-end'}>
                         <Box>
-                          <Button variant="contained" type="submit">
+                          <Button
+                            variant="contained"
+                            type="submit"
+                            disabled={
+                              currentTab == 'post'
+                                ? formik.values.content == '' ||
+                                  formik.values.title == '' ||
+                                  formik.values.topicPost == ''
+                                  ? true
+                                  : false
+                                : formik.values.contentLink == '' ||
+                                  formik.values.titleLink == '' ||
+                                  formik.values.topicPost == ''
+                                ? true
+                                : false
+                            }
+                          >
                             Đăng bài
                           </Button>
                         </Box>

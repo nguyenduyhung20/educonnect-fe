@@ -8,7 +8,8 @@ import {
   CardMedia,
   Button,
   IconButton,
-  Stack
+  Stack,
+  Badge
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -214,17 +215,22 @@ const GroupCover = ({ group }: { group: Group }) => {
               >
                 {ViMemberStatus[member.status]}
               </Button>
-              {member.role == 'admin' ? (
-                <Button
-                  sx={{ width: '100%' }}
-                  onClick={() => approveMemberDrawer.handleOpen(group)}
-                  variant="outlined"
-                >
-                  {'Phê duyệt thành viên'}
-                </Button>
-              ) : (
-                <></>
-              )}
+              <Badge
+                badgeContent={getListUserApplyGroup.data?.data.length}
+                color="error"
+              >
+                {member.role == 'admin' ? (
+                  <Button
+                    sx={{ width: '100%' }}
+                    onClick={() => approveMemberDrawer.handleOpen(group)}
+                    variant="outlined"
+                  >
+                    {'Phê duyệt thành viên'}
+                  </Button>
+                ) : (
+                  <></>
+                )}
+              </Badge>
             </Stack>
           ) : (
             <Button

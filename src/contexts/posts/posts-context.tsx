@@ -63,7 +63,9 @@ interface ContextValue {
   createPost: (
     requests: Partial<Post> & { uploadedFiles: File[] } & {
       type: 'post' | 'link';
-    }
+    } & {
+      contentLink: string;
+    } & { titleLink: string } & { topicPost: string }
   ) => Promise<void>;
   updatePost: (post: Post) => Promise<void>;
   deletePost: (id: string) => Promise<void>;
@@ -127,13 +129,16 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
     async (
       request: Partial<Post> & { uploadedFiles: File[] } & {
         type: 'post' | 'link';
-      }
+      } & {
+        contentLink: string;
+      } & { titleLink: string } & { topicPost: string }
     ) => {
       try {
         const response = await PostsApi.postPost(
           getFormData({
-            title: request.title,
-            content: request.content,
+            title: request.type == 'post' ? request.title : request.titleLink,
+            content:
+              request.type == 'post' ? request.content : request.contentLink,
             uploadedFiles: request.uploadedFiles ?? null,
             groupId: request.group?.id ?? null,
             type: request.type
@@ -382,13 +387,19 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
         getNewsFeedApi.data?.data || [],
         currentPosts
       );
-      currentNewsFeedPosts.current = [...currentPosts, ...(newPosts || [])];
+      currentNewsFeedPosts.current = [
+        ...(getNewsFeedApi.data?.data || []),
+        ...(newPosts || [])
+      ];
     } else {
       const newPosts = filterSameElement(
         getPublicPostsApi.data?.data || [],
         currentPosts
       );
-      currentNewsFeedPosts.current = [...currentPosts, ...(newPosts || [])];
+      currentNewsFeedPosts.current = [
+        ...(getPublicPostsApi.data?.data || []),
+        ...(newPosts || [])
+      ];
     }
   }, [getNewsFeedApi, getPublicPostsApi]);
 

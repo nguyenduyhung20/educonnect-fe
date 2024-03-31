@@ -4,35 +4,13 @@ import SidebarLayout from '@/layouts/SidebarLayout';
 import { Container } from '@mui/material';
 
 import { UserViewProfile } from '@/sections/management/user/user-view-profile';
-import { useEffect, useMemo } from 'react';
-import { useRouter } from 'next/router';
-import { useAuth } from '@/hooks/use-auth';
+
 import UsersProvider, { useUserContext } from '@/contexts/user/user-context';
 import ExplorePostsProvider from '@/contexts/explore/explore-context';
+import PostsProvider from '@/contexts/posts/posts-context';
 
 function ManagementUserProfile() {
-  const { isAuthenticated } = useAuth();
-  const router = useRouter();
-
-  const { getUsersProfile } = useUserContext();
-
-  const userProfile = useMemo(() => {
-    return getUsersProfile.data?.data;
-  }, [getUsersProfile.data]);
-
-  const userID = useMemo(() => {
-    return Number(router.query.userID);
-  }, [router.query.userID]);
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/login');
-    } else {
-      if (userID) {
-        getUsersProfile.call(userID);
-      }
-    }
-  }, [userID]);
+  const { currentUserProfile } = useUserContext();
 
   return (
     <>
@@ -40,7 +18,9 @@ function ManagementUserProfile() {
         <title>Trang cá nhân</title>
       </Head>
       <Container sx={{ mt: 3 }} maxWidth="lg">
-        {userProfile && <UserViewProfile userData={userProfile} />}
+        {currentUserProfile.current && (
+          <UserViewProfile userData={currentUserProfile.current} />
+        )}
       </Container>
     </>
   );
@@ -49,7 +29,9 @@ function ManagementUserProfile() {
 ManagementUserProfile.getLayout = (page) => (
   <SidebarLayout>
     <ExplorePostsProvider>
-      <UsersProvider>{page}</UsersProvider>
+      <UsersProvider>
+        <PostsProvider>{page}</PostsProvider>
+      </UsersProvider>
     </ExplorePostsProvider>
   </SidebarLayout>
 );
