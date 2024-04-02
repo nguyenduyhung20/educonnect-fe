@@ -11,7 +11,13 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import React, { useMemo, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 import ClearIcon from '@mui/icons-material/Clear';
 import IconButton from '@mui/material/IconButton';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -22,8 +28,10 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { CommentsList } from '@/sections/dashboards/feeds/comments-list';
 import { usePostsContext } from '@/contexts/posts/posts-context';
 import { useAuth } from '@/hooks/use-auth';
-import SendIcon from '@mui/icons-material/Send';
-import { useRouter } from 'next/router';
+
+import { CommentSendItem } from '@/sections/dashboards/feeds/comment-send-item';
+import { viFormatDistance } from '@/utils/vi-formatDistance';
+import { formatDistance } from 'date-fns';
 
 export const BodyNewsDetail = ({
   post,
@@ -34,23 +42,17 @@ export const BodyNewsDetail = ({
 }) => {
   const [isLiked, setIsLiked] = useState(post.userInteract ? true : false);
 
-  const { reactPost, createComment, getDetailPostApi } = usePostsContext();
+  const { reactPost, getDetailPostApi } = usePostsContext();
 
   const { user } = useAuth();
 
-  const textComment = useRef('');
-
-  const router = useRouter();
-
-  const postID = useMemo(() => {
-    return Number(router.query.postID);
-  }, [router.query.postID]);
-
   let sumCommentCount = post.commentCount;
 
-  post.comment.forEach((item) => {
-    sumCommentCount += item.commentCount;
-  });
+  useMemo(() => {
+    post.comment.forEach((item) => {
+      sumCommentCount += item.commentCount;
+    });
+  }, [getDetailPostApi.data]);
 
   return (
     <Card>
@@ -77,7 +79,9 @@ export const BodyNewsDetail = ({
             {post.user?.name + (post?.group ? ` -> ${post.group.title}` : '')}
           </Typography>
         }
-        subheader="17 phút"
+        subheader={viFormatDistance(
+          formatDistance(new Date(post.createdAt), new Date())
+        )}
         action={
           <IconButton aria-label="delete">
             <ClearIcon />
@@ -132,7 +136,11 @@ export const BodyNewsDetail = ({
                 }}
               >
                 <Stack direction={'row'} alignItems={'center'} spacing={0.5}>
-                  {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                  {isLiked ? (
+                    <FavoriteIcon color="primary" />
+                  ) : (
+                    <FavoriteBorderIcon color="primary" />
+                  )}
                   <Typography>{post.interactCount}</Typography>
                 </Stack>
               </IconButton>
@@ -147,7 +155,7 @@ export const BodyNewsDetail = ({
             >
               <IconButton aria-label="delete">
                 <Stack direction={'row'} alignItems={'center'} spacing={0.5}>
-                  <ForumOutlinedIcon />
+                  <ForumOutlinedIcon color="primary" />
                   <Typography>{sumCommentCount}</Typography>
                 </Stack>
               </IconButton>
@@ -156,45 +164,9 @@ export const BodyNewsDetail = ({
 
           <Divider />
 
-          <CommentsList
-            post={post}
-            type={type}
-            degree={2}
-            textComment={textComment}
-          />
+          <CommentsList post={post} degree={2} />
 
-          <Stack sx={{ pb: 1 }} direction={'row'} spacing={2}>
-            <Avatar
-              component={Link}
-              variant="rounded"
-              alt={user?.name}
-              src={user?.avatar}
-              href={`/management/profile${user?.id}`}
-            />
-            <Stack width={1} direction={'row'} spacing={2}>
-              <TextField
-                placeholder="Bạn nghĩ gì?"
-                multiline
-                sx={{ width: 7 / 8 }}
-                onChange={(text) => {
-                  textComment.current = text.target.value;
-                }}
-              />
-
-              <IconButton
-                onClick={async () => {
-                  await createComment({
-                    id: post.id,
-                    content: textComment.current
-                  });
-                  textComment.current = '';
-                  await getDetailPostApi.call({ id: postID });
-                }}
-              >
-                <SendIcon />
-              </IconButton>
-            </Stack>
-          </Stack>
+          <CommentSendItem item={post} />
         </Stack>
       </CardActions>
     </Card>

@@ -22,6 +22,7 @@ import { useGroupsContext } from '../groups/groups-context';
 import { useUserContext } from '../user/user-context';
 import { filterSameElement } from '@/utils/filter-same-element';
 import { useRouter } from 'next/router';
+import { Comment } from '@/types/comment';
 
 interface ContextValue {
   getPostsApi: UseFunctionReturnType<FormData, { data: Post[] }>;
@@ -57,7 +58,8 @@ interface ContextValue {
       itemType: 'post' | 'comment';
       postID: number;
     },
-    index: number
+    index: number,
+    parentIndex?: number
   ) => Promise<void>;
 
   createPost: (
@@ -70,7 +72,7 @@ interface ContextValue {
   updatePost: (post: Post) => Promise<void>;
   deletePost: (id: string) => Promise<void>;
   sendViewEvent: (postId: number) => Promise<void>;
-  createComment: (request: { id: number; content: string }) => Promise<void>;
+  createComment: (request: { id: number; content: string }) => Promise<Comment>;
 }
 
 export const PostsContext = createContext<ContextValue>({
@@ -91,7 +93,22 @@ export const PostsContext = createContext<ContextValue>({
   deletePost: async () => {},
   sendViewEvent: async () => {},
 
-  createComment: async () => {}
+  createComment: async (): Promise<Comment> => {
+    return {
+      id: 0,
+      title: '',
+      content: '',
+      fileContent: [],
+      user: { name: '', avatar: '', id: 0 },
+      parentPostId: 0,
+      group: { id: 0, title: '' },
+      createdAt: '',
+      commentCount: 0,
+      interactCount: 0,
+      userInteract: '',
+      comment: []
+    };
+  }
 });
 
 const PostsProvider = ({ children }: { children: ReactNode }) => {
@@ -118,6 +135,7 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
         const response = await PostsApi.postComment(request);
         if (response) {
         }
+        return response;
       } catch (error) {
         throw error;
       }
@@ -253,27 +271,52 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
         itemType: 'post' | 'comment';
         postID: number;
       },
-      index: number
+      index: number,
+      parentIndex?: number
     ) => {
       try {
         const response = await PostsApi.reactComment(request, action, info);
         if (response) {
           if (type == 'detail') {
             const postDetail = getDetailPostApi.data.data;
-            getDetailPostApi.setData({
-              data: {
-                ...postDetail,
-                comment: postDetail.comment.map((item, subIndex) => {
-                  if (subIndex == index) {
-                    item.interactCount =
-                      action == 'like'
-                        ? item.interactCount + 1
-                        : item.interactCount - 1;
-                  }
-                  return item;
-                })
-              }
-            });
+            if (typeof parentIndex != 'undefined') {
+              getDetailPostApi.setData({
+                data: {
+                  ...postDetail,
+                  comment: postDetail.comment.map((item, itemIndex) => {
+                    if (itemIndex == parentIndex) {
+                      item.comment = item.comment.map(
+                        (subItem, subItemIndex) => {
+                          if (subItemIndex == index) {
+                            subItem.interactCount =
+                              action == 'like'
+                                ? subItem.interactCount + 1
+                                : subItem.interactCount - 1;
+                          }
+                          return subItem;
+                        }
+                      );
+                    }
+                    return item;
+                  })
+                }
+              });
+            } else {
+              getDetailPostApi.setData({
+                data: {
+                  ...postDetail,
+                  comment: postDetail.comment.map((item, subIndex) => {
+                    if (subIndex == index) {
+                      item.interactCount =
+                        action == 'like'
+                          ? item.interactCount + 1
+                          : item.interactCount - 1;
+                    }
+                    return item;
+                  })
+                }
+              });
+            }
           } else if (type == 'newsfeed') {
             const newData = getNewsFeedApi.data.data.map((item) => {
               if (item.id == request.id) {

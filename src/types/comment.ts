@@ -1,5 +1,5 @@
-import { Post } from './post';
+import { PostDetail } from './post';
 
-export interface Comment extends Post {
-  parentPostId: string;
+export interface Comment extends PostDetail {
+  parentPostId: number;
 }

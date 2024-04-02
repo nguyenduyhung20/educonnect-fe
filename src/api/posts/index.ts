@@ -1,5 +1,5 @@
 import { apiGet, apiPost, apiDelete, apiPatch } from 'src/utils/api-request';
-
+import { Comment } from '@/types/comment';
 import { Post, PostDetail } from '@/types/post';
 
 export class PostsApi {
@@ -79,17 +79,18 @@ export class PostsApi {
     });
   }
 
-  static async getComment(id: number): Promise<{ data: PostDetail }> {
+  static async getComment(id: number): Promise<{ data: Comment }> {
     return await apiGet(`/post/comment/${id}`, {});
   }
 
   static async postComment(request: {
     id: number;
     content: string;
-  }): Promise<string> {
-    return await apiPost(`/post/${request.id}/comment`, {
+  }): Promise<Comment> {
+    const response = await apiPost(`/post/${request.id}/comment`, {
       content: request.content
     });
+    return response.data;
   }
 
   static async sendViewEvent({ postId }: { postId: number }) {

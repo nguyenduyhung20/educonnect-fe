@@ -1,5 +1,5 @@
 import { Avatar, Box, Card, IconButton, styled } from '@mui/material';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
 import { useUserContext } from '@/contexts/user/user-context';
 import { useDropzone } from 'react-dropzone';
@@ -45,8 +45,12 @@ const ButtonUploadWrapper = styled(Box)(
   `
 );
 
-export const AvatarCover = ({user} : {user: User}) => {
-  const [images, setImages] = useState<string[]>([user?.avatar]);
+export const AvatarCover = ({ user }: { user: User }) => {
+  const [images, setImages] = useState<string[]>([]);
+
+  useEffect(() => {
+    setImages([user?.avatar]);
+  }, [user]);
 
   const { changeAvatar } = useUserContext();
 

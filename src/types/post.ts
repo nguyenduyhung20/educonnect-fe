@@ -1,3 +1,4 @@
+import { Comment } from './comment';
 import { Group } from './groups';
 import { UserPost } from './user';
 
@@ -8,7 +9,6 @@ export interface Post {
   title: string;
   content: string;
   createdAt: string;
-  postUuid: string;
   interactCount: number;
   commentCount: number;
   userInteract: string;
@@ -18,7 +18,7 @@ export interface Post {
 export type TypePost = 'newsfeed' | 'group' | 'profile' | 'detail';
 
 export interface PostDetail extends Post {
-  comment: Post[];
+  comment: Comment[];
 }
 
 export interface PostExplore {

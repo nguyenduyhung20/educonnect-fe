@@ -209,7 +209,11 @@ export const BodyNewsItem = ({
                   }}
                 >
                   <Stack direction={'row'} alignItems={'center'} spacing={0.5}>
-                    {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                    {isLiked ? (
+                      <FavoriteIcon color="primary" />
+                    ) : (
+                      <FavoriteBorderIcon color="primary" />
+                    )}
                     <Typography>{post.interactCount}</Typography>
                   </Stack>
                 </IconButton>
@@ -232,7 +236,7 @@ export const BodyNewsItem = ({
                   }}
                 >
                   <Stack direction={'row'} alignItems={'center'} spacing={0.5}>
-                    <ForumOutlinedIcon />
+                    <ForumOutlinedIcon color="primary" />
                     <Typography>{post.commentCount}</Typography>
                   </Stack>
                 </IconButton>
