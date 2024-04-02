@@ -1,16 +1,33 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import AvatarGroup from '@mui/material/AvatarGroup';
-import { useTheme } from '@mui/material';
+import Tooltip from '@mui/material/Tooltip';
+import Button from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
 
-export default function GroupAvatarsMembers() {
-  const theme = useTheme();
+
+const CustomButton = styled(Button)({
+  margin: '0 -7px',
+  padding: '0px',
+  minWidth: '0',
+  backgroundColor: 'transparent', 
+  boxShadow: 'none',
+  borderRadius: '100%'
+});
+
+
+export default function GroupAvatarsMembers({ members }) {
   return (
     <AvatarGroup max={4}>
-      <Avatar alt="Travis Howard" src="/static/images/avatars/2.jpg" />
-      <Avatar alt="Cindy Baker" src="/static/images/avatars/3.jpg" />
-      <Avatar alt="Agnes Walker" src="/static/images/avatars/4.jpg" />
-      <Avatar alt="Trevor Henderson" src="/static/images/avatars/5.jpg" />
+      {members.map((member, index) => {
+        return (
+          <Tooltip arrow key={index} title={member?.user?.name}>
+            <CustomButton>
+              <Avatar alt={member?.user?.name} src={member?.user?.avatar} />
+            </CustomButton>
+          </Tooltip>
+        );
+      })}
     </AvatarGroup>
   );
 }

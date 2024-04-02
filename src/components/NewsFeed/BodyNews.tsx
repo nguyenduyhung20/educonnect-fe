@@ -1,104 +1,66 @@
-import {
-  Avatar,
-  Box,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  CardMedia,
-  Stack,
-  Typography
-} from '@mui/material';
-import React from 'react';
-import ClearIcon from '@mui/icons-material/Clear';
-import IconButton from '@mui/material/IconButton';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
-import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
-import Link from '../Link';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAuth } from '@/hooks/use-auth';
-import { Post } from '@/types/post';
+import { Post, TypePost } from '@/types/post';
+import { useRouter } from 'next/router';
+import { usePostsContext } from '@/contexts/posts/posts-context';
+import { BodyNewsItem } from './BodyNewsItem';
+import { useViewEventTimer } from '@/hooks/useViewEventTimer';
 
-export const BodyNews = ({ post }: { post: Post }) => {
-  const { user } = useAuth();
+export const BodyNews = ({
+  post,
+  type,
+  isLast,
+  newLimit
+}: {
+  post: Post;
+  type: TypePost;
+  isLast: boolean;
+  newLimit: () => void;
+}) => {
+  const newsFeedRef = useRef();
+
+  const [isLiked, setIsLiked] = useState(post?.userInteract ? true : false);
+
+  const { reactPost } = usePostsContext();
+
+  const { isAuthenticated, user } = useAuth();
+  const router = useRouter();
+  useViewEventTimer({ post, ref: newsFeedRef });
+
+  useEffect(() => {
+    if (!newsFeedRef?.current) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      // Infinite scroll logic
+      if (isLast && entry.isIntersecting) {
+        newLimit();
+        observer.unobserve(entry.target);
+      }
+    });
+
+    observer.observe(newsFeedRef.current);
+
+    // Clean-up observer
+    return () => {
+      if (newsFeedRef.current) {
+        observer.unobserve(newsFeedRef.current);
+      }
+    };
+  }, [isLast]);
+
   return (
-    <Card>
-      <CardHeader
-        avatar={
-          <Avatar
-            component={Link}
-            variant="rounded"
-            alt={post.user.name}
-            src={post.user.avatar}
-            href={'/management/profile'}
-          />
-        }
-        title={
-          <Typography
-            variant="h4"
-            component={Link}
-            href={'/management/profile'}
-            sx={{
-              color: 'black',
-              '&:hover': { textDecoration: 'underline' }
-            }}
-          >
-            {post.user.name}
-          </Typography>
-        }
-        subheader="17 phút"
-        action={
-          <IconButton aria-label="delete">
-            <ClearIcon />
-          </IconButton>
-        }
+    <>
+      <BodyNewsItem
+        post={post}
+        isAuthenticated={isAuthenticated}
+        user={user}
+        isLiked={isLiked}
+        setIsLiked={setIsLiked}
+        router={router}
+        type={type}
+        reactPost={reactPost}
+        newsFeedRef={newsFeedRef}
       />
-      <CardMedia
-        component={'img'}
-        image={
-          '/static/images/feeds/392825007_691969853024257_4320526996950590956_n.jpg'
-        }
-      />
-      <CardContent>
-        <Typography variant="h6">{post.content}</Typography>
-      </CardContent>
-      <CardActions>
-        <Box
-          sx={{
-            display: 'flex',
-            width: 1
-          }}
-        >
-          <Box
-            sx={{
-              width: 1,
-              display: 'flex',
-              justifyContent: 'center'
-            }}
-          >
-            <IconButton aria-label="delete">
-              <Stack direction={'row'} alignItems={'center'} spacing={0.5}>
-                <FavoriteBorderIcon />
-                <Typography>{post.interactCount}</Typography>
-              </Stack>
-            </IconButton>
-          </Box>
-          <Box
-            sx={{
-              width: 1,
-              display: 'flex',
-              justifyContent: 'center'
-            }}
-          >
-            <IconButton aria-label="delete">
-              <Stack direction={'row'} alignItems={'center'} spacing={0.5}>
-                <ForumOutlinedIcon />
-                <Typography>{post.commentCount}</Typography>
-              </Stack>
-            </IconButton>
-          </Box>
-        </Box>
-      </CardActions>
-    </Card>
+    </>
   );
 };

@@ -13,13 +13,11 @@ import {
 import NextLink from 'next/link';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 
-import DesignServicesTwoToneIcon from '@mui/icons-material/DesignServicesTwoTone';
 // import BrightnessLowTwoToneIcon from '@mui/icons-material/BrightnessLowTwoTone';
 // import MmsTwoToneIcon from '@mui/icons-material/MmsTwoTone';
 // import TableChartTwoToneIcon from '@mui/icons-material/TableChartTwoTone';
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import DisplaySettingsTwoToneIcon from '@mui/icons-material/DisplaySettingsTwoTone';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 // import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
@@ -287,10 +285,12 @@ function SidebarMenu() {
             <SubMenuWrapper>
               <List component="div">
                 <ListItem component="div">
-                  <NextLink href="/management/profile" passHref>
+                  <NextLink href={`/management/profile/${user?.id}`} passHref>
                     <Button
                       className={
-                        currentRoute === '/management/profile' ? 'active' : ''
+                        currentRoute === `/management/profile/[userID]`
+                          ? 'active'
+                          : ''
                       }
                       disableRipple
                       component="a"
@@ -301,7 +301,7 @@ function SidebarMenu() {
                     </Button>
                   </NextLink>
                 </ListItem>
-                <ListItem component="div">
+                {/* <ListItem component="div">
                   <NextLink href="/management/profile/settings" passHref>
                     <Button
                       className={
@@ -317,7 +317,7 @@ function SidebarMenu() {
                       Cài đặt
                     </Button>
                   </NextLink>
-                </ListItem>
+                </ListItem> */}
               </List>
             </SubMenuWrapper>
           </List>

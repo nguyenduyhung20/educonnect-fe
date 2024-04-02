@@ -1,5 +1,5 @@
-import type { User } from 'src/types/user';
-import { apiGet, apiPatch, apiPost } from 'src/utils/api-request';
+import type { User, UserProfile } from 'src/types/user';
+import { apiGet, apiPatch, apiPost, getFormData } from 'src/utils/api-request';
 
 type SignInRequest = {
   username: string;
@@ -21,6 +21,18 @@ type SignUpRequest = {
 type SignUpResponse = Promise<{
   accessToken: string;
 }>;
+
+interface FollowListResponse {
+  data: {
+    userFollowers: UserFollowers;
+    userFolloweds: UserFollowers;
+  };
+}
+
+interface UserFollowers {
+  user: User[];
+  count: number;
+}
 
 export class UsersApi {
   static async postUser(request: Omit<User, 'id'>): Promise<{ id: string }> {
@@ -50,5 +62,41 @@ export class UsersApi {
     new_password: string;
   }): Promise<User> {
     return await apiPost('/users/password', payload);
+  }
+
+  static async getUserProfile(id: number): Promise<{ data: UserProfile }> {
+    return await apiGet(`/user/${id}`);
+  }
+
+  static async followUser({ userId }: { userId: number }) {
+    const response = await apiPost(`/user/follow/${userId}`, {});
+    return response;
+  }
+
+  static async followList() {
+    const response: FollowListResponse = await apiGet(`/user/follow`, {});
+    return response.data;
+  }
+
+  static async changeAvatar(request: {
+    userId: number;
+    uploadedFiles: File[];
+  }) {
+    const response = await apiPost(
+      `/user/avatar/${request.userId}`,
+      getFormData(request)
+    );
+    return response;
+  }
+
+  static async changeBackGround(request: {
+    userId: number;
+    uploadedFiles: File[];
+  }) {
+    const response = await apiPost(
+      `/user/background/${request.userId}`,
+      getFormData(request)
+    );
+    return response;
   }
 }

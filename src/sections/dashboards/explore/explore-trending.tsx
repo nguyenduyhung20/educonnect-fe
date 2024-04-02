@@ -1,86 +1,15 @@
-import {
-  Box,
-  Button,
-  Collapse,
-  IconButton,
-  IconButtonProps,
-  Paper,
-  Stack,
-  TextField,
-  Typography,
-  styled
-} from '@mui/material';
-import React, { useState } from 'react';
-import { TrendingNewsItem } from '@/components/dashboards/trending-news-item';
+import { Box, Paper, Stack } from '@mui/material';
+import React from 'react';
 import { SearchBar } from '@/components/dashboards/search-bar';
-
-interface ExpandMoreProps extends IconButtonProps {
-  expand: boolean;
-}
+import { ExploreTrendingSection } from './explore-trending-section';
 
 export const ExploreTrending = () => {
-  const ExpandMore = styled((props: ExpandMoreProps) => {
-    const { expand, ...other } = props;
-    return <IconButton {...other} />;
-  })(({ theme, expand }) => ({
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest
-    })
-  }));
-
-  const [expanded, setExpanded] = useState(false);
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
-
   return (
     <Box>
       <Paper elevation={5} sx={{ p: 2 }}>
         <Stack direction={'column'} spacing={2}>
           <SearchBar />
-
-          <Typography
-            variant="h3"
-            sx={{
-              fontWeight: 700,
-              fontSize: 23
-            }}
-          >
-            Xu hướng dành cho bạn
-          </Typography>
-
-          <Stack direction={'column'} spacing={1}>
-            <TrendingNewsItem />
-            <TrendingNewsItem />
-            <TrendingNewsItem />
-            <TrendingNewsItem />
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-              <Stack direction={'column'} spacing={1}>
-                <TrendingNewsItem />
-                <TrendingNewsItem />
-                <TrendingNewsItem />
-              </Stack>
-            </Collapse>
-            <Stack justifyContent={'center'} direction={'row'}>
-              <ExpandMore
-                expand={expanded}
-                onClick={handleExpandClick}
-                aria-expanded={expanded}
-                aria-label="show more"
-              >
-                {!expanded ? (
-                  <Typography variant="h4" color={'primary'}>
-                    Show more
-                  </Typography>
-                ) : (
-                  <Typography variant="h4" color={'primary'}>
-                    Hide
-                  </Typography>
-                )}
-              </ExpandMore>
-            </Stack>
-          </Stack>
+          <ExploreTrendingSection />
         </Stack>
       </Paper>
     </Box>

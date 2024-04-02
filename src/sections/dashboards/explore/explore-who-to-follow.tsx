@@ -4,15 +4,18 @@ import {
   IconButton,
   Paper,
   Stack,
-  Typography,
-  useTheme
+  Typography
 } from '@mui/material';
-import React from 'react';
+import React, { useMemo } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useAuth } from '@/hooks/use-auth';
+import { useExplorePostsContext } from '@/contexts/explore/explore-context';
+import Link from '@/components/Link';
 
 export const ExploreWhoToFollow = () => {
-  const { user } = useAuth();
+  const { getUserMostFollower } = useExplorePostsContext();
+  const listUsers = useMemo(() => {
+    return getUserMostFollower.data?.data || [];
+  }, [getUserMostFollower]);
 
   return (
     <Box>
@@ -25,69 +28,47 @@ export const ExploreWhoToFollow = () => {
               fontSize: 23
             }}
           >
-            Who to follow
+            Người nổi tiếng
           </Typography>
 
           <Stack direction={'column'} spacing={2}>
-            <Stack direction={'row'} justifyContent={'space-between'} width={1}>
-              <Stack direction={'row'} spacing={1}>
-                <Avatar variant="rounded" alt={user?.name} src={user?.avatar} />
-                <Stack>
-                  <Typography variant="h5">Võ Quốc Bá Cẩn</Typography>
-                  <Typography variant="subtitle1">124k follower</Typography>
+            {listUsers.map((item, index) => (
+              <Stack
+                direction={'row'}
+                justifyContent={'space-between'}
+                width={1}
+                key={index}
+              >
+                <Stack direction={'row'} spacing={1}>
+                  <Avatar
+                    component={Link}
+                    variant="rounded"
+                    alt={item?.name}
+                    src={item?.avatar}
+                    href={`/management/profile/${item?.id}`}
+                  />
+                  <Stack>
+                    <Typography
+                      variant="h5"
+                      component={Link}
+                      href={`/management/profile/${item?.id}`}
+                      sx={{
+                        color: 'black',
+                        '&:hover': { textDecoration: 'underline' }
+                      }}
+                    >
+                      {item.name}
+                    </Typography>
+                    <Typography variant="subtitle1">{`${item.followerCount} người theo dõi`}</Typography>
+                  </Stack>
                 </Stack>
+                <Box>
+                  <IconButton aria-label="settings">
+                    <MoreVertIcon />
+                  </IconButton>
+                </Box>
               </Stack>
-              <Box>
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              </Box>
-            </Stack>
-
-            <Stack direction={'row'} justifyContent={'space-between'} width={1}>
-              <Stack direction={'row'} spacing={1}>
-                <Avatar variant="rounded" alt={user?.name} src={user?.avatar} />
-                <Stack>
-                  <Typography variant="h5">Võ Quốc Bá Cẩn</Typography>
-                  <Typography variant="subtitle1">124k follower</Typography>
-                </Stack>
-              </Stack>
-              <Box>
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              </Box>
-            </Stack>
-
-            <Stack direction={'row'} justifyContent={'space-between'} width={1}>
-              <Stack direction={'row'} spacing={1}>
-                <Avatar variant="rounded" alt={user?.name} src={user?.avatar} />
-                <Stack>
-                  <Typography variant="h5">Võ Quốc Bá Cẩn</Typography>
-                  <Typography variant="subtitle1">124k follower</Typography>
-                </Stack>
-              </Stack>
-              <Box>
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              </Box>
-            </Stack>
-
-            <Stack direction={'row'} justifyContent={'space-between'} width={1}>
-              <Stack direction={'row'} spacing={1}>
-                <Avatar variant="rounded" alt={user?.name} src={user?.avatar} />
-                <Stack>
-                  <Typography variant="h5">Võ Quốc Bá Cẩn</Typography>
-                  <Typography variant="subtitle1">124k follower</Typography>
-                </Stack>
-              </Stack>
-              <Box>
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              </Box>
-            </Stack>
+            ))}
           </Stack>
         </Stack>
       </Paper>

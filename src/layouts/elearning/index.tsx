@@ -1,10 +1,15 @@
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useCallback, useEffect, useMemo, useRef } from 'react';
 import { Box, alpha, lighten, useTheme } from '@mui/material';
 import PropTypes from 'prop-types';
 
 import Sidebar from './Sidebar';
 import Header from './Header';
 import { useAuth } from '@/hooks/use-auth';
+import { io } from 'socket.io-client';
+import useAppSnackbar from '@/hooks/use-app-snackbar';
+import { useNotificationContext } from '@/contexts/notification/noti-context';
+import { NotiData } from '@/types/noti';
+import router from 'next/router';
 
 interface ElearningLayoutProps {
   children?: ReactNode;
@@ -13,7 +18,52 @@ interface ElearningLayoutProps {
 const ElearningLayout: FC<ElearningLayoutProps> = ({ children }) => {
   const theme = useTheme();
 
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
+
+  const { showSnackbarNoti } = useAppSnackbar();
+
+  const { getNotificationApi } = useNotificationContext();
+
+  const listNoti = useMemo(() => {
+    return getNotificationApi.data?.data || [];
+  }, [getNotificationApi.data]);
+
+  const handleNotifyFunction = useRef<(data: NotiData) => void>();
+
+  handleNotifyFunction.current = useCallback(
+    (data: NotiData) => {
+      const newData = {
+        data: [
+          ...listNoti,
+          { message: data.content, create_at: new Date().toISOString() }
+        ]
+      };
+      getNotificationApi.setData(newData);
+      showSnackbarNoti(data);
+    },
+    [listNoti]
+  );
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      const socket = io(process.env.NEXT_PUBLIC_API_NOTIFICATION);
+      socket.on('connect', () => {
+        socket.emit('newUser', { userId: user?.id });
+      });
+      socket.on('getNotification', (data: NotiData) => {
+        handleNotifyFunction.current?.(data);
+      });
+      socket.on('disconnect', () => {
+        // undefined
+      });
+
+      return () => {
+        // Cleanup logic (disconnect socket) if needed
+      };
+    } else {
+      router.push('/login');
+    }
+  }, [isAuthenticated, user]);
 
   return (
     <>
@@ -48,8 +98,8 @@ const ElearningLayout: FC<ElearningLayoutProps> = ({ children }) => {
         <Sidebar />
         <Box
           sx={{
-            position: 'relative',
-            zIndex: 5,
+            position: 'static',
+            zIndex: 10,
             display: 'block',
             flex: 1,
             pt: `${theme.header.height}`,

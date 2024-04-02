@@ -1,255 +1,211 @@
 import {
-  Avatar,
   Box,
   Collapse,
   IconButton,
   IconButtonProps,
   Paper,
   Stack,
+  TextField,
   Typography,
   styled,
   useTheme
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import GroupAvatarsMembers from './groups-avatar-members';
-import { SearchBar } from '@/components/dashboards/search-bar';
 import { GroupsInfo } from './groups-info';
-
-const user = {
-  name: 'Trần Long Biên',
-  avatar: '/static/images/avatars/1.jpg'
-};
+import { useDebounce } from '@/hooks/use-debounce';
+import useFunction from '@/hooks/use-function';
+import { SearchApi } from '@/api/search';
+import { Search } from '@mui/icons-material';
+import { useRouter } from 'next/router';
+import { Group, TypeItemGroup } from '@/types/groups';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
+const ExpandMore = styled((props: ExpandMoreProps) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme }) => ({
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest
+  })
+}));
 
-export const DiscoverGroups = () => {
+export const DiscoverGroups = ({
+  type,
+  listGroups
+}: {
+  type: TypeItemGroup;
+  listGroups: Group[];
+}) => {
   const theme = useTheme();
 
-  const ExpandMore = styled((props: ExpandMoreProps) => {
-    const { expand, ...other } = props;
-    return <IconButton {...other} />;
-  })(({ theme }) => ({
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest
-    })
-  }));
-
   const [expanded, setExpanded] = useState(false);
+  const router = useRouter();
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
+  };
+
+  const [searchValue, setSearchValue] = useState('');
+  const debouncedSearchValue = useDebounce(searchValue, 500);
+
+  const searchGroupApi = useFunction(SearchApi.searchGroup);
+
+  const searchResult = useMemo(() => {
+    return searchGroupApi.data;
+  }, [searchGroupApi.data]);
+
+  useEffect(() => {
+    const searchUser = async () => {
+      if (debouncedSearchValue && debouncedSearchValue !== '') {
+        try {
+          await searchGroupApi.call({
+            userInput: debouncedSearchValue
+          });
+        } catch (error) {
+          console.error(error);
+          // Handle error state here if needed
+        }
+      }
+    };
+    searchUser();
+  }, [debouncedSearchValue]);
+
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    setSearchValue(event.target.value);
   };
 
   return (
     <Box>
       <Paper elevation={5} sx={{ p: 2 }}>
         <Stack direction={'column'} spacing={2}>
-          <SearchBar />
+          {type == 'hot' && (
+            <TextField
+              placeholder="Search"
+              sx={{ width: 1 }}
+              value={searchValue}
+              onChange={handleSearchChange}
+              InputProps={{
+                startAdornment: (
+                  <Stack
+                    sx={{ mr: 1 }}
+                    justifyContent={'center'}
+                    alignItems={'center'}
+                  >
+                    <Search />
+                  </Stack>
+                )
+              }}
+            />
+          )}
           <Typography
-            variant="h3"
+            variant="h5"
             sx={{
               fontWeight: 700,
-              fontSize: 23
+              fontSize: type == 'hot' ? 23 : 18
             }}
           >
-            Groups
+            {type == 'hot'
+              ? 'Nhóm'
+              : type == 'host'
+              ? 'Nhóm của bạn'
+              : 'Nhóm đã tham gia'}
           </Typography>
 
-          <Stack direction={'column'} spacing={3}>
-            <Stack
-              direction={'row'}
-              justifyContent={'space-between'}
-              width={1}
-              sx={{
-                p: 1,
-                '&:hover': {
-                  background: `${theme.colors.primary.lighter}`,
-                  borderRadius: 1
-                }
-              }}
-            >
-              <GroupsInfo />
-              <Box>
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              </Box>
-            </Stack>
-
-            <Stack
-              direction={'row'}
-              justifyContent={'space-between'}
-              width={1}
-              sx={{
-                p: 1,
-                '&:hover': {
-                  background: `${theme.colors.primary.lighter}`,
-                  borderRadius: 1
-                }
-              }}
-            >
-              <GroupsInfo />
-              <Box>
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              </Box>
-            </Stack>
-
-            <Stack
-              direction={'row'}
-              justifyContent={'space-between'}
-              width={1}
-              sx={{
-                p: 1,
-                '&:hover': {
-                  background: `${theme.colors.primary.lighter}`,
-                  borderRadius: 1
-                }
-              }}
-            >
-              <GroupsInfo />
-              <Box>
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              </Box>
-            </Stack>
-
-            <Stack
-              direction={'row'}
-              justifyContent={'space-between'}
-              width={1}
-              sx={{
-                p: 1,
-                '&:hover': {
-                  background: `${theme.colors.primary.lighter}`,
-                  borderRadius: 1
-                }
-              }}
-            >
-              <GroupsInfo />
-              <Box>
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              </Box>
-            </Stack>
-
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-              <Stack direction={'column'} spacing={3}>
-                <Stack
-                  direction={'row'}
-                  justifyContent={'space-between'}
-                  width={1}
-                  sx={{
-                    p: 1,
-                    '&:hover': {
-                      background: `${theme.colors.primary.lighter}`,
-                      borderRadius: 1
-                    }
-                  }}
-                >
-                  <Stack direction={'row'} spacing={1}>
-                    <Avatar
-                      sx={{
-                        mr: 2,
-                        width: theme.spacing(11),
-                        height: theme.spacing(11)
-                      }}
-                      variant="rounded"
-                      alt={user.name}
-                      src={user.avatar}
-                    />
-                    <Stack justifyContent={'space-between'}>
-                      <Stack spacing={0.5}>
-                        <Typography variant="h4">
-                          Cộng đồng toán học Việt Nam
-                        </Typography>
-                        <Stack direction={'row'} spacing={1}>
-                          <Typography variant="h5">321 </Typography>
-                          <Typography variant="body2">members </Typography>
-                        </Stack>
-                      </Stack>
-                      <Stack justifyContent={'flex-start'} direction={'row'}>
-                        <GroupAvatarsMembers />
-                      </Stack>
-                    </Stack>
+          <div>
+            {searchResult &&
+              searchResult.map((group, index) => {
+                return <div key={group.title + index}>{group.title}</div>;
+              })}
+          </div>
+          {listGroups.length == 0 ? (
+            type == 'host' ? (
+              <>Bạn chưa tạo nhóm</>
+            ) : (
+              <>Bạn chưa tham gia nhóm</>
+            )
+          ) : (
+            <Stack direction={'column'} spacing={3}>
+              {listGroups.slice(0, 4).map((group, index) => {
+                return (
+                  <Stack
+                    onClick={() => {
+                      router.push(`/communities/groups/${group.id}`);
+                    }}
+                    key={index}
+                    direction={'row'}
+                    justifyContent={'space-between'}
+                    width={1}
+                    sx={{
+                      '&:hover': {
+                        background: `${theme.colors.primary.lighter}`,
+                        borderRadius: 1
+                      }
+                    }}
+                  >
+                    <GroupsInfo group={group} />
+                    <Box>
+                      <IconButton aria-label="settings">
+                        <MoreVertIcon />
+                      </IconButton>
+                    </Box>
                   </Stack>
-                  <Box>
-                    <IconButton aria-label="settings">
-                      <MoreVertIcon />
-                    </IconButton>
-                  </Box>
+                );
+              })}
+
+              <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <Stack direction={'column'} spacing={3}>
+                  {listGroups.slice(4).map((group, index) => {
+                    return (
+                      <Stack
+                        onClick={() => {
+                          router.push(`/communities/groups/${group.id}`);
+                        }}
+                        key={index}
+                        direction={'row'}
+                        justifyContent={'space-between'}
+                        width={1}
+                        sx={{
+                          p: 1,
+                          '&:hover': {
+                            background: `${theme.colors.primary.lighter}`,
+                            borderRadius: 1
+                          }
+                        }}
+                      >
+                        <GroupsInfo group={group} />
+                        <Box>
+                          <IconButton aria-label="settings">
+                            <MoreVertIcon />
+                          </IconButton>
+                        </Box>
+                      </Stack>
+                    );
+                  })}
                 </Stack>
-                <Stack
-                  direction={'row'}
-                  justifyContent={'space-between'}
-                  width={1}
-                  sx={{
-                    p: 1,
-                    '&:hover': {
-                      background: `${theme.colors.primary.lighter}`,
-                      borderRadius: 1
-                    }
-                  }}
+              </Collapse>
+              <Stack justifyContent={'center'} direction={'row'}>
+                <ExpandMore
+                  expand={expanded}
+                  onClick={handleExpandClick}
+                  aria-expanded={expanded}
+                  aria-label="show more"
                 >
-                  <Stack direction={'row'} spacing={1}>
-                    <Avatar
-                      sx={{
-                        mr: 2,
-                        width: theme.spacing(11),
-                        height: theme.spacing(11)
-                      }}
-                      variant="rounded"
-                      alt={user.name}
-                      src={user.avatar}
-                    />
-                    <Stack justifyContent={'space-between'}>
-                      <Stack spacing={0.5}>
-                        <Typography variant="h4">
-                          Cộng đồng toán học Việt Nam
-                        </Typography>
-                        <Stack direction={'row'} spacing={1}>
-                          <Typography variant="h5">321 </Typography>
-                          <Typography variant="body2">members </Typography>
-                        </Stack>
-                      </Stack>
-                      <Stack justifyContent={'flex-start'} direction={'row'}>
-                        <GroupAvatarsMembers />
-                      </Stack>
-                    </Stack>
-                  </Stack>
-                  <Box>
-                    <IconButton aria-label="settings">
-                      <MoreVertIcon />
-                    </IconButton>
-                  </Box>
-                </Stack>
+                  {!expanded ? (
+                    <Typography variant="h4" color={'primary'}>
+                      Hiển thị thêm
+                    </Typography>
+                  ) : (
+                    <Typography variant="h4" color={'primary'}>
+                      Ẩn
+                    </Typography>
+                  )}
+                </ExpandMore>
               </Stack>
-            </Collapse>
-            <Stack justifyContent={'center'} direction={'row'}>
-              <ExpandMore
-                expand={expanded}
-                onClick={handleExpandClick}
-                aria-expanded={expanded}
-                aria-label="show more"
-              >
-                {!expanded ? (
-                  <Typography variant="h4" color={'primary'}>
-                    Show more
-                  </Typography>
-                ) : (
-                  <Typography variant="h4" color={'primary'}>
-                    Hide
-                  </Typography>
-                )}
-              </ExpandMore>
             </Stack>
-          </Stack>
+          )}
         </Stack>
       </Paper>
     </Box>

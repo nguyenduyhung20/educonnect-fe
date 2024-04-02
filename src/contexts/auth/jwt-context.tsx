@@ -1,7 +1,7 @@
 import type { FC, ReactNode } from 'react';
 import { createContext, useCallback, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
-import { UsersApi } from 'src/api/users';
+import { UsersApi } from '@/api/users';
 import type { User } from 'src/types/user';
 import { Issuer } from 'src/utils/auth';
 import CookieHelper, { CookieKeys } from 'src/utils/cookie-helper';
@@ -50,6 +50,7 @@ type SignUpAction = {
     user: User;
   };
 };
+
 
 type SignOutAction = {
   type: ActionType.SIGN_OUT;
@@ -222,17 +223,17 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
 
   const signUp = useCallback(
     async (
-      email: string,
-      name: string,
-      phone: string,
-      password: string
+      // email: string,
+      // name: string,
+      // phone: string,
+      // password: string
     ): Promise<void> => {
-      const { accessToken } = await UsersApi.signUp({
-        email,
-        name,
-        password,
-        phone
-      });
+      // const { accessToken } = await UsersApi.signUp({
+      //   email,
+      //   name,
+      //   password,
+      //   phone
+      // });
       // const user = await UsersApi.me({ accessToken });
 
       // sessionStorage.setItem(STORAGE_KEY, accessToken);
@@ -274,3 +275,4 @@ AuthProvider.propTypes = {
 };
 
 export const AuthConsumer = AuthContext.Consumer;
+

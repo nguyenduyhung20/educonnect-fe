@@ -4,4 +4,4 @@ import { AuthContext } from "src/contexts/auth/jwt-context";
 
 type AuthContextType = JwtAuthContextType;
 
-export const useAuth = <T = AuthContextType>() => useContext(AuthContext) as T;
+export const useAuth = <T = AuthContextType>() => useContext(AuthContext) as unknown as T;

@@ -1,3 +1,4 @@
+import { useAuth } from '@/hooks/use-auth';
 import {
   Box,
   List,
@@ -60,7 +61,7 @@ const ListWrapper = styled(Box)(
 );
 
 function HeaderMenu() {
-
+  const { user } = useAuth();
   return (
     <>
       <ListWrapper
@@ -80,21 +81,21 @@ function HeaderMenu() {
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
-              primary="Môn học của bạn"
+              primary="Lịch của bạn"
             />
           </ListItem>
-          <ListItem
+          {(user?.role === 'admin' || user?.role === 'student' || user?.role === 'teacher') && <ListItem
             classes={{ root: 'MuiListItem-indicators' }}
             button
             component={Link}
-            href="/components/forms"
+            href="/elearning/school"
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
-              primary="Lịch học của bạn"
+              primary="Trường học của bạn"
             />
-          </ListItem>
-          <ListItem
+          </ListItem>}
+          {(user?.role === 'parent' || user?.role === 'student')&& <ListItem
             classes={{ root: 'MuiListItem-indicators' }}
             button
             component={Link}
@@ -102,9 +103,9 @@ function HeaderMenu() {
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
-              primary="Điểm số của bạn"
+              primary={user?.role === 'parent' ? "Điểm số của con bạn" : "Điểm số của bạn"}
             />
-          </ListItem>
+          </ListItem>}
           {/* <ListItem
             classes={{ root: 'MuiListItem-indicators' }}
             button
@@ -125,20 +126,6 @@ function HeaderMenu() {
           </ListItem> */}
         </List>
       </ListWrapper>
-      {/* <Menu anchorEl={ref.current} onClose={handleClose} open={isOpen}>
-        <MenuItem sx={{ px: 3 }} component={Link} href="/">
-          Overview
-        </MenuItem>
-        <MenuItem sx={{ px: 3 }} component={Link} href="/components/tabs">
-          Tabs
-        </MenuItem>
-        <MenuItem sx={{ px: 3 }} component={Link} href="/components/cards">
-          Cards
-        </MenuItem>
-        <MenuItem sx={{ px: 3 }} component={Link} href="/components/modals">
-          Modals
-        </MenuItem>
-      </Menu> */}
     </>
   );
 }

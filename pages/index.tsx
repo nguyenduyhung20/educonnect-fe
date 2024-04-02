@@ -2,25 +2,22 @@ import Head from 'next/head';
 
 import SidebarLayout from '@/layouts/SidebarLayout';
 
-import PageHeader from '@/sections/dashboards/Crypto/PageHeader';
-import PageTitleWrapper from '@/components/PageTitleWrapper';
 import { Container, Grid } from '@mui/material';
 
-import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
-import { TrendingNews } from '@/sections/dashboards/feeds/trending-news';
 import { CreateNewsFeed } from '@/sections/dashboards/feeds/create-news-feed';
-import PostsProvider from '@/contexts/posts/posts-context';
-import { useAuth } from '@/hooks/use-auth';
+import PostsProvider, { usePostsContext } from '@/contexts/posts/posts-context';
+import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
+import { ExploreTrendingSection } from '@/sections/dashboards/explore/explore-trending-section';
+import ExplorePostsProvider from '@/contexts/explore/explore-context';
 
 function CommunitiesHome() {
-  const { user } = useAuth();
+  const { currentNewsFeedPosts } = usePostsContext();
 
   return (
     <>
       <Head>
         <title>EduConnect</title>
       </Head>
-      <PageTitleWrapper>{user ? <PageHeader /> : <></>}</PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid
           container
@@ -28,13 +25,18 @@ function CommunitiesHome() {
           justifyContent="center"
           alignItems="stretch"
           spacing={3}
+          mt={2}
         >
           <Grid item xs={12} md={7}>
             <CreateNewsFeed />
-            <NewsFeed />
+            <NewsFeed
+              listNewsFeeds={currentNewsFeedPosts.current}
+              detail={false}
+              type={'newsfeed'}
+            />
           </Grid>
           <Grid item xs={12} md={4}>
-            <TrendingNews />
+            <ExploreTrendingSection />
           </Grid>
         </Grid>
       </Container>
@@ -44,7 +46,9 @@ function CommunitiesHome() {
 
 CommunitiesHome.getLayout = (page) => (
   <SidebarLayout>
-    <PostsProvider>{page}</PostsProvider>
+    <ExplorePostsProvider>
+      <PostsProvider>{page} </PostsProvider>
+    </ExplorePostsProvider>
   </SidebarLayout>
 );
 

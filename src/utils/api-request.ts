@@ -1,4 +1,4 @@
-import CookieHelper from "./cookie-helper";
+import CookieHelper from './cookie-helper';
 
 const API_HOST = process.env.NEXT_PUBLIC_API_HOST;
 
@@ -8,32 +8,29 @@ export const getFormData = (data: { [name: string]: any }): FormData => {
     const value = data[key];
     if (Array.isArray(value)) {
       value.forEach((v) => formData.append(key, v));
-    } else if (typeof value != "undefined") {
+    } else if (typeof value != 'undefined') {
       formData.append(key, value);
     }
   });
   return formData;
 };
 
-const getRequestHeaders = async (
-  method: string,
-  isFormData?: boolean
-): Promise<any> => {
-  const token = CookieHelper.getItem("token");
+const getRequestHeaders = async (isFormData?: boolean): Promise<any> => {
+  const token = CookieHelper.getItem('token');
 
   const headers = new Headers();
   if (token) {
-    headers.append("Authorization", "Bearer " + token);
+    headers.append('Authorization', 'Bearer ' + token);
   }
   if (!isFormData) {
-    headers.append("Content-Type", "application/json");
+    headers.append('Content-Type', 'application/json');
   }
   return headers;
 };
 
 // Attach body as search params
 const getRequestUrl = (query: string, body?: any) => {
-  return API_HOST + query + (body ? "?" + new URLSearchParams(body) : "");
+  return API_HOST + query + (body ? '?' + new URLSearchParams(body) : '');
 };
 
 const apiFetch = async (
@@ -55,48 +52,48 @@ const apiFetch = async (
 
 export const apiPost = async (query: string, body: any) => {
   const isFormData = body instanceof FormData;
-  const headers = await getRequestHeaders("POST", isFormData);
+  const headers = await getRequestHeaders(isFormData);
   return await apiFetch(getRequestUrl(query), {
-    method: "POST",
+    method: 'POST',
     headers,
-    body: isFormData ? body : JSON.stringify(body),
+    body: isFormData ? body : JSON.stringify(body)
   });
 };
 
 export const apiDelete = async (query: string, body: any) => {
   const isFormData = body instanceof FormData;
-  const headers = await getRequestHeaders("DELETE", isFormData);
+  const headers = await getRequestHeaders(isFormData);
   return await apiFetch(getRequestUrl(query, body), {
-    method: "DELETE",
+    method: 'DELETE',
     headers,
-    body: isFormData ? body : JSON.stringify(body),
+    body: isFormData ? body : JSON.stringify(body)
   });
 };
 
 export const apiPut = async (query: string, body: any) => {
   const isFormData = body instanceof FormData;
-  const headers = await getRequestHeaders("PUT", isFormData);
+  const headers = await getRequestHeaders(isFormData);
   return await apiFetch(getRequestUrl(query), {
-    method: "PUT",
+    method: 'PUT',
     headers,
-    body: isFormData ? body : JSON.stringify(body),
+    body: isFormData ? body : JSON.stringify(body)
   });
 };
 
 export const apiPatch = async (query: string, body: any) => {
   const isFormData = body instanceof FormData;
-  const headers = await getRequestHeaders("PATCH", isFormData);
+  const headers = await getRequestHeaders(isFormData);
   return await apiFetch(getRequestUrl(query), {
-    method: "PATCH",
+    method: 'PATCH',
     headers,
-    body: isFormData ? body : JSON.stringify(body),
+    body: isFormData ? body : JSON.stringify(body)
   });
 };
 
 export const apiGet = async (query: string, body?: any) => {
-  const headers = await getRequestHeaders("GET");
+  const headers = await getRequestHeaders();
   return await apiFetch(getRequestUrl(query, body), {
-    method: "GET",
-    headers,
+    method: 'GET',
+    headers
   });
 };
