@@ -2,19 +2,14 @@ import PropTypes from 'prop-types';
 import {
   Box,
   Typography,
-  Card,
   Tooltip,
-  Avatar,
-  CardMedia,
   Button,
   IconButton,
   Stack,
   Badge
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
 
 import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
-import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
 import AddIcon from '@mui/icons-material/Add';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import { useRouter } from 'next/router';
@@ -32,68 +27,8 @@ import { GroupOutDialog } from './group-out-dialog';
 import { useDrawer } from '@/hooks/use-drawer';
 import { ApproveMemberDrawer } from './group-approve-member-drawer';
 import { useGroupsContext } from '@/contexts/groups/groups-context';
-
-const Input = styled('input')({
-  display: 'none'
-});
-
-const AvatarWrapper = styled(Card)(
-  ({ theme }) => `
-
-    position: relative;
-    overflow: visible;
-    display: inline-block;
-    margin-top: -${theme.spacing(9)};
-    margin-left: ${theme.spacing(2)};
-
-    .MuiAvatar-root {
-      width: ${theme.spacing(16)};
-      height: ${theme.spacing(16)};
-    }
-`
-);
-
-const ButtonUploadWrapper = styled(Box)(
-  ({ theme }) => `
-    position: absolute;
-    width: ${theme.spacing(4)};
-    height: ${theme.spacing(4)};
-    bottom: -${theme.spacing(1)};
-    right: -${theme.spacing(1)};
-
-    .MuiIconButton-root {
-      border-radius: 100%;
-      background: ${theme.colors.primary.main};
-      color: ${theme.palette.primary.contrastText};
-      box-shadow: ${theme.colors.shadows.primary};
-      width: ${theme.spacing(4)};
-      height: ${theme.spacing(4)};
-      padding: 0;
-  
-      &:hover {
-        background: ${theme.colors.primary.dark};
-      }
-    }
-`
-);
-
-const CardCover = styled(Card)(
-  ({ theme }) => `
-    position: relative;
-
-    .MuiCardMedia-root {
-      height: ${theme.spacing(26)};
-    }
-`
-);
-
-const CardCoverAction = styled(Box)(
-  ({ theme }) => `
-    position: absolute;
-    right: ${theme.spacing(2)};
-    bottom: ${theme.spacing(2)};
-`
-);
+import { GroupBackGround } from './group-background-item';
+import { GroupAvatarItem } from './group-avatar-item';
 
 const GroupCover = ({ group }: { group: Group }) => {
   const router = useRouter();
@@ -159,21 +94,7 @@ const GroupCover = ({ group }: { group: Group }) => {
           </IconButton>
         </Tooltip>
       </Box>
-      <CardCover>
-        <CardMedia image={group?.background} />
-        <CardCoverAction>
-          <Input accept="image/*" id="change-cover" multiple type="file" />
-          <label htmlFor="change-cover">
-            <Button
-              startIcon={<UploadTwoToneIcon />}
-              variant="contained"
-              component="span"
-            >
-              Thay đổi ảnh bìa
-            </Button>
-          </label>
-        </CardCoverAction>
-      </CardCover>
+      {member && <GroupBackGround group={group} member={member} />}
       <Box
         sx={{
           display: { xs: 'block', sm: 'flex' },
@@ -181,22 +102,7 @@ const GroupCover = ({ group }: { group: Group }) => {
           justifyContent: 'space-between'
         }}
       >
-        <AvatarWrapper>
-          <Avatar variant="rounded" alt={group?.title} src={group?.avatar} />
-          <ButtonUploadWrapper>
-            <Input
-              accept="image/*"
-              id="icon-button-file"
-              name="icon-button-file"
-              type="file"
-            />
-            <label htmlFor="icon-button-file">
-              <IconButton component="span" color="primary">
-                <UploadTwoToneIcon />
-              </IconButton>
-            </label>
-          </ButtonUploadWrapper>
-        </AvatarWrapper>
+        {member && <GroupAvatarItem group={group} member={member} />}
 
         <Box py={2} px={2} sx={{ mt: { xs: 0, sm: 1 } }}>
           {member?.status ? (
