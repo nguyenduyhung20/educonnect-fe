@@ -49,7 +49,11 @@ export const CommentSendItem = ({
             )
           ];
           getDetailPostApi.setData({
-            data: { ...getDetailPostApi.data?.data, comment: newComment }
+            data: {
+              ...getDetailPostApi.data?.data,
+              comment: newComment,
+              commentCount: getDetailPostApi.data?.data.commentCount + 1
+            }
           });
         } else {
           const result = await createComment({ ...values, id: item.id });
@@ -94,6 +98,7 @@ export const CommentSendItem = ({
               onChange={formik.handleChange}
               name="content"
               value={formik.values.content}
+              autoFocus
             />
 
             <IconButton type="submit" disabled={formik.isSubmitting}>

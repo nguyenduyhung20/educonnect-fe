@@ -34,6 +34,11 @@ interface ContextValue {
     },
     { data: UserApplyingGroup[] }
   >;
+  changeAvatar: (request: { groupId: number; uploadedFiles: File[] }) => void;
+  changeBackGround: (request: {
+    groupId: number;
+    uploadedFiles: File[];
+  }) => void;
   createGroup: (
     requests: Partial<Group> & {
       uploadedFiles: File[];
@@ -61,6 +66,8 @@ export const GroupsContext = createContext<ContextValue>({
   getGroupsUserHostApi: DEFAULT_FUNCTION_RETURN,
   getGroupsUserJoinApi: DEFAULT_FUNCTION_RETURN,
   getListUserApplyGroup: DEFAULT_FUNCTION_RETURN,
+  changeAvatar: async () => {},
+  changeBackGround: async () => {},
   createGroup: async () => {},
   joinGroup: async () => {},
   // updateGroup: async () => {},
@@ -91,6 +98,31 @@ const GroupsProvider = ({ children }: { children: ReactNode }) => {
   const groupID = useMemo(() => {
     return Number(router.query.groupID);
   }, [router.query.groupID]);
+
+  const changeAvatar = useCallback(
+    async (request: { groupId: number; uploadedFiles: File[] }) => {
+      try {
+        const response = await GroupsApi.changeAvatar(request);
+        if (response) {
+        }
+      } catch (error) {
+        throw error;
+      }
+    },
+    []
+  );
+  const changeBackGround = useCallback(
+    async (request: { groupId: number; uploadedFiles: File[] }) => {
+      try {
+        const response = await GroupsApi.changeBackGround(request);
+        if (response) {
+        }
+      } catch (error) {
+        throw error;
+      }
+    },
+    []
+  );
 
   const createGroup = useCallback(
     async (
@@ -208,6 +240,8 @@ const GroupsProvider = ({ children }: { children: ReactNode }) => {
         createGroup,
         joinGroup,
         refuseMember,
+        changeAvatar,
+        changeBackGround,
         //   updateGroup,
         deleteGroup,
         approveMember,

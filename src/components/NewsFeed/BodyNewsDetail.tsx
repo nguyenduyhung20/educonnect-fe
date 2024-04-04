@@ -8,16 +8,9 @@ import {
   CardMedia,
   Divider,
   Stack,
-  TextField,
   Typography
 } from '@mui/material';
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from 'react';
+import React, { useState } from 'react';
 import ClearIcon from '@mui/icons-material/Clear';
 import IconButton from '@mui/material/IconButton';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -42,17 +35,9 @@ export const BodyNewsDetail = ({
 }) => {
   const [isLiked, setIsLiked] = useState(post.userInteract ? true : false);
 
-  const { reactPost, getDetailPostApi } = usePostsContext();
+  const { reactPost } = usePostsContext();
 
   const { user } = useAuth();
-
-  let sumCommentCount = post.commentCount;
-
-  useMemo(() => {
-    post.comment.forEach((item) => {
-      sumCommentCount += item.commentCount;
-    });
-  }, [getDetailPostApi.data]);
 
   return (
     <Card>
@@ -156,7 +141,7 @@ export const BodyNewsDetail = ({
               <IconButton aria-label="delete">
                 <Stack direction={'row'} alignItems={'center'} spacing={0.5}>
                   <ForumOutlinedIcon color="primary" />
-                  <Typography>{sumCommentCount}</Typography>
+                  <Typography>{post.commentCount}</Typography>
                 </Stack>
               </IconButton>
             </Box>
