@@ -21,6 +21,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { CommentsList } from '@/sections/dashboards/feeds/comments-list';
 import { usePostsContext } from '@/contexts/posts/posts-context';
 import { useAuth } from '@/hooks/use-auth';
+import VerifiedIcon from '@mui/icons-material/Verified';
 
 import { CommentSendItem } from '@/sections/dashboards/feeds/comment-send-item';
 import { viFormatDistance } from '@/utils/vi-formatDistance';
@@ -52,17 +53,23 @@ export const BodyNewsDetail = ({
           />
         }
         title={
-          <Typography
-            variant="h4"
-            component={Link}
-            href={`/management/profile/${post.user?.id}`}
-            sx={{
-              color: 'black',
-              '&:hover': { textDecoration: 'underline' }
-            }}
-          >
-            {post.user?.name + (post?.group ? ` -> ${post.group.title}` : '')}
-          </Typography>
+          <Stack direction={'row'} spacing={1}>
+            <Typography
+              variant="h4"
+              component={Link}
+              href={`/management/profile/${post?.user?.id}`}
+              sx={{
+                color: 'black',
+                '&:hover': { textDecoration: 'underline' }
+              }}
+            >
+              {post?.user?.name +
+                (post?.group ? ' -> ' + post?.group?.title : '')}
+            </Typography>
+            {post?.user.is_famous && (
+              <VerifiedIcon color="primary" fontSize="small" />
+            )}
+          </Stack>
         }
         subheader={viFormatDistance(
           formatDistance(new Date(post.createdAt), new Date())
@@ -110,11 +117,12 @@ export const BodyNewsDetail = ({
                     isLiked ? 'dislike' : 'like',
                     type,
                     {
+                      senderId: user.id,
                       senderName: user?.name,
                       senderAvatar: user?.avatar,
                       receiverID: post.user?.id,
                       itemType: 'post',
-                      postID: post.id
+                      itemId: post.id
                     }
                   );
                   setIsLiked(!isLiked);

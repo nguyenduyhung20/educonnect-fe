@@ -39,11 +39,12 @@ interface ContextValue {
     action: 'like' | 'dislike',
     type: TypePost,
     info: {
-      senderName: string;
       senderAvatar: string;
+      senderId: number;
+      senderName: string;
       receiverID: number;
       itemType: 'post' | 'comment';
-      postID: number;
+      itemId: number;
     }
   ) => Promise<void>;
 
@@ -52,11 +53,12 @@ interface ContextValue {
     action: 'like' | 'dislike',
     type: TypePost,
     info: {
-      senderName: string;
       senderAvatar: string;
+      senderId: number;
+      senderName: string;
       receiverID: number;
       itemType: 'post' | 'comment';
-      postID: number;
+      itemId: number;
     },
     index: number,
     parentIndex?: number
@@ -99,7 +101,7 @@ export const PostsContext = createContext<ContextValue>({
       title: '',
       content: '',
       fileContent: [],
-      user: { name: '', avatar: '', id: 0 },
+      user: { name: '', avatar: '', id: 0, is_famous: false },
       parentPostId: 0,
       group: { id: 0, title: '' },
       createdAt: '',
@@ -177,11 +179,12 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
       action: 'like' | 'dislike',
       type: TypePost,
       info: {
-        senderName: string;
         senderAvatar: string;
+        senderId: number;
+        senderName: string;
         receiverID: number;
         itemType: 'post' | 'comment';
-        postID: number;
+        itemId: number;
       }
     ) => {
       try {
@@ -265,11 +268,12 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
       action: 'like' | 'dislike',
       type: TypePost,
       info: {
-        senderName: string;
         senderAvatar: string;
+        senderId: number;
+        senderName: string;
         receiverID: number;
         itemType: 'post' | 'comment';
-        postID: number;
+        itemId: number;
       },
       index: number,
       parentIndex?: number

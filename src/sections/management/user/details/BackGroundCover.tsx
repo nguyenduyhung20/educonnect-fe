@@ -5,6 +5,7 @@ import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
 import { useUserContext } from '@/contexts/user/user-context';
 import { useDropzone } from 'react-dropzone';
 import { User } from '@/types/user';
+import { useAuth } from '@/hooks/use-auth';
 
 const CardCover = styled(Card)(
   ({ theme }) => `
@@ -40,6 +41,7 @@ export const BackGroundCover = ({ user }: { user: User }) => {
     onDrop,
     useFsAccessApi: false
   });
+  const { user: userLogin } = useAuth();
   return (
     <>
       <CardCover>
@@ -51,13 +53,15 @@ export const BackGroundCover = ({ user }: { user: User }) => {
               e.stopPropagation();
             }}
           >
-            <Button
-              startIcon={<UploadTwoToneIcon />}
-              variant="contained"
-              component="span"
-            >
-              Thay đổi ảnh bìa
-            </Button>
+            {userLogin?.id == user?.id && (
+              <Button
+                startIcon={<UploadTwoToneIcon />}
+                variant="contained"
+                component="span"
+              >
+                Thay đổi ảnh bìa
+              </Button>
+            )}
             <input
               {...getInputProps()}
               id="change-cover"

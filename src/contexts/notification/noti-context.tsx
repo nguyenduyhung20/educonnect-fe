@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useEffect, useContext } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useEffect,
+  useContext,
+  useCallback
+} from 'react';
 
 import useFunction, {
   DEFAULT_FUNCTION_RETURN,
@@ -7,22 +13,27 @@ import useFunction, {
 
 import { NotificationsApi } from '@/api/notication';
 import { useAuth } from '@/hooks/use-auth';
+import { Notification } from '@/types/noti';
 
 interface ContextValue {
-  getNotificationApi: UseFunctionReturnType<
-    FormData,
-    { data: { message: string; create_at: string }[] }
-  >;
+  getNotificationApi: UseFunctionReturnType<FormData, { data: Notification[] }>;
+  readNotification: (notificationId: number) => void;
 }
 
 export const NotificationsContext = createContext<ContextValue>({
-  getNotificationApi: DEFAULT_FUNCTION_RETURN
+  getNotificationApi: DEFAULT_FUNCTION_RETURN,
+  readNotification: async () => {}
 });
 
 const NotificationsProvider = ({ children }: { children: ReactNode }) => {
   const getNotificationApi = useFunction(NotificationsApi.getNotification);
+  const readNotification = useCallback((notificationId: number) => {
+    const response = NotificationsApi.readNotification(notificationId);
+    if (response) {
+    }
+  }, []);
   const { isAuthenticated } = useAuth();
-  
+
   useEffect(() => {
     if (isAuthenticated) {
       getNotificationApi.call(new FormData());
@@ -33,7 +44,8 @@ const NotificationsProvider = ({ children }: { children: ReactNode }) => {
   return (
     <NotificationsContext.Provider
       value={{
-        getNotificationApi
+        getNotificationApi,
+        readNotification
       }}
     >
       {children}

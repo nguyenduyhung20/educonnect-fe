@@ -2,7 +2,6 @@ import { Avatar, Box, Card, IconButton, styled } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
 import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
 import { Group, Member } from '@/types/groups';
-import { useUserContext } from '@/contexts/user/user-context';
 import { useDropzone } from 'react-dropzone';
 import { useGroupsContext } from '@/contexts/groups/groups-context';
 
@@ -30,9 +29,6 @@ const ButtonUploadWrapper = styled(Box)(
   `
 );
 
-const Input = styled('input')({
-  display: 'none'
-});
 
 const AvatarWrapper = styled(Card)(
   ({ theme }) => `
