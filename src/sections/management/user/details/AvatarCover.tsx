@@ -4,6 +4,7 @@ import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
 import { useUserContext } from '@/contexts/user/user-context';
 import { useDropzone } from 'react-dropzone';
 import { User } from '@/types/user';
+import { useAuth } from '@/hooks/use-auth';
 
 const AvatarWrapper = styled(Card)(
   ({ theme }) => `
@@ -66,6 +67,7 @@ export const AvatarCover = ({ user }: { user: User }) => {
     onDrop,
     useFsAccessApi: false
   });
+  const { user: userLogin } = useAuth();
   return (
     <>
       <AvatarWrapper>
@@ -77,9 +79,11 @@ export const AvatarCover = ({ user }: { user: User }) => {
               e.stopPropagation();
             }}
           >
-            <IconButton component="span" color="primary">
-              <UploadTwoToneIcon />
-            </IconButton>
+            {userLogin?.id == user?.id && (
+              <IconButton component="span" color="primary">
+                <UploadTwoToneIcon />
+              </IconButton>
+            )}
             <input
               {...getInputProps()}
               id="upload-image"

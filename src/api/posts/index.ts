@@ -44,11 +44,12 @@ export class PostsApi {
     },
     action: string,
     info: {
-      senderName: string;
       senderAvatar: string;
+      senderId: number;
+      senderName: string;
       receiverID: number;
       itemType: 'post' | 'comment';
-      postID: number;
+      itemId: number;
     }
   ) {
     return await apiPost(`/post/${request.id}/interact`, {
@@ -65,11 +66,12 @@ export class PostsApi {
     },
     action: string,
     info: {
-      senderName: string;
       senderAvatar: string;
+      senderId: number;
+      senderName: string;
       receiverID: number;
       itemType: 'post' | 'comment';
-      postID: number;
+      itemId: number;
     }
   ) {
     return await apiPost(`/post/${request.id}/interact-comment`, {

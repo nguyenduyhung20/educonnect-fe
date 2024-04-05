@@ -1,5 +1,14 @@
 import { NotiData } from '@/types/noti';
-import { Avatar, Box, Button, Stack, Typography } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardHeader,
+  Link,
+  Stack,
+  Typography
+} from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useCallback, useMemo } from 'react';
 import NextLink from 'next/link';
@@ -31,29 +40,37 @@ function useAppSnackbar() {
     (notiData: NotiData) => {
       enqueueSnackbar(
         <>
-          <NextLink href={`/communities/home/${notiData.postId}`} passHref>
-            <Button>
-              <Stack
-                direction={'row'}
-                spacing={1}
-                justifyContent={'center'}
-                alignItems={'center'}
+          {/* <NextLink href={`/communities/home/${notiData.itemId}`} passHref>
+            <Button> */}
+
+          <Stack direction={'row'} alignItems={'center'} spacing={1}>
+            <Avatar
+              component={Link}
+              variant="rounded"
+              alt={notiData.senderInfo.name}
+              src={notiData.senderInfo.avatar}
+              href={`/management/profile/${notiData.senderInfo.id}`}
+            />
+            <Typography
+              sx={{
+                color: 'black',
+                '&:hover': { textDecoration: 'underline' }
+              }}
+            >
+              {notiData.senderInfo.name}
+            </Typography>
+            <Box>
+              <Typography
+                component={Link}
+                href={`http://localhost:3000/communities/home/${notiData?.itemId}`}
               >
-                <Box>
-                  <Avatar src={notiData.senderInfo.avatar} />
-                </Box>
-                <Box>
-                  <Typography
-                    variant="subtitle1"
-                    color={'black'}
-                    style={{ textTransform: 'none' }}
-                  >
-                    {notiData.content}
-                  </Typography>
-                </Box>
-              </Stack>
-            </Button>
-          </NextLink>
+                {notiData.content}
+              </Typography>
+            </Box>
+          </Stack>
+
+          {/* </Button>
+          </NextLink> */}
         </>,
         {
           variant: 'default',

@@ -1,11 +1,9 @@
 import { Group, Member } from '@/types/groups';
 import { Box, Button, Card, CardMedia, styled } from '@mui/material';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
 import { useGroupsContext } from '@/contexts/groups/groups-context';
 import { useDropzone } from 'react-dropzone';
-import useFunction from '@/hooks/use-function';
-import { GroupsApi } from '@/api/groups';
 
 const CardCover = styled(Card)(
   ({ theme }) => `
