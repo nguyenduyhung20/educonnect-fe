@@ -209,6 +209,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
       const response = await UsersApi.signIn({ username: email, password });
 
       CookieHelper.setItem(CookieKeys.TOKEN, response.token);
+      CookieHelper.setItem('Token', 'Bearer ' + response.token);
 
       dispatch({
         type: ActionType.SIGN_IN,
@@ -250,6 +251,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
 
   const signOut = useCallback(async (): Promise<void> => {
     CookieHelper.removeItem(CookieKeys.TOKEN);
+    CookieHelper.removeItem('Token');
     dispatch({ type: ActionType.SIGN_OUT });
     router.push(paths.login);
   }, [router]);

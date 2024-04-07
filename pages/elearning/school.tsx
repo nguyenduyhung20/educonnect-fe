@@ -25,19 +25,24 @@ function EleaningPage() {
   const [subjectName, setSubjectName] = useState('');
   const { user } = useAuth();
   const getClass = useFunction(ClassApi.getClassStudentLearning);
+  const getSchool = useFunction(ClassApi.getSchool);
   useEffect(() => {
     getClass.call('');
+    getSchool.call('');
   }, []);
 
   const [classId, setClassId] = useState(0);
   const classList = useMemo(() => {
     const classMapped = getClass.data?.data;
-    console.log(classMapped);
     if (classMapped?.length && user?.role === 'student') {
       setClassId(classMapped?.[0].classroom.id);
     }
     return classMapped;
   }, [getClass.data]);
+
+  const school = useMemo(() => {
+    return getSchool.data?.data?.school;
+  }, [getSchool.data]);
 
   return (
     <>
@@ -50,6 +55,14 @@ function EleaningPage() {
           <ElearningClassAdminRole />
         ) : (
           <Stack mt={2} spacing={4}>
+            { school && <Box textAlign={'center'}>
+              <Typography fontSize={24} variant="h4">
+                Trường {school?.name}
+              </Typography>
+              <Typography fontSize={16} variant="h5">
+                {school?.address}
+              </Typography>
+            </Box> }
             <Box
               display={'flex'}
               justifyContent={
