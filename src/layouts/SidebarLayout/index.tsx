@@ -29,10 +29,7 @@ const SidebarLayout: FC<SidebarLayoutProps> = ({ children }) => {
   handleNotifyFunction.current = useCallback(
     (data: NotiData) => {
       const newData = {
-        data: [
-          ...listNoti,
-          { message: data.content, create_at: new Date().toISOString() }
-        ]
+        data: [...listNoti]
       };
       getNotificationApi.setData(newData);
       showSnackbarNoti(data);

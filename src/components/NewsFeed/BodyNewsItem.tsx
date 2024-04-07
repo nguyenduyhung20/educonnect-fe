@@ -24,6 +24,7 @@ import { User } from '@/types/user';
 import { NextRouter } from 'next/router';
 import { formatDistance } from 'date-fns';
 import { viFormatDistance } from '@/utils/vi-formatDistance';
+import VerifiedIcon from '@mui/icons-material/Verified';
 
 export const BodyNewsItem = ({
   post,
@@ -47,11 +48,12 @@ export const BodyNewsItem = ({
     action: 'like' | 'dislike',
     type: TypePost,
     info: {
-      senderName: string;
       senderAvatar: string;
+      senderId: number;
+      senderName: string;
       receiverID: number;
       itemType: 'post' | 'comment';
-      postID: number;
+      itemId: number;
     }
   ) => Promise<void>;
   isLiked?: boolean;
@@ -79,18 +81,23 @@ export const BodyNewsItem = ({
               />
             }
             title={
-              <Typography
-                variant="h4"
-                component={Link}
-                href={`/management/profile/${post?.user?.id}`}
-                sx={{
-                  color: 'black',
-                  '&:hover': { textDecoration: 'underline' }
-                }}
-              >
-                {post?.user?.name +
-                  (post?.group ? ' -> ' + post?.group?.title : '')}
-              </Typography>
+              <Stack direction={'row'} spacing={1}>
+                <Typography
+                  variant="h4"
+                  component={Link}
+                  href={`/management/profile/${post?.user?.id}`}
+                  sx={{
+                    color: 'black',
+                    '&:hover': { textDecoration: 'underline' }
+                  }}
+                >
+                  {post?.user?.name +
+                    (post?.group ? ' -> ' + post?.group?.title : '')}
+                </Typography>
+                {post?.user.is_famous && (
+                  <VerifiedIcon color="primary" fontSize="small" />
+                )}
+              </Stack>
             }
             subheader={viFormatDistance(
               formatDistance(new Date(post.createdAt), new Date())
@@ -209,10 +216,11 @@ export const BodyNewsItem = ({
                         isLiked ? 'dislike' : 'like',
                         type,
                         {
+                          senderId: user?.id,
                           senderName: user?.name,
                           senderAvatar: user?.avatar,
                           receiverID: post.user?.id,
-                          postID: post.id,
+                          itemId: post.id,
                           itemType: 'post'
                         }
                       );
