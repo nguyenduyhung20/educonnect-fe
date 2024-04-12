@@ -97,7 +97,7 @@ export class PostsApi {
 
   static async sendViewEvent({ postId }: { postId: number }) {
     const payload = {
-      postId: postId.toString(),
+      postId: postId,
       interactionType: 'view',
       timestamp: new Date().toISOString()
     };
