@@ -3,7 +3,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { Post, TypePost } from '@/types/post';
 import { useRouter } from 'next/router';
 import { usePostsContext } from '@/contexts/posts/posts-context';
-import { BodyNewsItem } from './BodyNewsItem';
+import { BodyNewsItem } from './body-news-item';
 import { useViewEventTimer } from '@/hooks/useViewEventTimer';
 
 export const BodyNews = ({

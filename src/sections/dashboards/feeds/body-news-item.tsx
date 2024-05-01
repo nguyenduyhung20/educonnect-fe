@@ -13,7 +13,7 @@ import {
   Stack,
   Typography
 } from '@mui/material';
-import Link from '../Link';
+import Link from '../../../components/Link';
 import { Post, PostExplore, TypePost } from '@/types/post';
 import ClearIcon from '@mui/icons-material/Clear';
 import NextLink from 'next/link';
@@ -25,6 +25,7 @@ import { NextRouter } from 'next/router';
 import { formatDistance } from 'date-fns';
 import { viFormatDistance } from '@/utils/vi-formatDistance';
 import VerifiedIcon from '@mui/icons-material/Verified';
+import ReportIcon from '@mui/icons-material/Report';
 
 export const BodyNewsItem = ({
   post,
@@ -104,7 +105,7 @@ export const BodyNewsItem = ({
             )}
             action={
               <IconButton aria-label="delete">
-                <ClearIcon />
+                <ReportIcon />
               </IconButton>
             }
           />
