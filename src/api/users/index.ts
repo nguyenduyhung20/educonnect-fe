@@ -34,6 +34,11 @@ interface UserFollowers {
   count: number;
 }
 
+export interface UserOverviewActivity {
+  interactNumber: number;
+  commentNumber: number;
+}
+
 export class UsersApi {
   static async postUser(request: Omit<User, 'id'>): Promise<{ id: string }> {
     return await apiPost('/users', request);
@@ -66,6 +71,11 @@ export class UsersApi {
 
   static async getUserProfile(id: number): Promise<{ data: UserProfile }> {
     return await apiGet(`/user/${id}`);
+  }
+
+  static async getUserOverviewActivity(): Promise<UserOverviewActivity> {
+    const response = await apiGet(`/user/activity/overview`);
+    return response.data;
   }
 
   static async followUser({ userId }: { userId: number }) {

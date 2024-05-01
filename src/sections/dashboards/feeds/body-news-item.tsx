@@ -13,7 +13,7 @@ import {
   Stack,
   Typography
 } from '@mui/material';
-import Link from '../Link';
+import Link from '../../../components/Link';
 import { Post, PostExplore, TypePost } from '@/types/post';
 import ClearIcon from '@mui/icons-material/Clear';
 import NextLink from 'next/link';
@@ -24,6 +24,8 @@ import { User } from '@/types/user';
 import { NextRouter } from 'next/router';
 import { formatDistance } from 'date-fns';
 import { viFormatDistance } from '@/utils/vi-formatDistance';
+import VerifiedIcon from '@mui/icons-material/Verified';
+import ReportIcon from '@mui/icons-material/Report';
 
 export const BodyNewsItem = ({
   post,
@@ -47,11 +49,12 @@ export const BodyNewsItem = ({
     action: 'like' | 'dislike',
     type: TypePost,
     info: {
-      senderName: string;
       senderAvatar: string;
+      senderId: number;
+      senderName: string;
       receiverID: number;
       itemType: 'post' | 'comment';
-      postID: number;
+      itemId: number;
     }
   ) => Promise<void>;
   isLiked?: boolean;
@@ -79,25 +82,30 @@ export const BodyNewsItem = ({
               />
             }
             title={
-              <Typography
-                variant="h4"
-                component={Link}
-                href={`/management/profile/${post?.user?.id}`}
-                sx={{
-                  color: 'black',
-                  '&:hover': { textDecoration: 'underline' }
-                }}
-              >
-                {post?.user?.name +
-                  (post?.group ? ' -> ' + post?.group?.title : '')}
-              </Typography>
+              <Stack direction={'row'} spacing={1}>
+                <Typography
+                  variant="h4"
+                  component={Link}
+                  href={`/management/profile/${post?.user?.id}`}
+                  sx={{
+                    color: 'black',
+                    '&:hover': { textDecoration: 'underline' }
+                  }}
+                >
+                  {post?.user?.name +
+                    (post?.group ? ' -> ' + post?.group?.title : '')}
+                </Typography>
+                {post?.user.is_famous && (
+                  <VerifiedIcon color="primary" fontSize="small" />
+                )}
+              </Stack>
             }
             subheader={viFormatDistance(
               formatDistance(new Date(post.createdAt), new Date())
             )}
             action={
               <IconButton aria-label="delete">
-                <ClearIcon />
+                <ReportIcon />
               </IconButton>
             }
           />
@@ -155,12 +163,24 @@ export const BodyNewsItem = ({
                 <Box className="flex flex-col gap-4">
                   {isPostType(post) &&
                     post.fileContent.map((item, index) => {
-                      return (
-                        <img
-                          src={item}
-                          key={index}
-                          style={{ maxWidth: '100%' }}
-                        />
+                      return item.endsWith('.pdf') ? (
+                        // <Link
+                        //   marginLeft={2}
+                        //   href={item}
+                        //   target="_blank"
+                        //   rel="noreferrer noopener"
+                        // >
+                        //   Bấm vào đây để xem tài liệu
+                        // </Link>
+                        <></>
+                      ) : (
+                        <Stack>
+                          <img
+                            src={item}
+                            key={index}
+                            style={{ maxWidth: '100%' }}
+                          />
+                        </Stack>
                       );
                     })}
                 </Box>
@@ -197,10 +217,11 @@ export const BodyNewsItem = ({
                         isLiked ? 'dislike' : 'like',
                         type,
                         {
+                          senderId: user?.id,
                           senderName: user?.name,
                           senderAvatar: user?.avatar,
                           receiverID: post.user?.id,
-                          postID: post.id,
+                          itemId: post.id,
                           itemType: 'post'
                         }
                       );

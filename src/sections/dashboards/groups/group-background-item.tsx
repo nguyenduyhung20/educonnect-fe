@@ -1,11 +1,9 @@
-import { styled } from '@mui/material/styles';
-import { Box, Button, Card, CardMedia } from '@mui/material';
+import { Group, Member } from '@/types/groups';
+import { Box, Button, Card, CardMedia, styled } from '@mui/material';
 import React, { useCallback, useState } from 'react';
 import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
-import { useUserContext } from '@/contexts/user/user-context';
+import { useGroupsContext } from '@/contexts/groups/groups-context';
 import { useDropzone } from 'react-dropzone';
-import { User } from '@/types/user';
-import { useAuth } from '@/hooks/use-auth';
 
 const CardCover = styled(Card)(
   ({ theme }) => `
@@ -16,7 +14,6 @@ const CardCover = styled(Card)(
       }
   `
 );
-
 const CardCoverAction = styled(Box)(
   ({ theme }) => `
       position: absolute;
@@ -25,23 +22,29 @@ const CardCoverAction = styled(Box)(
   `
 );
 
-export const BackGroundCover = ({ user }: { user: User }) => {
-  const [background, setBackGround] = useState<string[]>([user?.background]);
-  const { changeBackGround } = useUserContext();
+export const GroupBackGround = ({
+  group,
+  member
+}: {
+  group: Group;
+  member: Member;
+}) => {
+  const [background, setBackGround] = useState<string[]>([group?.background]);
+  const { changeBackGround } = useGroupsContext();
 
   const onDrop = useCallback(async (acceptedFiles) => {
     const selectedFiles = acceptedFiles.map((file) =>
       URL.createObjectURL(file)
     );
     setBackGround(selectedFiles);
-    changeBackGround({ userId: user.id, uploadedFiles: acceptedFiles });
+    changeBackGround({ groupId: group.id, uploadedFiles: acceptedFiles });
   }, []);
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     useFsAccessApi: false
   });
-  const { user: userLogin } = useAuth();
+
   return (
     <>
       <CardCover>
@@ -53,7 +56,7 @@ export const BackGroundCover = ({ user }: { user: User }) => {
               e.stopPropagation();
             }}
           >
-            {userLogin?.id == user?.id && (
+            {member.role == 'admin' && (
               <Button
                 startIcon={<UploadTwoToneIcon />}
                 variant="contained"

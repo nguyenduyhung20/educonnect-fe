@@ -14,7 +14,7 @@ import useFunction, {
   UseFunctionReturnType
 } from 'src/hooks/use-function';
 
-import { UsersApi } from '@/api/users';
+import { UserOverviewActivity, UsersApi } from '@/api/users';
 import { UserProfile } from '@/types/user';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/hooks/use-auth';
@@ -28,13 +28,15 @@ interface ContextValue {
     uploadedFiles: File[];
   }) => void;
   currentUserProfile: MutableRefObject<UserProfile>;
+  getOverviewActivity: UseFunctionReturnType<void, UserOverviewActivity>;
 }
 
 export const UsersContext = createContext<ContextValue>({
   getUsersProfile: DEFAULT_FUNCTION_RETURN,
   changeAvatar: async () => {},
   changeBackGround: async () => {},
-  currentUserProfile: { current: undefined }
+  currentUserProfile: { current: undefined },
+  getOverviewActivity: DEFAULT_FUNCTION_RETURN
 });
 
 const UsersProvider = ({ children }: { children: ReactNode }) => {
@@ -63,6 +65,8 @@ const UsersProvider = ({ children }: { children: ReactNode }) => {
     },
     []
   );
+
+  const getOverviewActivity = useFunction(UsersApi.getUserOverviewActivity);
 
   const currentUserProfile = useRef<UserProfile>();
 
@@ -107,7 +111,8 @@ const UsersProvider = ({ children }: { children: ReactNode }) => {
         getUsersProfile,
         changeAvatar,
         changeBackGround,
-        currentUserProfile
+        currentUserProfile,
+        getOverviewActivity
       }}
     >
       {children}

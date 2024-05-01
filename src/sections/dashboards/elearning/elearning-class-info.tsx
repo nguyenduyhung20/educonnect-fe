@@ -25,7 +25,7 @@ import { DeleteDialogData } from '@/types/elearning';
 import { useDrawer } from '@/hooks/use-drawer';
 import { ClassManagerDrawer } from './class-manager-drawer';
 
-export const EleaningClassInfo = ({ classId }) => {
+export const EleaningClassInfo = ({ classId, setInSubject, setSubjectName }) => {
   const getSubject = useFunction(ClassApi.getSubjectOfClass);
   const getTeacher = useFunction(ClassApi.getTeacherOfClass);
   const getStudent = useFunction(ClassApi.getStudentOfClass);
@@ -95,7 +95,12 @@ export const EleaningClassInfo = ({ classId }) => {
                   {getSubject.data?.data?.map((item, index) => (
                     <TableRow
                       key={index}
+                      onClick={() => {
+                        setInSubject(item.subject.id);
+                        setSubjectName(item.subject.name);
+                      }}
                       sx={{
+                        cursor: 'pointer',
                         '.MuiTableCell-root': {
                           paddingTop: '16px',
                           paddingBottom: '16px'

@@ -6,6 +6,7 @@ export interface User {
   avatar: string;
   name: string;
   background: string;
+  is_famous: boolean;
 }
 
 export interface UserDetail extends User {
@@ -21,7 +22,7 @@ export interface UserDetail extends User {
   deleted: boolean;
 }
 
-export type UserPost = Pick<User, 'name' | 'avatar' | 'id'>;
+export type UserPost = Pick<User, 'name' | 'avatar' | 'id' | 'is_famous'>;
 
 export type UserProfile = {
   user: UserDetail;

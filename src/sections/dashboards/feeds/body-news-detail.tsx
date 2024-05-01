@@ -8,26 +8,20 @@ import {
   CardMedia,
   Divider,
   Stack,
-  TextField,
   Typography
 } from '@mui/material';
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from 'react';
+import React, { useState } from 'react';
 import ClearIcon from '@mui/icons-material/Clear';
 import IconButton from '@mui/material/IconButton';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
-import Link from '../Link';
+import Link from '../../../components/Link';
 import { PostDetail, TypePost } from '@/types/post';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { CommentsList } from '@/sections/dashboards/feeds/comments-list';
 import { usePostsContext } from '@/contexts/posts/posts-context';
 import { useAuth } from '@/hooks/use-auth';
+import VerifiedIcon from '@mui/icons-material/Verified';
 
 import { CommentSendItem } from '@/sections/dashboards/feeds/comment-send-item';
 import { viFormatDistance } from '@/utils/vi-formatDistance';
@@ -42,17 +36,9 @@ export const BodyNewsDetail = ({
 }) => {
   const [isLiked, setIsLiked] = useState(post.userInteract ? true : false);
 
-  const { reactPost, getDetailPostApi } = usePostsContext();
+  const { reactPost } = usePostsContext();
 
   const { user } = useAuth();
-
-  let sumCommentCount = post.commentCount;
-
-  useMemo(() => {
-    post.comment.forEach((item) => {
-      sumCommentCount += item.commentCount;
-    });
-  }, [getDetailPostApi.data]);
 
   return (
     <Card>
@@ -67,17 +53,23 @@ export const BodyNewsDetail = ({
           />
         }
         title={
-          <Typography
-            variant="h4"
-            component={Link}
-            href={`/management/profile/${post.user?.id}`}
-            sx={{
-              color: 'black',
-              '&:hover': { textDecoration: 'underline' }
-            }}
-          >
-            {post.user?.name + (post?.group ? ` -> ${post.group.title}` : '')}
-          </Typography>
+          <Stack direction={'row'} spacing={1}>
+            <Typography
+              variant="h4"
+              component={Link}
+              href={`/management/profile/${post?.user?.id}`}
+              sx={{
+                color: 'black',
+                '&:hover': { textDecoration: 'underline' }
+              }}
+            >
+              {post?.user?.name +
+                (post?.group ? ' -> ' + post?.group?.title : '')}
+            </Typography>
+            {post?.user.is_famous && (
+              <VerifiedIcon color="primary" fontSize="small" />
+            )}
+          </Stack>
         }
         subheader={viFormatDistance(
           formatDistance(new Date(post.createdAt), new Date())
@@ -89,11 +81,17 @@ export const BodyNewsDetail = ({
         }
       />
       <CardMedia>
-        <Stack>
-          {post.fileContent.map((item, index) => {
-            return <img src={item} key={index} style={{ maxWidth: '100%' }} />;
-          })}
-        </Stack>
+        {post.fileContent.map((item, index) => {
+          return item.endsWith('.pdf') ? (
+              <Link marginLeft={2} href={item} target="_blank" rel="noreferrer noopener">
+                Bấm vào đây để xem tài liệu
+              </Link>
+          ) : (
+            <Stack>
+              <img src={item} key={index} style={{ maxWidth: '100%' }} />
+            </Stack>
+          );
+        })}
       </CardMedia>
       <CardContent>
         <Stack spacing={1}>
@@ -125,11 +123,12 @@ export const BodyNewsDetail = ({
                     isLiked ? 'dislike' : 'like',
                     type,
                     {
+                      senderId: user.id,
                       senderName: user?.name,
                       senderAvatar: user?.avatar,
                       receiverID: post.user?.id,
                       itemType: 'post',
-                      postID: post.id
+                      itemId: post.id
                     }
                   );
                   setIsLiked(!isLiked);
@@ -156,7 +155,7 @@ export const BodyNewsDetail = ({
               <IconButton aria-label="delete">
                 <Stack direction={'row'} alignItems={'center'} spacing={0.5}>
                   <ForumOutlinedIcon color="primary" />
-                  <Typography>{sumCommentCount}</Typography>
+                  <Typography>{post.commentCount}</Typography>
                 </Stack>
               </IconButton>
             </Box>

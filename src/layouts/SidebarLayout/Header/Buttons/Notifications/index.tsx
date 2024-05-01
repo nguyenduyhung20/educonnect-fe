@@ -1,11 +1,13 @@
 import {
   alpha,
+  Avatar,
   Badge,
   Box,
+  Card,
+  CardHeader,
   Divider,
   IconButton,
-  List,
-  ListItem,
+  Link,
   Popover,
   Stack,
   Tooltip,
@@ -17,6 +19,8 @@ import { styled } from '@mui/material/styles';
 
 import { formatDistance } from 'date-fns';
 import { useNotificationContext } from '@/contexts/notification/noti-context';
+import { viFormatDistance } from '@/utils/vi-formatDistance';
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
 const NotificationsBadge = styled(Badge)(
   ({ theme }) => `
@@ -61,7 +65,7 @@ function HeaderNotifications({
     setOpen(false);
   };
 
-  const { getNotificationApi } = useNotificationContext();
+  const { getNotificationApi, readNotification } = useNotificationContext();
 
   const listNoti = useMemo(() => {
     return getNotificationApi.data?.data || [];
@@ -72,7 +76,13 @@ function HeaderNotifications({
       <Tooltip arrow title="Notifications">
         <IconButton color="primary" ref={ref} onClick={handleOpen}>
           <NotificationsBadge
-            badgeContent={!isSeen ? listNoti.length : 0}
+            badgeContent={
+              !isSeen
+                ? getNotificationApi.data?.data.filter((item) => {
+                    return !item.isRead;
+                  }).length
+                : 0
+            }
             anchorOrigin={{
               vertical: 'top',
               horizontal: 'right'
@@ -82,6 +92,7 @@ function HeaderNotifications({
           </NotificationsBadge>
         </IconButton>
       </Tooltip>
+
       <Popover
         anchorEl={ref.current}
         onClose={handleClose}
@@ -104,29 +115,68 @@ function HeaderNotifications({
           <Typography variant="h5">Thông báo</Typography>
         </Box>
         <Divider />
-        <List sx={{ p: 0 }}>
-          {listNoti.map((item, index) => (
-            <ListItem
-              sx={{ p: 2, minWidth: 350, display: { xs: 'block', sm: 'flex' } }}
-              key={index}
-            >
-              <Box flex="1">
-                <Stack display="flex" justifyContent="space-between">
-                  <Stack>
-                    <Typography sx={{ fontWeight: 'bold' }}>
-                      {item.message}
+
+        {listNoti.map((item, index) => (
+          <Stack key={index} sx={{ paddingTop: 1 }}>
+            <Card>
+              <CardHeader
+                avatar={
+                  <Avatar
+                    component={Link}
+                    variant="rounded"
+                    alt={item?.user?.name}
+                    src={item?.user?.avatar}
+                    href={`/management/profile/${item?.user?.id}`}
+                  />
+                }
+                title={
+                  <Stack direction={'row'} spacing={1 / 2}>
+                    <Typography
+                      variant="h4"
+                      component={Link}
+                      href={`/management/profile/${item?.user?.id}`}
+                      sx={{
+                        color: 'black',
+                        '&:hover': { textDecoration: 'underline' }
+                      }}
+                    >
+                      {item?.user?.name + ' '}
+                    </Typography>
+                    <Typography
+                      component={Link}
+                      href={`http://localhost:3000/communities/home/${item?.itemId}`}
+                      onClick={async () => {
+                        await readNotification(item.id);
+                      }}
+                    >
+                      {item?.message}
                     </Typography>
                   </Stack>
-                  <Typography variant="caption" sx={{ textTransform: 'none' }}>
-                    {formatDistance(new Date(item.create_at), new Date(), {
-                      addSuffix: true
-                    })}
-                  </Typography>
-                </Stack>
-              </Box>
-            </ListItem>
-          ))}
-        </List>
+                }
+                subheader={
+                  <>
+                    <Stack
+                      direction={'row'}
+                      spacing={1}
+                      justifyContent={'space-between'}
+                    >
+                      {viFormatDistance(
+                        formatDistance(new Date(item.createdAt), new Date())
+                      )}
+                      {!item.isRead && (
+                        <FiberManualRecordIcon
+                          color="primary"
+                          fontSize="small"
+                        />
+                      )}
+                    </Stack>
+                  </>
+                }
+                action={<></>}
+              />
+            </Card>
+          </Stack>
+        ))}
       </Popover>
     </>
   );
