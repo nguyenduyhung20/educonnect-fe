@@ -143,7 +143,12 @@ export default function UserTable({ type }) {
         resData = await ClassApi.createUser(updatedRow);
       }
       if (resData) {
-        setRows(rows.map((row) => (row.id === updatedRow.id ? {...updatedRow, id: resData} : row)));
+        console.log(resData)
+        setRows(
+          rows.map((row) =>
+            row.id === updatedRow.id ? { ...updatedRow, id: resData?.data?.id } : row
+          )
+        );
         return updatedRow;
       }
     } catch (error) {
@@ -157,7 +162,14 @@ export default function UserTable({ type }) {
   };
 
   const columnsNormal = [
-    { field: 'id', headerName: 'ID', width: 40, editable: false },
+    {
+      field: 'id',
+      headerName: 'ID',
+      headerAlign: 'center',
+      align: 'center',
+      width: 80,
+      editable: false
+    },
     {
       field: 'name',
       headerName: 'Họ và tên',
@@ -228,7 +240,8 @@ export default function UserTable({ type }) {
       align: 'left',
       headerAlign: 'left',
       editable: true,
-      valueGetter: (item) => typeof(item.value) === 'object' ? item.value?.username : item.value
+      valueGetter: (item) =>
+        typeof item.value === 'object' ? item.value?.username : item.value
     },
     {
       field: 'actions',
@@ -283,7 +296,14 @@ export default function UserTable({ type }) {
   ];
 
   const columnsStudent = [
-    { field: 'id', headerName: 'ID', width: 40, editable: false },
+    {
+      field: 'id',
+      headerName: 'ID',
+      headerAlign: 'center',
+      align: 'center',
+      width: 80,
+      editable: false
+    },
     {
       field: 'name',
       headerName: 'Họ và tên',
@@ -354,7 +374,8 @@ export default function UserTable({ type }) {
       align: 'left',
       headerAlign: 'left',
       editable: true,
-      valueGetter: (item) => typeof(item.value) === 'object' ? item.value?.username : item.value
+      valueGetter: (item) =>
+        typeof item.value === 'object' ? item.value?.username : item.value
     },
     {
       field: 'parentId',

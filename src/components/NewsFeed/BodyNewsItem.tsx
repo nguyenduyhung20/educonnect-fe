@@ -162,12 +162,24 @@ export const BodyNewsItem = ({
                 <Box className="flex flex-col gap-4">
                   {isPostType(post) &&
                     post.fileContent.map((item, index) => {
-                      return (
-                        <img
-                          src={item}
-                          key={index}
-                          style={{ maxWidth: '100%' }}
-                        />
+                      return item.endsWith('.pdf') ? (
+                        // <Link
+                        //   marginLeft={2}
+                        //   href={item}
+                        //   target="_blank"
+                        //   rel="noreferrer noopener"
+                        // >
+                        //   Bấm vào đây để xem tài liệu
+                        // </Link>
+                        <></>
+                      ) : (
+                        <Stack>
+                          <img
+                            src={item}
+                            key={index}
+                            style={{ maxWidth: '100%' }}
+                          />
+                        </Stack>
                       );
                     })}
                 </Box>

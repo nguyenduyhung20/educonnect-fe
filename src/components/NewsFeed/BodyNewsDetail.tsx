@@ -81,11 +81,17 @@ export const BodyNewsDetail = ({
         }
       />
       <CardMedia>
-        <Stack>
-          {post.fileContent.map((item, index) => {
-            return <img src={item} key={index} style={{ maxWidth: '100%' }} />;
-          })}
-        </Stack>
+        {post.fileContent.map((item, index) => {
+          return item.endsWith('.pdf') ? (
+              <Link marginLeft={2} href={item} target="_blank" rel="noreferrer noopener">
+                Bấm vào đây để xem tài liệu
+              </Link>
+          ) : (
+            <Stack>
+              <img src={item} key={index} style={{ maxWidth: '100%' }} />
+            </Stack>
+          );
+        })}
       </CardMedia>
       <CardContent>
         <Stack spacing={1}>
