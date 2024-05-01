@@ -1,6 +1,6 @@
 import { Box, Paper, Stack } from '@mui/material';
 import React from 'react';
-import { SearchBar } from '@/components/dashboards/search-bar';
+import { SearchBar } from '@/sections/dashboards/feeds/search-bar';
 import { ExploreTrendingSection } from './explore-trending-section';
 
 export const ExploreTrending = () => {
