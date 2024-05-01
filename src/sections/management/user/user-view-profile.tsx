@@ -10,6 +10,7 @@ import { CreateNewsFeed } from '@/sections/dashboards/feeds/create-news-feed';
 
 export const UserViewProfile = ({ userData }: { userData: UserProfile }) => {
   const { user } = useAuth();
+
   return (
     <>
       <Grid
