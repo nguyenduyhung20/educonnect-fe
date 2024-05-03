@@ -20,6 +20,7 @@ export const DeleteDialog = ({
         buttonDeny="Huỷ bỏ"
         buttonAccept="Xác nhận"
         onConfirm={onConfirm}
+        onClose={dialogProps.onClose}
       />
     </>
   );

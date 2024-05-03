@@ -54,7 +54,6 @@ export const ElearningClassAdminRole = () => {
   }, [recall]);
 
   const classList = useMemo(() => {
-    console.log(getClass.data?.data?.[0]);
     return getClass.data?.data?.[0];
   }, [getClass.data]);
 

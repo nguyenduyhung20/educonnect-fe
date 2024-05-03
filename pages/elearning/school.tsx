@@ -52,17 +52,19 @@ function EleaningPage() {
 
       <Container maxWidth="lg">
         {user?.role === 'admin' ? (
-          <ElearningClassAdminRole />
+          <>{<ElearningClassAdminRole />}</>
         ) : (
           <Stack mt={2} spacing={4}>
-            { school && <Box textAlign={'center'}>
-              <Typography fontSize={24} variant="h4">
-                Trường {school?.name}
-              </Typography>
-              <Typography fontSize={16} variant="h5">
-                {school?.address}
-              </Typography>
-            </Box> }
+            {school && (
+              <Box textAlign={'center'}>
+                <Typography fontSize={24} variant="h4">
+                  Trường {school?.name}
+                </Typography>
+                <Typography fontSize={16} variant="h5">
+                  {school?.address}
+                </Typography>
+              </Box>
+            )}
             <Box
               display={'flex'}
               justifyContent={
@@ -127,7 +129,9 @@ function EleaningPage() {
                 />
               )
             ) : (
-              <ElearningDocument classId={classId} subjectId={inSubject} />
+              <>
+                <ElearningDocument classId={classId} subjectId={inSubject} />
+              </>
             )}
           </Stack>
         )}

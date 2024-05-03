@@ -29,6 +29,7 @@ export const ConfirmApproveDialog = ({
         open={dialogProps.open}
         onConfirm={onConfirm}
         title="Xác nhận"
+        onClose={dialogProps.onClose}
       />
     </>
   );
