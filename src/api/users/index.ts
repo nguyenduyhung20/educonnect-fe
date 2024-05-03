@@ -12,14 +12,15 @@ type SignInResponse = Promise<{
 }>;
 
 type SignUpRequest = {
-  email: string;
-  name: string;
+  username: string;
   password: string;
-  phone: string;
+  name: string;
+  email: string;
 };
 
 type SignUpResponse = Promise<{
-  accessToken: string;
+  data: User;
+  token: string;
 }>;
 
 interface FollowListResponse {
@@ -54,7 +55,7 @@ export class UsersApi {
   }
 
   static async signUp(request: SignUpRequest): SignUpResponse {
-    return await apiPost('/users', request);
+    return await apiPost('/auth/register', request);
   }
 
   static async me(): Promise<User> {

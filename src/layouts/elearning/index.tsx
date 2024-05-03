@@ -43,6 +43,9 @@ const ElearningLayout: FC<ElearningLayoutProps> = ({ children }) => {
 
   useEffect(() => {
     if (isAuthenticated) {
+      if (user.role == 'user') {
+        router.push('/');
+      }
       const socket = io(process.env.NEXT_PUBLIC_API_NOTIFICATION);
       socket.on('connect', () => {
         socket.emit('newUser', { userId: user?.id });
