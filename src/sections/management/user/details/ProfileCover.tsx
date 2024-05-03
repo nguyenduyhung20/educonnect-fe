@@ -30,7 +30,7 @@ const ProfileCover = ({ user: user }: { user: UserDetail }) => {
   const getFollowList = async () => {
     const followList = await followListApi.call(null);
     if (
-      followList.data.userFolloweds.user?.some(
+      followList.data?.userFolloweds.user?.some(
         (followed) => followed.id === user?.id
       )
     ) {

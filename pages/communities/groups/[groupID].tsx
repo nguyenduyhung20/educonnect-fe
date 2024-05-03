@@ -12,6 +12,7 @@ import PostsProvider from '@/contexts/posts/posts-context';
 import { ExploreTrendingSection } from '@/sections/dashboards/explore/explore-trending-section';
 import ExplorePostsProvider from '@/contexts/explore/explore-context';
 import { CreateNewsFeed } from '@/sections/dashboards/feeds/create-news-feed';
+import ReportProvider from '@/contexts/report/report-context';
 
 const CommunitiesGroups = () => {
   const router = useRouter();
@@ -75,7 +76,9 @@ CommunitiesGroups.getLayout = (page) => (
   <SidebarLayout>
     <ExplorePostsProvider>
       <GroupsProvider>
-        <PostsProvider>{page}</PostsProvider>
+        <PostsProvider>
+          <ReportProvider>{page}</ReportProvider>
+        </PostsProvider>
       </GroupsProvider>
     </ExplorePostsProvider>
   </SidebarLayout>

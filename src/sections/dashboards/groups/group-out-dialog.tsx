@@ -21,6 +21,7 @@ export const GroupOutDialog = ({
         buttonDeny="Huỷ bỏ"
         open={dialogProps.open}
         onConfirm={onConfirm}
+        onClose={dialogProps.onClose}
       />
     </>
   );
