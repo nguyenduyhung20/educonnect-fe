@@ -1,3 +1,4 @@
+import { Film } from '@/components/dashboards/search-bar';
 import { PostExplore } from '@/types/post';
 import { apiGet } from 'src/utils/api-request';
 
@@ -20,5 +21,10 @@ export class ExploreApi {
   }> {
     const response = await apiGet('/public/most-follower', new FormData());
     return response;
+  }
+
+  static async getSearchResult() {
+    const data: { data: Film[] } = await apiGet('/explore/search', {});
+    return data.data;
   }
 }
