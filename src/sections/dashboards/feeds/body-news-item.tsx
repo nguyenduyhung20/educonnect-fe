@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Avatar,
   Box,
@@ -13,9 +13,8 @@ import {
   Stack,
   Typography
 } from '@mui/material';
-import Link from '../Link';
+import Link from '../../../components/Link';
 import { Post, PostExplore, TypePost } from '@/types/post';
-import ClearIcon from '@mui/icons-material/Clear';
 import NextLink from 'next/link';
 import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -25,6 +24,10 @@ import { NextRouter } from 'next/router';
 import { formatDistance } from 'date-fns';
 import { viFormatDistance } from '@/utils/vi-formatDistance';
 import VerifiedIcon from '@mui/icons-material/Verified';
+import ReportIcon from '@mui/icons-material/Report';
+import { useDialog } from '@/hooks/use-dialog';
+import { ReportPostDialog } from './report-post-dialog';
+import { useReportContext } from '@/contexts/report/report-context';
 
 export const BodyNewsItem = ({
   post,
@@ -62,9 +65,17 @@ export const BodyNewsItem = ({
   type?: TypePost;
   setIsLiked?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const isPostType = (post: Post | PostExplore): post is Post => {
-    return (post as Post).fileContent !== undefined;
-  };
+  const isPostType = useCallback(
+    (post: Post | PostExplore): post is Post => {
+      return (post as Post).fileContent !== undefined;
+    },
+    [post]
+  );
+  const reportPostDialog = useDialog();
+
+  const { reportPost } = useReportContext();
+
+  const [reason, setReason] = useState<string>('');
 
   return (
     <>
@@ -103,8 +114,13 @@ export const BodyNewsItem = ({
               formatDistance(new Date(post.createdAt), new Date())
             )}
             action={
-              <IconButton aria-label="delete">
-                <ClearIcon />
+              <IconButton
+                aria-label="delete"
+                onClick={() => {
+                  reportPostDialog.handleOpen();
+                }}
+              >
+                <ReportIcon />
               </IconButton>
             }
           />
@@ -162,12 +178,24 @@ export const BodyNewsItem = ({
                 <Box className="flex flex-col gap-4">
                   {isPostType(post) &&
                     post.fileContent.map((item, index) => {
-                      return (
-                        <img
-                          src={item}
-                          key={index}
-                          style={{ maxWidth: '100%' }}
-                        />
+                      return item.endsWith('.pdf') ? (
+                        // <Link
+                        //   marginLeft={2}
+                        //   href={item}
+                        //   target="_blank"
+                        //   rel="noreferrer noopener"
+                        // >
+                        //   Bấm vào đây để xem tài liệu
+                        // </Link>
+                        <></>
+                      ) : (
+                        <Stack>
+                          <img
+                            src={item}
+                            key={index}
+                            style={{ maxWidth: '100%' }}
+                          />
+                        </Stack>
                       );
                     })}
                 </Box>
@@ -255,6 +283,18 @@ export const BodyNewsItem = ({
           <></>
         )}
       </Card>
+
+      <ReportPostDialog
+        open={reportPostDialog.open}
+        onConfirm={async () => {
+          if (isPostType(post)) {
+            reportPost(post.id, user.id, reason, post?.group?.id);
+          }
+        }}
+        onClose={reportPostDialog.handleClose}
+        reason={reason}
+        setReason={setReason}
+      />
     </>
   );
 };

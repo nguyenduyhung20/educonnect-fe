@@ -237,7 +237,7 @@ function SidebarMenu() {
           </SubMenuWrapper>
         </List>
 
-        {user ? (
+        {user && user.role != 'user' ? (
           <List
             component="div"
             subheader={

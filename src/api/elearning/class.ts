@@ -5,6 +5,10 @@ export class ClassApi {
     return await apiGet(`/elearning/subject`);
   }
 
+  static async getSchool() {
+    return await apiGet(`/elearning/school`);
+  }
+
   static async getClassStudentLearning() {
     return await apiGet(`/elearning/class`);
   }
@@ -102,4 +106,8 @@ export class ClassApi {
   static async createUser(data) {
     return await apiPost(`/elearning/user`, data);
   } 
+
+  static async shareDocument(data) {
+    return await apiPost(`/elearning/share-document`, data);
+  }
 }

@@ -9,6 +9,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo } from 'react';
 import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
+import ReportProvider from '@/contexts/report/report-context';
 
 function PostDetail() {
   const router = useRouter();
@@ -56,7 +57,9 @@ function PostDetail() {
 
 PostDetail.getLayout = (page) => (
   <SidebarLayout>
-    <PostsProvider>{page}</PostsProvider>
+    <PostsProvider>
+      <ReportProvider>{page}</ReportProvider>
+    </PostsProvider>
   </SidebarLayout>
 );
 

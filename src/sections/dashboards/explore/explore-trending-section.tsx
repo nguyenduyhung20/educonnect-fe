@@ -1,4 +1,4 @@
-import { TrendingNewsItem } from '@/components/dashboards/trending-news-item';
+import { TrendingNewsItem } from '@/sections/dashboards/feeds/trending-news-item';
 import { useExplorePostsContext } from '@/contexts/explore/explore-context';
 import { useAuth } from '@/hooks/use-auth';
 import { Stack, Typography } from '@mui/material';

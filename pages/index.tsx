@@ -9,6 +9,7 @@ import PostsProvider, { usePostsContext } from '@/contexts/posts/posts-context';
 import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
 import { ExploreTrendingSection } from '@/sections/dashboards/explore/explore-trending-section';
 import ExplorePostsProvider from '@/contexts/explore/explore-context';
+import ReportProvider from '@/contexts/report/report-context';
 
 function CommunitiesHome() {
   const { currentNewsFeedPosts } = usePostsContext();
@@ -47,7 +48,9 @@ function CommunitiesHome() {
 CommunitiesHome.getLayout = (page) => (
   <SidebarLayout>
     <ExplorePostsProvider>
-      <PostsProvider>{page} </PostsProvider>
+      <PostsProvider>
+        <ReportProvider>{page}</ReportProvider>
+      </PostsProvider>
     </ExplorePostsProvider>
   </SidebarLayout>
 );

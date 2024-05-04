@@ -18,6 +18,7 @@ import { AuthContextType } from '@/contexts/auth/jwt-context';
 import { useAuth } from '@/hooks/use-auth';
 import { useMounted } from '@/hooks/use-mounted';
 import { useRouter } from 'next/router';
+import Link from '@/components/Link';
 
 const TypographyH1 = styled(Typography)(
   ({ theme }) => `
@@ -151,6 +152,10 @@ function Hero() {
             >
               Đăng nhập
             </Button>
+
+            <Typography padding={1} component={Link} href={'/register'}>
+              Đăng ký
+            </Typography>
           </form>
         </Grid>
       </Grid>

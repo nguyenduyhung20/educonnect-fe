@@ -30,12 +30,14 @@ import { useDialog } from '@/hooks/use-dialog';
 import { DeleteDialogData } from '@/types/elearning';
 import { useDrawer } from '@/hooks/use-drawer';
 import { DocuCreateDrawer } from './docu-create-drawer';
+import { PostCreateDrawer } from './post-create-drawer';
 
 export const ElearningDocument = ({ classId, subjectId }) => {
   const { user } = useAuth();
   const [recall, setRecall] = useState(false);
   const getDocument = useFunction(ClassApi.getDocumentOfSubjectAndClass);
   const docuCreateDrawer = useDrawer();
+  const postCreateDrawer = useDrawer();
 
   useEffect(() => {
     getDocument.call({ classId, subjectId });
@@ -162,10 +164,10 @@ export const ElearningDocument = ({ classId, subjectId }) => {
                         </Link>
                       </Tooltip>
                     </Stack>
-                    {user.role === 'teacher' && <CardActions
+                    {(user?.role === 'teacher' || user?.role === 'admin') && <CardActions
                       sx={{ width: '100%', justifyContent: 'flex-end' }}
                     >
-                      <ShareIcon className="share" onClick={() => {}} />
+                      <ShareIcon className="share" onClick={() => {postCreateDrawer.handleOpen({title: item.title, url: item.url})}} />
                       <ModeEditOutlineIcon
                         className="update ml-1"
                         onClick={() => {
@@ -244,6 +246,12 @@ export const ElearningDocument = ({ classId, subjectId }) => {
         classId={classId}
         subjectId={subjectId}
         setRecall={setRecall}
+      />
+
+      <PostCreateDrawer
+        open={postCreateDrawer.open}
+        onClose={postCreateDrawer.handleClose}
+        data={postCreateDrawer.data}
       />
     </>
   );

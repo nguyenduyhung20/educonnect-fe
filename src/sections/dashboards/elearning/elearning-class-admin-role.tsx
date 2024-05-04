@@ -30,10 +30,13 @@ import { useDialog } from '@/hooks/use-dialog';
 import { DeleteDialogData } from '@/types/elearning';
 import { useDrawer } from '@/hooks/use-drawer';
 import { ClassCreateDrawer } from './class-create-drawer';
+import { ElearningDocument } from './elearning-document';
 
 export const ElearningClassAdminRole = () => {
   const [inClass, setInClass] = useState(0);
+  const [inSubject, setInSubject] = useState(0);
   const [className, setClassName] = useState('');
+  const [subjectName, setSubjectName] = useState('');
   const [valueTab, setValueTab] = useState('0');
   const deleteDialog = useDialog<DeleteDialogData>();
   const classCreateDrawer = useDrawer();
@@ -51,7 +54,6 @@ export const ElearningClassAdminRole = () => {
   }, [recall]);
 
   const classList = useMemo(() => {
-    console.log(getClass.data?.data?.[0]);
     return getClass.data?.data?.[0];
   }, [getClass.data]);
 
@@ -103,11 +105,11 @@ export const ElearningClassAdminRole = () => {
           >
             {inClass !== 0 && (
               <Box display={'flex'} alignItems={'center'}>
-                <Button style={{ height: 38 }} onClick={() => setInClass(0)}>
+                <Button style={{ height: 38 }} onClick={() => inSubject === 0 ? setInClass(0) : setInSubject(0)}>
                   <KeyboardBackspaceIcon />
                 </Button>
                 <Typography fontSize={20} variant="h5">
-                  {className}
+                  {inSubject === 0 ? className : subjectName}
                 </Typography>
               </Box>
             )}
@@ -201,8 +203,10 @@ export const ElearningClassAdminRole = () => {
                   ))}
                 </Grid>
               </>
+            ) : inSubject === 0 ? (
+              <EleaningClassInfo classId={inClass} setInSubject={setInSubject} setSubjectName={setSubjectName} />
             ) : (
-              <EleaningClassInfo classId={inClass} />
+              <ElearningDocument classId={inClass} subjectId={inSubject} />
             )}
           </TabPanel>
 

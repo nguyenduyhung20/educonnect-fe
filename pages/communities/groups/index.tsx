@@ -87,7 +87,9 @@ function CommunitiesGroups() {
 
 CommunitiesGroups.getLayout = (page) => (
   <SidebarLayout>
-    <GroupsProvider>{page}</GroupsProvider>
+    <GroupsProvider>
+      {page}
+    </GroupsProvider>
   </SidebarLayout>
 );
 

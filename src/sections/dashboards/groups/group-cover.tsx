@@ -29,6 +29,8 @@ import { ApproveMemberDrawer } from './group-approve-member-drawer';
 import { useGroupsContext } from '@/contexts/groups/groups-context';
 import { GroupBackGround } from './group-background-item';
 import { GroupAvatarItem } from './group-avatar-item';
+import { ListReportedDrawer } from './list-reported-drawer';
+import { useReportContext } from '@/contexts/report/report-context';
 
 const GroupCover = ({ group }: { group: Group }) => {
   const router = useRouter();
@@ -36,7 +38,9 @@ const GroupCover = ({ group }: { group: Group }) => {
   const leaveGroupApi = useFunction(GroupsApi.leaveGroup);
   const checkJoinGroupApi = useFunction(GroupsApi.checkJoinGroup);
   const approveMemberDrawer = useDrawer();
+  const listPostReportedDrawer = useDrawer<Group>();
   const { getListUserApplyGroup, groupID } = useGroupsContext();
+  const { getPostReportedGroup } = useReportContext();
 
   const { user, isAuthenticated } = useAuth();
   const requestData: Member = {
@@ -75,6 +79,7 @@ const GroupCover = ({ group }: { group: Group }) => {
   useEffect(() => {
     if (member?.role == 'admin' && user) {
       getListUserApplyGroup.call({ userId: user?.id, groupId: groupID });
+      getPostReportedGroup.call(groupID);
     }
   }, [member, groupID, user]);
 
@@ -137,6 +142,23 @@ const GroupCover = ({ group }: { group: Group }) => {
                   <></>
                 )}
               </Badge>
+
+              <Badge
+                badgeContent={getPostReportedGroup.data?.data.length}
+                color="error"
+              >
+                {member.role == 'admin' ? (
+                  <Button
+                    sx={{ width: '100%' }}
+                    onClick={() => listPostReportedDrawer.handleOpen(group)}
+                    variant="outlined"
+                  >
+                    {'Bài viết bị báo cáo'}
+                  </Button>
+                ) : (
+                  <></>
+                )}
+              </Badge>
             </Stack>
           ) : (
             <Button
@@ -170,6 +192,12 @@ const GroupCover = ({ group }: { group: Group }) => {
       <ApproveMemberDrawer
         open={approveMemberDrawer.open}
         onClose={approveMemberDrawer.handleClose}
+      />
+
+      <ListReportedDrawer
+        open={listPostReportedDrawer.open}
+        onClose={listPostReportedDrawer.handleClose}
+        group={listPostReportedDrawer.data}
       />
     </>
   );
