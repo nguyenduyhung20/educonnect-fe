@@ -10,10 +10,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useRouter } from 'next/router';
 import useFunction from '@/hooks/use-function';
 import { ExploreApi } from '@/api/explore';
-
-export interface Film {
-  title: string;
-}
+import { SearchResult } from '@/types/explore';
 
 type FetchSearchInput = {
   input: string;
@@ -21,58 +18,67 @@ type FetchSearchInput = {
 
 // TODO: make example working, shit
 export const SearchBar = () => {
-  const [value, setValue] = useState<Film | null>(null);
+  const [value, setValue] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState('');
-  const [options, setOptions] = useState<Film[]>([]);
+  const [options, setOptions] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const getResult = useFunction(ExploreApi.getSearchResult);
   const router = useRouter();
 
+  const handleSearchResult = useCallback(
+    (data: SearchResult) => {
+      const results = [];
+      if (data?.suggest && data.suggest !== inputValue) {
+        results.push(data.suggest);
+      }
+      if (data?.posts) {
+        results.push(...data.posts.map((item) => item.title));
+      }
+      setOptions(results);
+    },
+    [inputValue]
+  );
+
   const fetchSearch = useCallback(
     async ({ input }: FetchSearchInput) => {
-      console.log('called');
-
+      setIsLoading(true);
       try {
-        setIsLoading(true);
-        const result = await getResult.call({});
-        setIsLoading(false);
+        const result = await getResult.call({ input, mode: 'suggest' });
         if (result.data) {
-          if (result) {
-            setOptions([...result.data]);
-          }
+          handleSearchResult(result.data);
         }
       } catch (error) {
         if ((error.message as string).includes('unauthorization')) {
           router.push('/login');
         }
+      } finally {
+        setIsLoading(false);
       }
     },
-    [getResult, router]
+    [getResult, handleSearchResult, router]
   );
-  const debounced = useDebouncedCallback(fetchSearch, 300);
+
+  const debouncedFetchSearch = useDebouncedCallback(fetchSearch, 200);
+
+  const handleKeyPressEvent = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    console.log(event);
+
+    if (event.key === 'Enter' && inputValue.trim() !== '') {
+      setValue(inputValue);
+    }
+  };
 
   useEffect(() => {
-    let active = true;
-
-    if (inputValue === '') {
+    if (!inputValue.trim()) {
       return undefined;
     }
     if (inputValue.endsWith(' ')) {
       return undefined;
     }
-
-    const querySearch = async () => {
-      if (active) {
-        await debounced({ input: inputValue });
-      }
-    };
-    querySearch();
-
-    return () => {
-      active = false;
-    };
-  }, [debounced, inputValue]);
+    debouncedFetchSearch({ input: inputValue });
+  }, [debouncedFetchSearch, inputValue]);
 
   return (
     <>
@@ -80,20 +86,20 @@ export const SearchBar = () => {
         placeholder="Tìm kiếm"
         sx={{ width: 300 }}
         autoComplete
+        freeSolo={false}
         filterOptions={(x) => x}
-        options={options}
+        options={inputValue ? [inputValue, ...options] : options}
         value={value}
-        onChange={(_event, newValue: Film | null) => {
-          console.log(newValue);
-
-          setOptions(newValue ? [newValue, ...options] : options);
+        onChange={(_event, newValue: string | null) => {
+          console.log('onchange', newValue);
           setValue(newValue);
         }}
         onInputChange={(_event, newInputValue) => {
           setInputValue(newInputValue);
         }}
-        isOptionEqualToValue={(option, value) => option.title === value.title}
-        getOptionLabel={(option: Film) => option.title}
+        onKeyUp={handleKeyPressEvent}
+        isOptionEqualToValue={(option, value) => option === value}
+        getOptionLabel={(option: string) => option}
         loading={isLoading}
         renderInput={(params) => (
           <TextField
