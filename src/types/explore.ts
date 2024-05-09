@@ -9,4 +9,5 @@ export type SearchQuery = {
 export type SearchResult = {
   suggest?: string;
   posts?: Post[];
+  autocomplete?: string[];
 };

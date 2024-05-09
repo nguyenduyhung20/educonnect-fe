@@ -28,16 +28,22 @@ export const SearchBar = () => {
 
   const handleSearchResult = useCallback(
     (data: SearchResult) => {
+      console.log(options);
+
       const results = [];
       if (data?.suggest && data.suggest !== inputValue) {
         results.push(data.suggest);
       }
+      if (data?.autocomplete) {
+        results.push(...data.autocomplete);
+      }
       if (data?.posts) {
         results.push(...data.posts.map((item) => item.title));
       }
+
       setOptions(results);
     },
-    [inputValue]
+    [inputValue, options]
   );
 
   const fetchSearch = useCallback(
