@@ -10,4 +10,5 @@ export type SearchResult = {
   suggest?: string;
   posts?: Post[];
   autocomplete?: string[];
+  most_access?: string[];
 };

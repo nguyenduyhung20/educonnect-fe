@@ -11,13 +11,18 @@ import { useRouter } from 'next/router';
 import useFunction from '@/hooks/use-function';
 import { ExploreApi } from '@/api/explore';
 import { SearchResult } from '@/types/explore';
+import { Post } from '@/types/post';
 
 type FetchSearchInput = {
   input: string;
 };
 
 // TODO: make example working, shit
-export const SearchBar = () => {
+
+type SearchBarProps = {
+  onQueryResult: (results: Post[]) => void;
+};
+export const SearchBar = ({ onQueryResult }: SearchBarProps) => {
   const [value, setValue] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<string[]>([]);
@@ -28,24 +33,35 @@ export const SearchBar = () => {
 
   const handleSearchResult = useCallback(
     (data: SearchResult) => {
-      console.log(options);
-
-      const results = [];
+      let results: string[] = [];
       if (data?.suggest && data.suggest !== inputValue) {
         results.push(data.suggest);
       }
+
       if (data?.autocomplete) {
         results.push(...data.autocomplete);
+      }
+      if (data?.most_access) {
+        results.push(...data.most_access);
       }
       if (data?.posts) {
         results.push(...data.posts.map((item) => item.title));
       }
 
+      // Preprocess results
+      results = results.map((item: string) => {
+        if (item.length >= 48) {
+          console.log(item, item.length);
+          return item + '...';
+        }
+        return item;
+      });
+      console.log(results);
+
       setOptions(results);
     },
-    [inputValue, options]
+    [inputValue]
   );
-
   const fetchSearch = useCallback(
     async ({ input }: FetchSearchInput) => {
       setIsLoading(true);
@@ -65,12 +81,33 @@ export const SearchBar = () => {
     [getResult, handleSearchResult, router]
   );
 
-  const debouncedFetchSearch = useDebouncedCallback(fetchSearch, 200);
+  // Debounce input
+  const debouncedFetchSearch = useDebouncedCallback(fetchSearch, 100);
+
+  const queryResult = useCallback(async () => {
+    if (value) {
+      const result = await getResult.call({ input: value, mode: 'query' });
+      console.log('value changed', value, result);
+      if (result.data && result.data.posts) {
+        onQueryResult(result.data.posts);
+      }
+    }
+  }, [getResult, onQueryResult, value]);
+
+  const calculatedOptions = useCallback(() => {
+    let results: string[] = options;
+    if (
+      inputValue &&
+      inputValue.trim() !== options[0] &&
+      !options.includes(inputValue)
+    ) {
+      results = [inputValue, ...results];
+    }
+    return results;
+  }, [inputValue, options]);
 
   const handleKeyPressEvent = (event: React.KeyboardEvent<HTMLDivElement>) => {
     event.preventDefault();
-    console.log(event);
-
     if (event.key === 'Enter' && inputValue.trim() !== '') {
       setValue(inputValue);
     }
@@ -86,18 +123,24 @@ export const SearchBar = () => {
     debouncedFetchSearch({ input: inputValue });
   }, [debouncedFetchSearch, inputValue]);
 
+  useEffect(() => {
+    /**
+     * Listen to value change and call the query respectively
+     */
+    queryResult();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
+
   return (
     <>
       <Autocomplete
         placeholder="Tìm kiếm"
-        sx={{ width: 300 }}
         autoComplete
         freeSolo={false}
         filterOptions={(x) => x}
-        options={inputValue ? [inputValue, ...options] : options}
+        options={calculatedOptions()}
         value={value}
         onChange={(_event, newValue: string | null) => {
-          console.log('onchange', newValue);
           setValue(newValue);
         }}
         onInputChange={(_event, newInputValue) => {

@@ -3,17 +3,28 @@ import { useExplorePostsContext } from '@/contexts/explore/explore-context';
 import { useAuth } from '@/hooks/use-auth';
 import { Stack, Typography } from '@mui/material';
 import React, { useMemo } from 'react';
+import { Post } from '@/types/post';
 
-export const ExploreTrendingSection = () => {
-  const { getExplorePostsApi, getPublicExplorePostsApi } = useExplorePostsContext();
-  const {isAuthenticated} = useAuth()
+type ExploreTrendingSectionProps = {
+  queryResults?: Post[];
+};
+export const ExploreTrendingSection = ({
+  queryResults
+}: ExploreTrendingSectionProps) => {
+  const { getExplorePostsApi, getPublicExplorePostsApi } =
+    useExplorePostsContext();
+  const { isAuthenticated } = useAuth();
 
   const listExplorePosts = useMemo(() => {
     if (isAuthenticated) {
-      return  getExplorePostsApi.data?.data || [];
+      if (queryResults && queryResults.length > 0) {
+        return queryResults;
+      } else {
+        return getExplorePostsApi.data?.data || [];
+      }
     }
     return getPublicExplorePostsApi.data?.data || [];
-  }, [getExplorePostsApi, getPublicExplorePostsApi]);
+  }, [getExplorePostsApi.data?.data, getPublicExplorePostsApi.data?.data, isAuthenticated, queryResults]);
   return (
     <>
       <Stack spacing={2}>
