@@ -1,3 +1,4 @@
+import { SearchQuery, SearchResult } from '@/types/explore';
 import { PostExplore } from '@/types/post';
 import { apiGet } from 'src/utils/api-request';
 
@@ -20,5 +21,10 @@ export class ExploreApi {
   }> {
     const response = await apiGet('/public/most-follower', new FormData());
     return response;
+  }
+
+  static async getSearchResult(query: SearchQuery) {
+    const data: { data: SearchResult } = await apiGet('/explore/search', query);
+    return data.data;
   }
 }

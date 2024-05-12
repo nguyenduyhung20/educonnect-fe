@@ -30,7 +30,7 @@ const ProfileCover = ({ user: user }: { user: UserDetail }) => {
   const getFollowList = async () => {
     const followList = await followListApi.call(null);
     if (
-      followList.data.userFolloweds.user?.some(
+      followList.data?.userFolloweds.user?.some(
         (followed) => followed.id === user?.id
       )
     ) {
@@ -49,7 +49,7 @@ const ProfileCover = ({ user: user }: { user: UserDetail }) => {
       <BackGroundCover user={user} />
 
       <Box display={'flex'} justifyContent={'space-between'}>
-        <AvatarCover user={user} />
+        {<AvatarCover user={user} />}
 
         {currentUser?.id !== user?.id && (
           <Box mt={2} mx={2}>
@@ -76,7 +76,7 @@ const ProfileCover = ({ user: user }: { user: UserDetail }) => {
         <Typography gutterBottom variant="h4">
           {user?.name}
         </Typography>
-        <VerifiedIcon color="primary" />
+        {user?.is_famous && <VerifiedIcon color="primary" />}
       </Stack>
     </>
   );

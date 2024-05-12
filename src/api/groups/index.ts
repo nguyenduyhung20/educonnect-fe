@@ -1,4 +1,4 @@
-import { apiGet, apiPost, apiDelete, apiPatch } from 'src/utils/api-request';
+import { apiGet, apiPost, apiDelete, apiPatch, getFormData } from 'src/utils/api-request';
 
 import { Group, Member, UserApplyingGroup } from '@/types/groups';
 import { Post } from '@/types/post';
@@ -92,5 +92,27 @@ export class GroupsApi {
     return await apiGet(
       `/group/list-apply-group/${request.groupId}/${request.userId}`
     );
+  }
+
+  static async changeAvatar(request: {
+    groupId: number;
+    uploadedFiles: File[];
+  }) {
+    const response = await apiPost(
+      `/group/avatar/${request.groupId}`,
+      getFormData(request)
+    );
+    return response;
+  }
+
+  static async changeBackGround(request: {
+    groupId: number;
+    uploadedFiles: File[];
+  }) {
+    const response = await apiPost(
+      `/group/background/${request.groupId}`,
+      getFormData(request)
+    );
+    return response;
   }
 }

@@ -8,6 +8,7 @@ import { UserViewProfile } from '@/sections/management/user/user-view-profile';
 import UsersProvider, { useUserContext } from '@/contexts/user/user-context';
 import ExplorePostsProvider from '@/contexts/explore/explore-context';
 import PostsProvider from '@/contexts/posts/posts-context';
+import ReportProvider from '@/contexts/report/report-context';
 
 function ManagementUserProfile() {
   const { currentUserProfile } = useUserContext();
@@ -30,7 +31,9 @@ ManagementUserProfile.getLayout = (page) => (
   <SidebarLayout>
     <ExplorePostsProvider>
       <UsersProvider>
-        <PostsProvider>{page}</PostsProvider>
+        <PostsProvider>
+          <ReportProvider>{page}</ReportProvider>
+        </PostsProvider>
       </UsersProvider>
     </ExplorePostsProvider>
   </SidebarLayout>

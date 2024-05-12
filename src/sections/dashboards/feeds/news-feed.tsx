@@ -1,11 +1,11 @@
-import { BodyNews } from '@/components/NewsFeed/BodyNews';
+import { BodyNews } from '@/sections/dashboards/feeds/body-news';
 import { usePostsContext } from '@/contexts/posts/posts-context';
 import { useAuth } from '@/hooks/use-auth';
 import { Post, PostDetail, TypePost } from '@/types/post';
 import { getFormData } from '@/utils/api-request';
 import { Stack } from '@mui/material';
 import React, { useMemo } from 'react';
-import { BodyNewsDetail } from '@/components/NewsFeed/BodyNewsDetail';
+import { BodyNewsDetail } from '@/sections/dashboards/feeds/body-news-detail';
 import { useUserContext } from '@/contexts/user/user-context';
 import { useRouter } from 'next/router';
 

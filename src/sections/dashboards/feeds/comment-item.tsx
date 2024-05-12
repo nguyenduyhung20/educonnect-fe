@@ -16,6 +16,7 @@ import { usePostsContext } from '@/contexts/posts/posts-context';
 import { CommentSendItem } from './comment-send-item';
 import { PostsApi } from '@/api/posts';
 import { CommentsList } from './comments-list';
+import VerifiedIcon from '@mui/icons-material/Verified';
 
 export const CommentItem = ({
   comment,
@@ -31,7 +32,6 @@ export const CommentItem = ({
   const [isLiked, setIsLiked] = useState(comment.userInteract ? true : false);
   const [isShow, setIsShow] = useState(false);
 
-
   const { reactComment, getDetailPostApi } = usePostsContext();
   return (
     <Stack direction={'row'} spacing={1}>
@@ -45,7 +45,8 @@ export const CommentItem = ({
       {<Divider orientation="vertical" />}
       <Box sx={{ width: 1 }}>
         <Stack>
-          <Box>
+          <Stack direction={'row'} spacing={1}>
+            {' '}
             <Typography
               variant="h4"
               component={Link}
@@ -58,7 +59,10 @@ export const CommentItem = ({
             >
               {comment.user?.name}
             </Typography>
-          </Box>
+            {comment?.user.is_famous && (
+              <VerifiedIcon color="primary" fontSize="small" />
+            )}
+          </Stack>
 
           <Typography sx={{ pl: 1 }}>{comment.content}</Typography>
         </Stack>
@@ -78,11 +82,12 @@ export const CommentItem = ({
                     isLiked ? 'dislike' : 'like',
                     'detail',
                     {
+                      senderId: comment?.user?.id,
                       senderName: comment?.user?.name,
                       senderAvatar: comment?.user?.avatar,
                       receiverID: comment?.user?.id,
                       itemType: 'comment',
-                      postID: comment.id
+                      itemId: getDetailPostApi?.data.data.id
                     },
                     index,
                     parentIndex

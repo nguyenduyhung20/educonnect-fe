@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Button,
   Card,
   CardHeader,
   Drawer,
@@ -71,18 +70,6 @@ export const ApproveMemberDrawer = ({
                 </Typography>
               </Box>
               <Typography variant="h6">{'Phê duyệt thành viên mới'}</Typography>
-            </Box>
-
-            <Box
-              sx={{
-                display: 'flex',
-                gap: 2,
-                alignItems: 'center'
-              }}
-            >
-              <Button variant="contained" color="primary" type="submit">
-                Phê duyệt tất cả
-              </Button>
             </Box>
           </Box>
         </Paper>

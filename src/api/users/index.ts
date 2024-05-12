@@ -12,14 +12,15 @@ type SignInResponse = Promise<{
 }>;
 
 type SignUpRequest = {
-  email: string;
-  name: string;
+  username: string;
   password: string;
-  phone: string;
+  name: string;
+  email: string;
 };
 
 type SignUpResponse = Promise<{
-  accessToken: string;
+  data: User;
+  token: string;
 }>;
 
 interface FollowListResponse {
@@ -32,6 +33,11 @@ interface FollowListResponse {
 interface UserFollowers {
   user: User[];
   count: number;
+}
+
+export interface UserOverviewActivity {
+  interactNumber: number;
+  commentNumber: number;
 }
 
 export class UsersApi {
@@ -49,7 +55,7 @@ export class UsersApi {
   }
 
   static async signUp(request: SignUpRequest): SignUpResponse {
-    return await apiPost('/users', request);
+    return await apiPost('/auth/register', request);
   }
 
   static async me(): Promise<User> {
@@ -66,6 +72,11 @@ export class UsersApi {
 
   static async getUserProfile(id: number): Promise<{ data: UserProfile }> {
     return await apiGet(`/user/${id}`);
+  }
+
+  static async getUserOverviewActivity(): Promise<UserOverviewActivity> {
+    const response = await apiGet(`/user/activity/overview`);
+    return response.data;
   }
 
   static async followUser({ userId }: { userId: number }) {

@@ -13,7 +13,6 @@ import {
   MenuItem,
   Paper,
   Select,
-  SelectChangeEvent,
   Stack,
   Tab,
   Tabs,
@@ -147,6 +146,7 @@ function CreatePost() {
       ) {
         setIsShow(false);
         setSearchContent('');
+        setBackGround(false);
       }
     };
 
@@ -163,6 +163,7 @@ function CreatePost() {
     );
   }, [searchContent, getGroupsUserJoinApi]);
 
+  const [background, setBackGround] = useState(false);
 
   return (
     <>
@@ -218,7 +219,9 @@ function CreatePost() {
                               background: `${theme.colors.primary.lighter}`,
                               borderRadius: 1
                             },
-                            background: 'white'
+                            background: background
+                              ? `${theme.colors.primary.lighter}`
+                              : 'white'
                           }}
                           onClick={() => {
                             formik.setFieldValue('group', {
@@ -226,6 +229,7 @@ function CreatePost() {
                               title: item.title
                             });
                             setSearchContent(item.title);
+                            setBackGround(true);
                           }}
                         >
                           <GroupsInfo group={item} />

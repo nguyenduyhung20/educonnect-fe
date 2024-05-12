@@ -51,7 +51,6 @@ type SignUpAction = {
   };
 };
 
-
 type SignOutAction = {
   type: ActionType.SIGN_OUT;
 };
@@ -123,11 +122,11 @@ export interface AuthContextType extends State {
   updateUser: (user: Partial<User>) => void;
   signIn: (email: string, password: string) => Promise<User | undefined>;
   signUp: (
-    email: string,
-    name: string,
-    phone: string,
-    password: string
-  ) => Promise<void>;
+    username: string,
+    password: string,
+    fullName: string,
+    email: string
+  ) => Promise<User>;
   signOut: () => Promise<void>;
 }
 
@@ -136,7 +135,7 @@ export const AuthContext = createContext<AuthContextType>({
   updateUser: () => {},
   issuer: Issuer.JWT,
   signIn: () => Promise.resolve(undefined),
-  signUp: () => Promise.resolve(),
+  signUp: () => Promise.resolve(undefined),
   signOut: () => Promise.resolve()
 });
 
@@ -209,6 +208,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
       const response = await UsersApi.signIn({ username: email, password });
 
       CookieHelper.setItem(CookieKeys.TOKEN, response.token);
+      CookieHelper.setItem('Token', 'Bearer ' + response.token);
 
       dispatch({
         type: ActionType.SIGN_IN,
@@ -223,33 +223,33 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
 
   const signUp = useCallback(
     async (
-      // email: string,
-      // name: string,
-      // phone: string,
-      // password: string
-    ): Promise<void> => {
-      // const { accessToken } = await UsersApi.signUp({
-      //   email,
-      //   name,
-      //   password,
-      //   phone
-      // });
-      // const user = await UsersApi.me({ accessToken });
-
-      // sessionStorage.setItem(STORAGE_KEY, accessToken);
-
-      // dispatch({
-      //   type: ActionType.SIGN_UP,
-      //   payload: {
-      //     user,
-      //   },
-      // });
+      username: string,
+      password: string,
+      fullName: string,
+      email: string
+    ): Promise<User> => {
+      const response = await UsersApi.signUp({
+        email,
+        username,
+        password,
+        name: fullName
+      });
+      CookieHelper.setItem(CookieKeys.TOKEN, response.token);
+      CookieHelper.setItem('Token', 'Bearer ' + response.token);
+      dispatch({
+        type: ActionType.SIGN_UP,
+        payload: {
+          user: response.data
+        }
+      });
+      return response.data;
     },
-    []
+    [dispatch]
   );
 
   const signOut = useCallback(async (): Promise<void> => {
     CookieHelper.removeItem(CookieKeys.TOKEN);
+    CookieHelper.removeItem('Token');
     dispatch({ type: ActionType.SIGN_OUT });
     router.push(paths.login);
   }, [router]);
@@ -275,4 +275,3 @@ AuthProvider.propTypes = {
 };
 
 export const AuthConsumer = AuthContext.Consumer;
-
