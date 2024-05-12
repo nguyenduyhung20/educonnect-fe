@@ -20,7 +20,7 @@ type FetchSearchInput = {
 // TODO: make example working, shit
 
 type SearchBarProps = {
-  onQueryResult: (results: Post[]) => void;
+  onQueryResult?: (results: Post[]) => void;
 };
 export const SearchBar = ({ onQueryResult }: SearchBarProps) => {
   const [value, setValue] = useState<string | null>(null);
@@ -49,13 +49,17 @@ export const SearchBar = ({ onQueryResult }: SearchBarProps) => {
       }
 
       // Preprocess results
-      results = results.map((item: string) => {
-        if (item.length >= 48) {
-          console.log(item, item.length);
-          return item + '...';
-        }
-        return item;
-      });
+      results = results
+        .filter((value, index, arr) => {
+          return index === arr.indexOf(value);
+        })
+        .map((item: string) => {
+          if (item.length >= 48) {
+            console.log(item, item.length);
+            return item + '...';
+          }
+          return item;
+        });
       console.log(results);
 
       setOptions(results);
