@@ -1,17 +1,7 @@
 import { NotiData } from '@/types/noti';
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardHeader,
-  Link,
-  Stack,
-  Typography
-} from '@mui/material';
+import { Avatar, Box, Link, Stack, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useCallback, useMemo } from 'react';
-import NextLink from 'next/link';
 
 function getErrorString(errorRaw: any): string {
   if (typeof errorRaw == 'string') {

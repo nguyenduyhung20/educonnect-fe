@@ -39,7 +39,10 @@ const SidebarLayout: FC<SidebarLayoutProps> = ({ children }) => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      const socket = io(process.env.NEXT_PUBLIC_API_NOTIFICATION);
+      const socket = io(process.env.NEXT_PUBLIC_API_NOTIFICATION, {
+        reconnection: false,
+        transports: ['websocket']
+      });
       socket.on('connect', () => {
         socket.emit('newUser', { userId: user?.id });
       });
