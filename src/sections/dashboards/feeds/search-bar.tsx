@@ -52,12 +52,10 @@ export const SearchBar = ({ onQueryResult }: SearchBarProps) => {
         })
         .map((item: string) => {
           if (item.length >= 48) {
-            console.log(item, item.length);
             return item + '...';
           }
           return item;
         });
-      console.log(results);
 
       setOptions(results);
     },
@@ -88,7 +86,6 @@ export const SearchBar = ({ onQueryResult }: SearchBarProps) => {
   const queryResult = useCallback(async () => {
     if (value) {
       const result = await getResult.call({ input: value, mode: 'query' });
-      console.log('value changed', value, result);
       if (result.data && result.data.posts) {
         onQueryResult(result.data.posts);
       }
