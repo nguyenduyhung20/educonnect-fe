@@ -16,9 +16,6 @@ import { Post } from '@/types/post';
 type FetchSearchInput = {
   input: string;
 };
-
-// TODO: make example working, shit
-
 type SearchBarProps = {
   onQueryResult?: (results: Post[]) => void;
 };
