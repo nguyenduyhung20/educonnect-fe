@@ -52,7 +52,7 @@ function useAppSnackbar() {
             <Box>
               <Typography
                 component={Link}
-                href={`http://localhost:3000/communities/home/${notiData?.itemId}`}
+                href={`https://educonnect-fe.vercel.app/communities/home/${notiData?.itemId}`}
               >
                 {notiData.content}
               </Typography>
