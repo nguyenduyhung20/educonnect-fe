@@ -46,7 +46,7 @@ const ProfileCover = ({ user: user }: { user: UserDetail }) => {
 
   return (
     <>
-      <BackGroundCover user={user} />
+      {user && <BackGroundCover user={user} /> }
 
       <Box display={'flex'} justifyContent={'space-between'}>
         {<AvatarCover user={user} />}

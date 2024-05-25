@@ -1,6 +1,7 @@
 import { usePostsContext } from '@/contexts/posts/posts-context';
 import { Post } from '@/types/post';
 import { useEffect, useRef } from 'react';
+import { useAuth } from './use-auth';
 
 const VIEW_RATIO_THRESHOLD = 1;
 const VIEW_TIME_THRESHOLD = 30 * 1000;
@@ -15,8 +16,12 @@ export const useViewEventTimer = ({ ref, post }: ViewEventTimerInput) => {
   const fullyViewedRef = useRef(false);
 
   const { sendViewEvent } = usePostsContext();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      return;
+    }
     if (!ref?.current) {
       return;
     }
@@ -71,5 +76,6 @@ export const useViewEventTimer = ({ ref, post }: ViewEventTimerInput) => {
       }
       clearTimeout(timerRef.current);
     };
-  }, [ref]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ref, isAuthenticated]);
 };

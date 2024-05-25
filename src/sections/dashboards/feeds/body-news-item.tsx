@@ -134,7 +134,7 @@ export const BodyNewsItem = ({
             </Typography>
             {isPostType(post) && (
               <Typography variant="h6" style={{ whiteSpace: 'pre-line' }}>
-                {post.content.split(/\s+/).slice(0, 100).join(' ') + '... '}
+                {post.content?.split(/\s+/).slice(0, 100).join(' ') + '... '}
               </Typography>
             )}
             {!isPostType(post) && (
