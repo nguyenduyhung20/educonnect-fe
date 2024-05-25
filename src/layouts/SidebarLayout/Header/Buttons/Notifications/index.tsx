@@ -144,7 +144,7 @@ function HeaderNotifications({
                     </Typography>
                     <Typography
                       component={Link}
-                      href={`http://localhost:3000/communities/home/${item?.itemId}`}
+                      href={`https://educonnect-fe.vercel.app/communities/home/${item?.itemId}`}
                       onClick={async () => {
                         await readNotification(item.id);
                       }}
