@@ -18,7 +18,7 @@ const ProfileCover = ({ user: user }: { user: UserDetail }) => {
 
   const followUserApi = useFunction(UsersApi.followUser);
   const followListApi = useFunction(UsersApi.followList);
-  const { user: currentUser } = useAuth(); 
+  const { user: currentUser } = useAuth();  
 
   const handleUserFollow = async () => {
     const response = await followUserApi.call({ userId: user?.id });
