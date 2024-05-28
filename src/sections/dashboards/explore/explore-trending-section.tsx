@@ -18,13 +18,25 @@ export const ExploreTrendingSection = ({
   const listExplorePosts = useMemo(() => {
     if (isAuthenticated) {
       if (queryResults && queryResults.length > 0) {
-        return queryResults;
+        return queryResults.map((item: any) => ({
+          ...item,
+          commentCount: item.comment_count,
+          interactCount: item.interact_count
+        }));
       } else {
         return getExplorePostsApi.data?.data || [];
       }
     }
     return getPublicExplorePostsApi.data?.data || [];
-  }, [getExplorePostsApi.data?.data, getPublicExplorePostsApi.data?.data, isAuthenticated, queryResults]);
+  }, [
+    getExplorePostsApi.data?.data,
+    getPublicExplorePostsApi.data?.data,
+    isAuthenticated,
+    queryResults
+  ]);
+
+  console.log(queryResults);
+
   return (
     <>
       <Stack spacing={2}>
