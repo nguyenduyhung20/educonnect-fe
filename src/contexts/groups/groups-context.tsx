@@ -24,7 +24,10 @@ interface ContextValue {
   getGroupsApi: UseFunctionReturnType<FormData, { data: Group[] }>;
   getHotGroups: UseFunctionReturnType<FormData, { data: Group[] }>;
   getGroupsApiById: UseFunctionReturnType<{ id: number }, { data: Group }>;
-  getPostByGroupId: UseFunctionReturnType<{ id: number }, { data: Post[] }>;
+  getPostByGroupId: UseFunctionReturnType<
+    { id: number },
+    { data: Post[]; sumPosts: any }
+  >;
   getGroupsUserHostApi: UseFunctionReturnType<number, { data: Group[] }>;
   getGroupsUserJoinApi: UseFunctionReturnType<number, { data: Group[] }>;
   getListUserApplyGroup: UseFunctionReturnType<

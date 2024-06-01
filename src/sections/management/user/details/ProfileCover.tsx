@@ -18,7 +18,7 @@ const ProfileCover = ({ user: user }: { user: UserDetail }) => {
 
   const followUserApi = useFunction(UsersApi.followUser);
   const followListApi = useFunction(UsersApi.followList);
-  const { user: currentUser } = useAuth();  
+  const { user: currentUser } = useAuth();
 
   const handleUserFollow = async () => {
     const response = await followUserApi.call({ userId: user?.id });
@@ -46,7 +46,7 @@ const ProfileCover = ({ user: user }: { user: UserDetail }) => {
 
   return (
     <>
-      {user && <BackGroundCover user={user} /> }
+      {user && <BackGroundCover user={user} />}
 
       <Box display={'flex'} justifyContent={'space-between'}>
         {<AvatarCover user={user} />}
@@ -66,17 +66,15 @@ const ProfileCover = ({ user: user }: { user: UserDetail }) => {
         )}
       </Box>
 
-      <Stack
-        justifyContent={'flex-start'}
-        py={2}
-        pl={2}
-        direction={'row'}
-        spacing={1}
-      >
-        <Typography gutterBottom variant="h4">
-          {user?.name}
-        </Typography>
-        {user?.is_famous && <VerifiedIcon color="primary" />}
+      <Stack py={2} pl={2}>
+        <Stack justifyContent={'flex-start'} direction={'row'} spacing={1}>
+          <Typography gutterBottom variant="h4">
+            {user?.name}
+          </Typography>
+          {user?.is_famous && <VerifiedIcon color="primary" />}
+        </Stack>
+
+        <Typography variant='h5'>Điểm uy tín: {user?.point ?? 0}</Typography>
       </Stack>
     </>
   );

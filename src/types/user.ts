@@ -20,6 +20,7 @@ export interface UserDetail extends User {
   create_at: string;
   update_at: string;
   deleted: boolean;
+  point: number;
 }
 
 export type UserPost = Pick<User, 'name' | 'avatar' | 'id' | 'is_famous'>;
@@ -27,6 +28,7 @@ export type UserPost = Pick<User, 'name' | 'avatar' | 'id' | 'is_famous'>;
 export type UserProfile = {
   user: UserDetail;
   newsfeed: Post[];
+  listSumPost: { id: number; title: string; contentSummarize: string }[];
 };
 
 export type UserSearch = {

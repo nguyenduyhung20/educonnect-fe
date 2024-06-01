@@ -9,10 +9,10 @@ import GroupsProvider, {
 } from '@/contexts/groups/groups-context';
 import { useAuth } from '@/hooks/use-auth';
 import PostsProvider from '@/contexts/posts/posts-context';
-import { ExploreTrendingSection } from '@/sections/dashboards/explore/explore-trending-section';
 import ExplorePostsProvider from '@/contexts/explore/explore-context';
 import { CreateNewsFeed } from '@/sections/dashboards/feeds/create-news-feed';
 import ReportProvider from '@/contexts/report/report-context';
+import { GroupTrendPost } from '@/sections/dashboards/groups/group-trend-post';
 
 const CommunitiesGroups = () => {
   const router = useRouter();
@@ -26,6 +26,10 @@ const CommunitiesGroups = () => {
     return getPostByGroupId.data?.data || [];
   }, [getPostByGroupId]);
 
+  const listGroupPost = useMemo(() => {
+    return getPostByGroupId.data?.sumPosts || [];
+  }, [getPostByGroupId]);
+
   const { isAuthenticated, user } = useAuth();
 
   useEffect(() => {
@@ -37,6 +41,7 @@ const CommunitiesGroups = () => {
         getPostByGroupId.call({ id: groupID });
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupID, user, isAuthenticated, router]);
   return (
     <>
@@ -62,8 +67,9 @@ const CommunitiesGroups = () => {
           <Grid item xs={12} md={5}>
             {/* <PopularTags /> */}
             <Stack spacing={3}>
-              <ExploreTrendingSection />
+              {/* <ExploreTrendingSection /> */}
               {/* <RecentActivity /> */}
+              <GroupTrendPost listTrendPosts={listGroupPost} />
             </Stack>
           </Grid>
         </Grid>

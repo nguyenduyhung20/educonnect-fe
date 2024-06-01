@@ -69,7 +69,7 @@ export const BodyNewsItem = ({
     (post: Post | PostExplore): post is Post => {
       return (post as Post).fileContent !== undefined;
     },
-    [post]
+    []
   );
   const reportPostDialog = useDialog();
 
@@ -98,8 +98,8 @@ export const BodyNewsItem = ({
                   component={Link}
                   href={`/management/profile/${post?.user?.id}`}
                   sx={{
-                    color: 'black',
-                    '&:hover': { textDecoration: 'underline' }
+                    '&:hover': { textDecoration: 'underline' },
+                    color: 'black'
                   }}
                 >
                   {post?.user?.name +
@@ -217,9 +217,9 @@ export const BodyNewsItem = ({
             >
               <Box
                 sx={{
-                  width: 1,
                   display: 'flex',
-                  justifyContent: 'center'
+                  justifyContent: 'center',
+                  width: 1
                 }}
               >
                 <IconButton
@@ -232,12 +232,12 @@ export const BodyNewsItem = ({
                         isLiked ? 'dislike' : 'like',
                         type,
                         {
-                          senderId: user?.id,
-                          senderName: user?.name,
-                          senderAvatar: user?.avatar,
-                          receiverID: post.user?.id,
                           itemId: post.id,
-                          itemType: 'post'
+                          itemType: 'post',
+                          receiverID: post.user?.id,
+                          senderAvatar: user?.avatar,
+                          senderId: user?.id,
+                          senderName: user?.name
                         }
                       );
                       setIsLiked(!isLiked);
@@ -256,9 +256,9 @@ export const BodyNewsItem = ({
               </Box>
               <Box
                 sx={{
-                  width: 1,
                   display: 'flex',
-                  justifyContent: 'center'
+                  justifyContent: 'center',
+                  width: 1
                 }}
               >
                 <IconButton

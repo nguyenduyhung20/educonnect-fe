@@ -5,12 +5,11 @@ import React from 'react';
 import { UserProfile } from '@/types/user';
 import { useAuth } from '@/hooks/use-auth';
 import { NewsFeed } from '@/sections/dashboards/feeds/news-feed';
-import { ExploreTrendingSection } from '@/sections/dashboards/explore/explore-trending-section';
 import { CreateNewsFeed } from '@/sections/dashboards/feeds/create-news-feed';
+import { PostTrendList } from './user-trend-post';
 
 export const UserViewProfile = ({ userData }: { userData: UserProfile }) => {
   const { user } = useAuth();
-
   return (
     <>
       <Grid
@@ -34,7 +33,9 @@ export const UserViewProfile = ({ userData }: { userData: UserProfile }) => {
         <Grid item xs={12} md={5}>
           <Stack spacing={3}>
             {user?.id == userData.user?.id && <RecentActivity />}
-            <ExploreTrendingSection />
+            {/* <ExploreTrendingSection /> */}
+
+            <PostTrendList listExplorePosts={userData.listSumPost} />
           </Stack>
         </Grid>
       </Grid>

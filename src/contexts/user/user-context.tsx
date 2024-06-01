@@ -32,11 +32,11 @@ interface ContextValue {
 }
 
 export const UsersContext = createContext<ContextValue>({
-  getUsersProfile: DEFAULT_FUNCTION_RETURN,
   changeAvatar: async () => {},
   changeBackGround: async () => {},
   currentUserProfile: { current: undefined },
-  getOverviewActivity: DEFAULT_FUNCTION_RETURN
+  getOverviewActivity: DEFAULT_FUNCTION_RETURN,
+  getUsersProfile: DEFAULT_FUNCTION_RETURN
 });
 
 const UsersProvider = ({ children }: { children: ReactNode }) => {
@@ -86,6 +86,7 @@ const UsersProvider = ({ children }: { children: ReactNode }) => {
         getUsersProfile.call(userID);
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userID]);
 
   useMemo(() => {
@@ -96,23 +97,29 @@ const UsersProvider = ({ children }: { children: ReactNode }) => {
         currentPosts?.newsfeed || []
       );
       currentUserProfile.current = {
-        user: getUsersProfile.data?.data.user,
+        listSumPost: getUsersProfile.data?.data.listSumPost || [],
         newsfeed: [
           ...(getUsersProfile.data?.data.newsfeed || []),
           ...(newPosts || [])
-        ]
+        ],
+        user: getUsersProfile.data?.data.user
       };
     }
-  }, [getUsersProfile, userID]);
+  }, [
+    getUsersProfile.data?.data.listSumPost,
+    getUsersProfile.data?.data.newsfeed,
+    getUsersProfile.data?.data.user,
+    isAuthenticated
+  ]);
 
   return (
     <UsersContext.Provider
       value={{
-        getUsersProfile,
         changeAvatar,
         changeBackGround,
         currentUserProfile,
-        getOverviewActivity
+        getOverviewActivity,
+        getUsersProfile
       }}
     >
       {children}
