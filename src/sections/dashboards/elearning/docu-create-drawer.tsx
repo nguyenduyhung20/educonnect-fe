@@ -136,7 +136,7 @@ export const DocuCreateDrawer = ({
             <Typography variant="h5">Tên tài liệu</Typography>
 
             <TextField
-              placeholder="Nhập tên nhóm"
+              placeholder="Nhập tên tài liệu"
               name="title"
               value={formik.values.title}
               onChange={formik.handleChange}
