@@ -35,7 +35,7 @@ export const ExploreTrendingSection = ({
     queryResults
   ]);
 
-  console.log(queryResults);
+  // console.log(queryResults);
 
   return (
     <>
