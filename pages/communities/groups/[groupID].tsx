@@ -80,13 +80,11 @@ const CommunitiesGroups = () => {
 
 CommunitiesGroups.getLayout = (page) => (
   <SidebarLayout>
-    <ExplorePostsProvider>
       <GroupsProvider>
         <PostsProvider>
           <ReportProvider>{page}</ReportProvider>
         </PostsProvider>
       </GroupsProvider>
-    </ExplorePostsProvider>
   </SidebarLayout>
 );
 

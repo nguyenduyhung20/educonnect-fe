@@ -27,6 +27,8 @@ export const NewsFeed = ({
     return Number(router.query.userID);
   }, [router.query.userID]);
 
+  console.log(listNewsFeeds.length);
+
   return (
     <Stack direction={'column'} spacing={2}>
       {listNewsFeeds.map((newsfeed, index) => {
