@@ -1,4 +1,10 @@
-import { apiGet, apiPost, apiDelete, apiPatch, getFormData } from 'src/utils/api-request';
+import {
+  apiGet,
+  apiPost,
+  apiDelete,
+  apiPatch,
+  getFormData
+} from 'src/utils/api-request';
 
 import { Group, Member, UserApplyingGroup } from '@/types/groups';
 import { Post } from '@/types/post';
@@ -42,7 +48,7 @@ export class GroupsApi {
 
   static async getPostByGroupId(request: {
     id: number;
-  }): Promise<{ data: Post[] }> {
+  }): Promise<{ data: Post[]; sumPosts: any }> {
     const response = await apiGet(`/group/${request.id}/posts`);
     return response;
   }

@@ -232,7 +232,8 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
               return item;
             });
             getPostByGroupId.setData({
-              data: [...newData]
+              data: [...newData],
+              sumPosts: getPostByGroupId.data.sumPosts
             });
           } else if (type == 'profile') {
             const newData = getUsersProfile.data?.data.newsfeed.map((item) => {
@@ -250,7 +251,8 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
             getUsersProfile.setData({
               data: {
                 user: getUsersProfile.data?.data.user,
-                newsfeed: [...(newData || [])]
+                newsfeed: [...(newData || [])],
+                listSumPost: getUsersProfile.data?.data.listSumPost
               }
             });
           }
@@ -352,7 +354,8 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
               return item;
             });
             getPostByGroupId.setData({
-              data: [...newData]
+              data: [...newData],
+              sumPosts: getPostByGroupId.data.sumPosts
             });
           } else if (type == 'profile') {
             const newData = getUsersProfile.data?.data.newsfeed.map((item) => {
@@ -370,7 +373,8 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
             getUsersProfile.setData({
               data: {
                 user: getUsersProfile.data?.data.user,
-                newsfeed: [...(newData || [])]
+                newsfeed: [...(newData || [])],
+                listSumPost: getUsersProfile.data?.data.listSumPost
               }
             });
           }

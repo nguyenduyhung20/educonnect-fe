@@ -9,7 +9,6 @@ import GroupsProvider, {
 } from '@/contexts/groups/groups-context';
 import { useAuth } from '@/hooks/use-auth';
 import PostsProvider from '@/contexts/posts/posts-context';
-import ExplorePostsProvider from '@/contexts/explore/explore-context';
 import { CreateNewsFeed } from '@/sections/dashboards/feeds/create-news-feed';
 import ReportProvider from '@/contexts/report/report-context';
 import { GroupTrendPost } from '@/sections/dashboards/groups/group-trend-post';
