@@ -250,6 +250,7 @@ function HeaderSearch() {
   const handleRedirect = (url: string) => {
     router.push(url);
     setOpenDialog(false);
+    setSearchValue('');
   };
 
   return (
