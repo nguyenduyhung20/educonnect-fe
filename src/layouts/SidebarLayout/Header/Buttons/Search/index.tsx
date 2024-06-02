@@ -17,7 +17,6 @@ import {
   InputAdornment,
   lighten,
   List,
-  ListItem,
   ListItemAvatar,
   TextField,
   Theme,
@@ -27,17 +26,19 @@ import {
   DialogContent,
   DialogTitle,
   Slide,
-  Hidden
+  Hidden,
+  ListItemButton
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { TransitionProps } from '@mui/material/transitions';
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import FindInPageTwoToneIcon from '@mui/icons-material/FindInPageTwoTone';
-
 import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone';
 import { useDebounce } from '@/hooks/use-debounce';
 import useFunction from '@/hooks/use-function';
 import { SearchApi } from '@/api/search';
+import { FindInPage, Group } from '@mui/icons-material';
+import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & { children: ReactElement<any, any> },
@@ -74,21 +75,150 @@ const DialogTitleWrapper = styled(DialogTitle)(
     padding: ${theme.spacing(3)}
 `
 );
+// const searchResults = [
+//   {
+//     id: 2,
+//     name: 'Nguyen Duy Hung',
+//     avatar: 'https://i.imgur.com/PwqrcYG.png',
+//     background: 'http://localhost:4001',
+//     email: 'hung@gmail.com',
+//     birthday: '2023-10-19T00:00:00.000Z',
+//     sex: 'male',
+//     createAt: '2024-01-25T09:16:14.354Z'
+//   },
+//   {
+//     id: 3,
+//     name: 'Nguyen Duy Hung',
+//     avatar: 'https://i.imgur.com/PwqrcYG.png',
+//     background: 'http://localhost:4001',
+//     email: 'hung@gmail.com',
+//     birthday: '2023-10-19T00:00:00.000Z',
+//     sex: 'male',
+//     createAt: '2024-01-25T09:16:14.354Z'
+//   },
+//   {
+//     id: 4,
+//     name: 'Nguyen Duy Hung',
+//     avatar: 'https://i.imgur.com/PwqrcYG.png',
+//     background: 'http://localhost:4001',
+//     email: 'hung@gmail.com',
+//     birthday: '2023-10-19T00:00:00.000Z',
+//     sex: 'male',
+//     createAt: '2024-01-25T09:16:14.354Z'
+//   },
+//   {
+//     id: 5,
+//     name: 'Nguyen Duy Hung',
+//     avatar: 'https://i.imgur.com/PwqrcYG.png',
+//     background: 'http://localhost:4001',
+//     email: 'hung@gmail.com',
+//     birthday: '2023-10-19T00:00:00.000Z',
+//     sex: 'male',
+//     createAt: '2024-01-25T09:16:14.354Z'
+//   },
+//   {
+//     id: 6,
+//     name: 'Nguyen Duy Hung',
+//     avatar: 'https://i.imgur.com/PwqrcYG.png',
+//     background: 'http://localhost:4001',
+//     email: 'hung@gmail.com',
+//     birthday: '2023-10-19T00:00:00.000Z',
+//     sex: 'male',
+//     createAt: '2024-01-25T09:16:14.354Z'
+//   },
+//   {
+//     id: 7,
+//     name: 'Nguyen Duy Hung',
+//     avatar: 'https://i.imgur.com/PwqrcYG.png',
+//     background: 'http://localhost:4001',
+//     email: 'hung@gmail.com',
+//     birthday: '2023-10-19T00:00:00.000Z',
+//     sex: 'male',
+//     createAt: '2024-01-25T09:16:14.354Z'
+//   },
+//   {
+//     id: 8,
+//     name: 'Nguyen Duy Hung',
+//     avatar: 'https://i.imgur.com/PwqrcYG.png',
+//     background: 'http://localhost:4001',
+//     email: 'hung@gmail.com',
+//     birthday: '2023-10-19T00:00:00.000Z',
+//     sex: 'male',
+//     createAt: '2024-01-25T09:16:14.354Z'
+//   },
+//   {
+//     id: 9,
+//     name: 'Nguyen Duy Hung',
+//     avatar: 'https://i.imgur.com/PwqrcYG.png',
+//     background: 'http://localhost:4001',
+//     email: 'hung@gmail.com',
+//     birthday: '2023-10-19T00:00:00.000Z',
+//     sex: 'male',
+//     createAt: '2024-01-25T09:16:14.354Z'
+//   },
+//   {
+//     id: 10,
+//     name: 'Nguyen Duy Hung',
+//     avatar: 'https://i.imgur.com/PwqrcYG.png',
+//     background: 'http://localhost:4001',
+//     email: 'hung@gmail.com',
+//     birthday: '2023-10-19T00:00:00.000Z',
+//     sex: 'male',
+//     createAt: '2024-01-25T09:16:14.354Z'
+//   },
+//   {
+//     id: 25,
+//     name: 'Nguyen Duy Hung Day',
+//     avatar: 'http://localhost:4001',
+//     background: 'http://localhost:4001',
+//     email: 'test3@gmail.com',
+//     birthday: '2023-10-19T00:00:00.000Z',
+//     sex: 'male',
+//     createAt: '2024-01-25T09:16:14.405Z'
+//   },
 
+//   {
+//     id: 1008,
+//     name: 'Duy Hung',
+//     avatar: 'http://localhost:4001',
+//     background: 'http://localhost:4001',
+//     email: '',
+//     birthday: null,
+//     sex: null,
+//     createAt: '2024-05-30T05:36:48.257Z'
+//   },
+//   {
+//     id: 1009,
+//     name: 'Duy Hung',
+//     avatar: 'http://localhost:4001',
+//     background: 'http://localhost:4001',
+//     email: '',
+//     birthday: null,
+//     sex: null,
+//     createAt: '2024-05-31T01:22:07.448Z'
+//   }
+// ];
 function HeaderSearch() {
+  const [openDialog, setOpenDialog] = useState(false);
   const [openSearchResults, setOpenSearchResults] = useState(false);
   const [searchValue, setSearchValue] = useState('');
+  const [isShowMore, setIsShowMore] = useState(false);
 
   const debouncedSearchValue = useDebounce(searchValue, 500);
-
   const searchUserApi = useFunction(SearchApi.searchUser);
+  const router = useRouter();
 
-  const searchResult = useMemo(() => {
+  const searchResults = useMemo(() => {
     return searchUserApi.data;
   }, [searchUserApi.data]);
 
-  useEffect(() => {
+  const showSearchResults = searchResults
+    ? isShowMore
+      ? searchResults
+      : searchResults.slice(0, 5)
+    : [];
 
+  useEffect(() => {
     const searchUser = async () => {
       if (debouncedSearchValue && debouncedSearchValue !== '') {
         try {
@@ -104,22 +234,23 @@ function HeaderSearch() {
         setOpenSearchResults(false);
       }
     };
-
     searchUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearchValue]);
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setSearchValue(event.target.value);
   };
-
-  const [open, setOpen] = useState(false);
-
   const handleClickOpen = () => {
-    setOpen(true);
+    setOpenDialog(true);
   };
-
   const handleClose = () => {
-    setOpen(false);
+    setOpenDialog(false);
+  };
+  const handleRedirect = (url: string) => {
+    router.push(url);
+    setOpenDialog(false);
+    setSearchValue('');
   };
 
   return (
@@ -131,7 +262,7 @@ function HeaderSearch() {
       </Tooltip>
 
       <DialogWrapper
-        open={open}
+        open={openDialog}
         TransitionComponent={Transition}
         keepMounted
         maxWidth="md"
@@ -151,9 +282,10 @@ function HeaderSearch() {
                 </InputAdornment>
               )
             }}
-            placeholder="Tìm kiếm bạn bè, nhóm..."
+            placeholder="Tìm kiếm người dùng"
             fullWidth
             label="Tìm kiếm"
+            focused={true}
           />
         </DialogTitleWrapper>
         <Divider />
@@ -166,7 +298,7 @@ function HeaderSearch() {
               justifyContent="space-between"
             >
               <Typography variant="body2" component="span">
-                Search results for{' '}
+                Kết quả tìm kiếm cho{' '}
                 <Typography
                   sx={{ fontWeight: 'bold' }}
                   variant="body1"
@@ -175,58 +307,92 @@ function HeaderSearch() {
                   {debouncedSearchValue}
                 </Typography>
               </Typography>
-              <Link href="#" variant="body2" underline="hover">
-                Advanced search
-              </Link>
             </Box>
-            <div className='flex flex-col'>
-              {searchResult && searchResult.map((user) => (
-              <div key={user?.id}>{user?.name}</div>
-            ))}
-            </div>
-            
+
             <Divider sx={{ my: 1 }} />
+
             <List disablePadding>
-              <ListItem button>
-                <Hidden smDown>
-                  <ListItemAvatar>
-                    <Avatar
-                      sx={{
-                        background: (theme: Theme) =>
-                          theme.palette.secondary.main
-                      }}
-                    >
-                      <FindInPageTwoToneIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                </Hidden>
-                <Box flex="1">
-                  <Box display="flex" justifyContent="space-between">
-                    <Link
-                      href="#"
-                      underline="hover"
-                      sx={{ fontWeight: 'bold' }}
-                      variant="body2"
-                    >
-                      Dashboard for Healthcare Platform
-                    </Link>
-                  </Box>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    sx={{
-                      color: (theme: Theme) =>
-                        lighten(theme.palette.secondary.main, 0.5)
+              {showSearchResults && showSearchResults.length > 0 ? (
+                showSearchResults.map((user) => (
+                  <ListItemButton
+                    key={user.id}
+                    onClick={() => {
+                      handleRedirect(`/management/profile/${user.id}`);
                     }}
                   >
-                    This page contains all the necessary information for
-                    managing all hospital staff.
+                    <Hidden smDown>
+                      <ListItemAvatar>
+                        <Avatar
+                          sx={{
+                            background: (theme: Theme) =>
+                              theme.palette.secondary.main
+                          }}
+                          src={user.avatar}
+                        />
+                      </ListItemAvatar>
+                    </Hidden>
+                    <Box flex="1">
+                      <Box display="flex" justifyContent="space-between">
+                        <Link
+                          href={`/management/profile/${user.id}`}
+                          underline="hover"
+                          sx={{ fontWeight: 'bold' }}
+                          variant="body2"
+                        >
+                          {user.name}
+                        </Link>
+                      </Box>
+                    </Box>
+                    <ChevronRightTwoToneIcon />
+                  </ListItemButton>
+                ))
+              ) : (
+                <Box
+                  sx={{
+                    textAlign: 'center',
+                    position: 'relative',
+                    padding: '4rem'
+                  }}
+                >
+                  <Image
+                    src={
+                      '/static/images/illustrate/search-no-result-not-found.jpg'
+                    }
+                    width="250"
+                    height="250"
+                  />
+                  <Typography variant="h3">
+                    Không tìm thấy kết quả nào
                   </Typography>
                 </Box>
-                <ChevronRightTwoToneIcon />
-              </ListItem>
+              )}
+              {searchResults && searchResults.length > 5 ? (
+                isShowMore ? (
+                  <Box sx={{ textAlign: 'center' }}>
+                    <Button
+                      color="primary"
+                      onClick={() => setIsShowMore(false)}
+                    >
+                      Hiển thị ít hơn
+                    </Button>
+                  </Box>
+                ) : (
+                  <Box sx={{ textAlign: 'center' }}>
+                    <Button color="primary" onClick={() => setIsShowMore(true)}>
+                      Hiển thị tất cả
+                    </Button>
+                  </Box>
+                )
+              ) : (
+                <></>
+              )}
               <Divider sx={{ my: 1 }} component="li" />
-              <ListItem button>
+
+              <ListItemButton
+                onClick={() => {
+                  handleRedirect('/communities/explore');
+                }}
+              >
                 <Hidden smDown>
                   <ListItemAvatar>
                     <Avatar
@@ -235,7 +401,7 @@ function HeaderSearch() {
                           theme.palette.secondary.main
                       }}
                     >
-                      <FindInPageTwoToneIcon />
+                      <FindInPage />
                     </Avatar>
                   </ListItemAvatar>
                 </Hidden>
@@ -247,7 +413,7 @@ function HeaderSearch() {
                       sx={{ fontWeight: 'bold' }}
                       variant="body2"
                     >
-                      Example Projects Application
+                      Tìm kiếm bài viết
                     </Link>
                   </Box>
                   <Typography
@@ -258,13 +424,16 @@ function HeaderSearch() {
                         lighten(theme.palette.secondary.main, 0.5)
                     }}
                   >
-                    This is yet another search result pointing to a app page.
+                    Bấm để chuyển sang trang tìm kiếm bài viết
                   </Typography>
                 </Box>
                 <ChevronRightTwoToneIcon />
-              </ListItem>
+              </ListItemButton>
+
               <Divider sx={{ my: 1 }} component="li" />
-              <ListItem button>
+              <ListItemButton
+                onClick={() => handleRedirect('/communities/groups')}
+              >
                 <Hidden smDown>
                   <ListItemAvatar>
                     <Avatar
@@ -273,7 +442,7 @@ function HeaderSearch() {
                           theme.palette.secondary.main
                       }}
                     >
-                      <FindInPageTwoToneIcon />
+                      <Group />
                     </Avatar>
                   </ListItemAvatar>
                 </Hidden>
@@ -285,7 +454,7 @@ function HeaderSearch() {
                       sx={{ fontWeight: 'bold' }}
                       variant="body2"
                     >
-                      Search Results Page
+                      Tìm kiếm nhóm
                     </Link>
                   </Box>
                   <Typography
@@ -296,17 +465,13 @@ function HeaderSearch() {
                         lighten(theme.palette.secondary.main, 0.5)
                     }}
                   >
-                    Choose if you would like to show or not this typography
-                    section here...
+                    Bấm để chuyển sang tìm kiếm nhóm
                   </Typography>
                 </Box>
                 <ChevronRightTwoToneIcon />
-              </ListItem>
+              </ListItemButton>
             </List>
             <Divider sx={{ mt: 1, mb: 2 }} />
-            <Box sx={{ textAlign: 'center' }}>
-              <Button color="primary">View all search results</Button>
-            </Box>
           </DialogContent>
         )}
       </DialogWrapper>

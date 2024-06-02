@@ -20,7 +20,6 @@
         "maximum": 2,
         "when": "multiline"
       }
-    ],
-    "sort-keys-fix/sort-keys-fix": "warn"
+    ]
   }
 }
