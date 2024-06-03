@@ -45,7 +45,7 @@ const CommunitiesGroups = () => {
   return (
     <>
       <Container sx={{ mt: 3 }} maxWidth="lg">
-        <Grid
+        <Grid 
           container
           direction="row"
           justifyContent="center"
