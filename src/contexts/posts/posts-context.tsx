@@ -221,7 +221,7 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
             // If user doesn't pass value, we don't process.
             const newData = getPostByGroupId.data.data.map((item) => {
               if (item.id == request.id) {
-                return {
+                return { 
                   ...item,
                   interactCount:
                     action == 'like'
