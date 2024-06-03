@@ -84,9 +84,10 @@ const UsersProvider = ({ children }: { children: ReactNode }) => {
     } else {
       if (userID) {
         getUsersProfile.call(userID);
+        currentUserProfile.current = null;
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userID]);
 
   useMemo(() => {
