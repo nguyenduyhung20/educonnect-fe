@@ -19,7 +19,7 @@ const CommunitiesGroups = () => {
 
   const group = useMemo(() => {
     return getGroupsApiById.data?.data;
-  }, [getGroupsApiById.data]);
+  }, [getGroupsApiById.data]); 
 
   const listNewsFeeds = useMemo(() => {
     return getPostByGroupId.data?.data || [];
