@@ -12,7 +12,12 @@ import {
   DialogTitle,
   Tab,
   CardActions,
-  TextField
+  TextField,
+  SelectChangeEvent,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
 } from '@mui/material';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -40,6 +45,23 @@ export const ElearningClassAdminRole = () => {
   const [valueTab, setValueTab] = useState('0');
   const deleteDialog = useDialog<DeleteDialogData>();
   const classCreateDrawer = useDrawer();
+  const splitClassList = {};
+  const [selectedSchoolYear, setselectedSchoolYear] = useState<string>('');
+
+  const timeToSchoolYear = (inputDate: string) => {
+    const date = new Date(inputDate);
+    let schoolYear = '';
+    if (date.getMonth() < 6) {
+      schoolYear = `${date.getFullYear() - 1}-${date.getFullYear()}`;
+    } else {
+      schoolYear = `${date.getFullYear()}-${date.getFullYear() + 1}`;
+    }
+    return schoolYear;
+  };
+
+  const onChangeSelect = (ev: SelectChangeEvent) => {
+    setselectedSchoolYear(ev.target.value);
+  };
 
   const handleChangeTab = (_: React.SyntheticEvent, newValue: string) => {
     setValueTab(newValue);
@@ -82,6 +104,21 @@ export const ElearningClassAdminRole = () => {
     setOpenDialog(false);
   };
 
+  classList?.school?.classroom?.forEach((element) => {
+    const schoolYear = timeToSchoolYear(element?.create_at);
+    if (splitClassList[schoolYear]) {
+      splitClassList[schoolYear]?.push(element);
+    } else {
+      splitClassList[schoolYear] = [element];
+    }
+  });
+  const selected = Object.keys(splitClassList).length
+    ? Object.keys(splitClassList)[0]
+    : '';
+  if (selectedSchoolYear === '' && selected !== '') {
+    setselectedSchoolYear(selected);
+  }
+
   const updateClass = useFunction(handleSave, {
     successMessage: 'Cập nhật thành công!'
   });
@@ -100,18 +137,45 @@ export const ElearningClassAdminRole = () => {
           </Box>
           <Box
             display={'flex'}
-            justifyContent={inClass ? 'space-between' : 'flex-end'}
+            justifyContent={'space-between'}
             alignItems={'center'}
           >
-            {inClass !== 0 && (
+            {inClass !== 0 ? (
               <Box display={'flex'} alignItems={'center'}>
-                <Button style={{ height: 38 }} onClick={() => inSubject === 0 ? setInClass(0) : setInSubject(0)}>
+                <Button
+                  style={{ height: 38 }}
+                  onClick={() =>
+                    inSubject === 0 ? setInClass(0) : setInSubject(0)
+                  }
+                >
                   <KeyboardBackspaceIcon />
                 </Button>
                 <Typography fontSize={20} variant="h5">
                   {inSubject === 0 ? className : subjectName}
                 </Typography>
               </Box>
+            ) : (
+              <FormControl sx={{ m: 1, minWidth: 120 }} variant="standard">
+                <InputLabel
+                  style={{ fontSize: '16px' }}
+                  id="demo-select-small-label"
+                >
+                  Niên khóa
+                </InputLabel>
+                <Select
+                  style={{ fontSize: '16px' }}
+                  labelId="demo-select-small-label"
+                  id="demo-select-small"
+                  value={selectedSchoolYear}
+                  onChange={onChangeSelect}
+                >
+                  {Object.keys(splitClassList)?.map((item, index) => (
+                    <MenuItem key={index} value={item}>
+                      {item}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             )}
 
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -145,7 +209,7 @@ export const ElearningClassAdminRole = () => {
                   </Button>
                 </Box>
                 <Grid container spacing={3}>
-                  {classList?.school?.classroom?.map((item, index) => (
+                  {splitClassList?.[selectedSchoolYear]?.map((item, index) => (
                     <Grid key={index} item xs={3}>
                       <Card
                         onClick={() => {
@@ -204,7 +268,11 @@ export const ElearningClassAdminRole = () => {
                 </Grid>
               </>
             ) : inSubject === 0 ? (
-              <EleaningClassInfo classId={inClass} setInSubject={setInSubject} setSubjectName={setSubjectName} />
+              <EleaningClassInfo
+                classId={inClass}
+                setInSubject={setInSubject}
+                setSubjectName={setSubjectName}
+              />
             ) : (
               <ElearningDocument classId={inClass} subjectId={inSubject} />
             )}
